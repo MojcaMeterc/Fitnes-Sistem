@@ -25,13 +25,13 @@ class Tabela:
     def dodajanje(self, stolpci):
         return f"""
             INSERT INTO {self.ime} ({", ".join(stolpci)})
-            VALUES({", ".jpin(PARAM_FMT.format(s) for s in stolpci)});
+            VALUES({", ".join(PARAM_FMT.format(s) for s in stolpci)});
         """
     def dodaj_vrstico(self, **podatki):
         podatki = {k: v for k, v in podatki.items() if v is not None}
         poizvedba = self.dodajanje(podatki.keys())
         cur = self.conn.execute(poizvedba, podatki)
-        return cur.lastrwoid
+        return cur.lastrowid
 
     def uvozi(self, encoding='UTF-8'):
         if self.podatki is None:
@@ -47,22 +47,22 @@ class Tabela:
                 self.dodaj_vrstico(**podatki)
 
 class Uporabniki(Tabela):
-    ime = 'Uporabniki'
+    ime = 'uporabniki'
     podatki = "podatki/uporabniki.csv"
 
     def ustvari(self):
         self.conn.execute("""
             CREATE TABLE uporabniki (
-                uporabniki_id INTEGER KEY AUTOINCREMENT,
+                uporabnik_id INTEGER PRIMARY KEY AUTOINCREMENT,
                 ime TEXT NOT NULL,
                 priimek TEXT NOT NULL,
                 email TEXT UNIQUE,
-                telefon TEXT UNIQUE,
+                telefon TEXT UNIQUE
                 );
      """)
 
 class Trener(Tabela):
-    ime = 'Trener'
+    ime = 'trener'
     podatki = 'podatki/trenerji.csv'
 
     def ustvari(self):
@@ -71,7 +71,7 @@ class Trener(Tabela):
                 trener_id INTEGER PRIMARY KEY AUTOINCREMENT,
                 ime TEXT NOT NULL,
                 priimek TEXT NOT NULL,
-                specializacija TEXT NOT NULL,
+                specializacija TEXT NOT NULL
             );
         """)
 
@@ -84,7 +84,7 @@ class Dvorane(Tabela):
             CREATE TABLE dvorane(
                 dvorana_id INTEGER PRIMARY KEY AUTOINCREMENT,
                 naziv TEXT NOT NULL,
-                kapaciteta INTEGER NOT NULL CHECK(kapaciteta > 0);
+                kapaciteta INTEGER NOT NULL CHECK (kapaciteta > 0)
         );
     """)
 
@@ -94,11 +94,11 @@ class Karta(Tabela):
 
     def ustvari(self):
         self.conn.execute("""
-            CREATE TABLE(
-            karta_id INTEGER PRIMARY KEY AUTOINCREMENT,
-            naziv TEXT NOT NULL,
-            trajanje_dni INTEGER NOT NULL CHECK(trajanje_dni > 0),
-            cena REAL NOT NULL CHECK(cena > 0),
+            CREATE TABLE karta(
+                karta_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                naziv TEXT NOT NULL,
+                trajanje_dni INTEGER NOT NULL CHECK(trajanje_dni > 0),
+                cena REAL NOT NULL CHECK(cena > 0)
             );
         """)
 
@@ -106,20 +106,26 @@ class Termin(Tabela):
     ime = 'termini'
     podatki = 'podatki/termini.csv'
 
-    #def ustvari(self):
-    #    self.conn.execute("""
-    #        # se še treba točn dogovort glede podatkov
-    #        );
-    #    """)
+    def ustvari(self):
+       #še potrebno dodati podatke venar še ne veva točno
+       self.conn.execute("""
+            CREATE TABLE termin
+                termin_id INTEGER PRIMARY KEY AUTOINCREMENT
+
+            );
+  """)
 
 class Rezervacija(Tabela):
-    ime = 'Rezervacije'
+    ime = 'rezervacije'
     podatki = 'podatki/rezervacije.csv'
 
-    #def ustvari(self):
-    #    self.conn.execute("""
-    # tut tuki še točn dogovor glede podatkov
-#""")
+    def ustvari(self):
+        #še potrebno dodati podatke venar še ne veva točno
+        self.conn.execute("""
+            CREATE TABLE rezervacija(
+            rezervacija_id INTEGER PRIMARY KEY AUTOINCREMENT
+            );
+""")
 
 def pripravi_tabele(conn):
     return[
@@ -136,12 +142,12 @@ def ustvari_bazo(conn):
     tabele = pripravi_tabele(conn)
     for t in reversed(tabele):
         t.izbrisi()
-    for t in tabele():
+    for t in tabele:
         t.ustvari()
-    for t in tabele():
+    for t in tabele:
         t.uvozi()
 
 if __name__ == '__main__':
     conn = sqlite3.connect('fitnes.db')
     ustvari_bazo(conn)
-    conn.close
+    conn.close()
