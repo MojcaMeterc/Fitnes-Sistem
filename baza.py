@@ -107,7 +107,6 @@ class Termin(Tabela):
     podatki = 'podatki/termini.csv'
 
     def ustvari(self):
-       #še potrebno dodati podatke venar še ne veva točno
        self.conn.execute("""
             CREATE TABLE termini(
                 termin_id INTEGER PRIMARY KEY AUTOINCREMENT
@@ -120,7 +119,6 @@ class Rezervacija(Tabela):
     podatki = 'podatki/rezervacije.csv'
 
     def ustvari(self):
-        #še potrebno dodati podatke venar še ne veva točno
         self.conn.execute("""
             CREATE TABLE rezervacija(
             rezervacija_id INTEGER PRIMARY KEY AUTOINCREMENT
