@@ -109,8 +109,11 @@ class Termin(Tabela):
     def ustvari(self):
        self.conn.execute("""
             CREATE TABLE termini(
-                termin_id INTEGER PRIMARY KEY AUTOINCREMENT
-
+                termin_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                dvorana TEXT NOT NULL,
+                datum TEXT NOT NULL,
+                ura_pricetka TEXT NOT NULL,
+                ura_konca TEXT NOT NULL         
             );
   """)
 
@@ -121,7 +124,8 @@ class Rezervacija(Tabela):
     def ustvari(self):
         self.conn.execute("""
             CREATE TABLE rezervacija(
-            rezervacija_id INTEGER PRIMARY KEY AUTOINCREMENT
+                rezervacija_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                termin_id INTEGER
             );
 """)
 
