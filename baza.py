@@ -109,7 +109,7 @@ class Termin(Tabela):
     def ustvari(self):
        #še potrebno dodati podatke venar še ne veva točno
        self.conn.execute("""
-            CREATE TABLE termin
+            CREATE TABLE termini(
                 termin_id INTEGER PRIMARY KEY AUTOINCREMENT
 
             );
