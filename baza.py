@@ -113,13 +113,24 @@ class Termin(Tabela):
                 dvorana TEXT NOT NULL,
                 datum TEXT NOT NULL,
                 ura_pricetka TEXT NOT NULL,
-                ura_konca TEXT NOT NULL         
+                ura_konca TEXT NOT NULL
             );
   """)
 
-class Rezervacija(Tabela):
-    ime = 'rezervacije'
-    podatki = 'podatki/rezervacije.csv'
+class RezervacijaTrener(Tabela):
+    ime = 'rezervacijeTrener'
+    podatki = 'podatki/rezervacijeT.csv'
+
+    def ustvari(self):
+        self.conn.execute("""
+            CREATE TABLE rezervacija(
+                rezervacija_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                termin_id INTEGER
+            );
+""")
+class RezervacijaUporabniki(Tabela):
+    ime = 'rezervacijeUporabniki'
+    podatki = 'podatki/rezervacijeU.csv'
 
     def ustvari(self):
         self.conn.execute("""
