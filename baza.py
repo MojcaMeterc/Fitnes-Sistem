@@ -125,7 +125,7 @@ class RezervacijaTrener(Tabela):
         self.conn.execute("""
             CREATE TABLE rezervacija(
                 rezervacija_id INTEGER PRIMARY KEY AUTOINCREMENT,
-                termin_id INTEGER
+                termin TEXT,
             );
 """)
 class RezervacijaUporabniki(Tabela):
@@ -136,7 +136,8 @@ class RezervacijaUporabniki(Tabela):
         self.conn.execute("""
             CREATE TABLE rezervacija(
                 rezervacija_id INTEGER PRIMARY KEY AUTOINCREMENT,
-                termin_id INTEGER
+                termin_id TEXT,
+                vrsta_vadbe TEXT
             );
 """)
 
@@ -147,7 +148,8 @@ def pripravi_tabele(conn):
         Dvorane(conn),
         Karta(conn),
         Termin(conn),
-        Rezervacija(conn)
+        RezervacijaTrener(conn),
+        RezervacijaUporabniki(conn)
     ]
 
 def ustvari_bazo(conn):
