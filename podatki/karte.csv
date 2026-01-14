@@ -1,0 +1,15 @@
+karta_id,naziv,kapaciteta,trajanje,cena
+1,Dnevna,1,5.00
+2,Mesečna,30,35.00
+3,Letna,365,300.00
+4,Pilates 1x,1,8.00
+5,Pilates mesečna,30,45.00
+6,Joga 1x,1,7.00
+7,Joga mesečna,30,40.00
+8,Spinning 1x,1,9.00
+9,Spinning mesečna,30,50.00
+10,Paket1,30,60.00
+11,Paket2,60,110.00
+12,Paket3,90,150.00
+13,Paket4,180,260.00
+14,Paket5,365,400.00
