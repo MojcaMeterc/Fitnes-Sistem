@@ -1,4 +1,4 @@
-karta_id,naziv,kapaciteta,trajanje,cena
+karta_id,naziv,trajanje,cena
 1,Dnevna,1,5.00
 2,Mesečna,30,35.00
 3,Letna,365,300.00
@@ -12,4 +12,5 @@ karta_id,naziv,kapaciteta,trajanje,cena
 11,Paket2,60,110.00
 12,Paket3,90,150.00
 13,Paket4,180,260.00
+
 14,Paket5,365,400.00
