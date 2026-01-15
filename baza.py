@@ -57,7 +57,10 @@ class Uporabniki(Tabela):
                 ime TEXT NOT NULL,
                 priimek TEXT NOT NULL,
                 email TEXT UNIQUE,
-                telefon TEXT UNIQUE
+                telefon TEXT UNIQUE,
+
+                vrsta_karte INTEGER,
+                izbran_termin INTEGER
                 );
      """)
 
@@ -127,7 +130,6 @@ class RezervacijaTrener(Tabela):
                 rezervacijaT_id INTEGER PRIMARY KEY AUTOINCREMENT,
                 trener_id INTEGER,
                 termin TEXT
-                
             );
 """)
 class RezervacijaUporabniki(Tabela):
@@ -144,6 +146,8 @@ class RezervacijaUporabniki(Tabela):
                 kapacitetea INTEGER,
             );
 """)
+
+# dodaj tabelo nakup karte
 
 def pripravi_tabele(conn):
     return[
