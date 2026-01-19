@@ -126,19 +126,20 @@ class RezervacijaTrener(Tabela):
 
     def ustvari(self):
         self.conn.execute("""
-            CREATE TABLE rezervacija(
+            CREATE TABLE rezervacijaT(
                 rezervacijaT_id INTEGER PRIMARY KEY AUTOINCREMENT,
                 trener_id INTEGER,
                 termin TEXT
             );
 """)
+
 class RezervacijaUporabniki(Tabela):
     ime = 'rezervacijeUporabniki'
     podatki = 'podatki/rezervacijeU.csv'
 
     def ustvari(self):
         self.conn.execute("""
-            CREATE TABLE rezervacija(
+            CREATE TABLE rezervacijaU(
                 rezervacijaU_id INTEGER PRIMARY KEY AUTOINCREMENT,
                 termin_id TEXT,
                 uporabnik_id INTEGER,
@@ -146,7 +147,16 @@ class RezervacijaUporabniki(Tabela):
                 kapacitetea INTEGER,
             );
 """)
+class KupljeneKarte(Tabela):
+    ime = 'kupljeneKarte'
 
+    def ustvari(self):
+        self.conn.execute("""
+            CREATE TABLE kupljenaKarta(
+                karta_id INTEGER PRIMARY KEY  AUTOINCREMENT,
+                vsta_karte INTEGER,
+                uporabnik INTEGER);
+""")
 # dodaj tabelo nakup karte
 
 def pripravi_tabele(conn):
