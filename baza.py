@@ -155,9 +155,10 @@ class KupljeneKarte(Tabela):
             CREATE TABLE kupljenaKarta(
                 karta_id INTEGER PRIMARY KEY  AUTOINCREMENT,
                 vsta_karte INTEGER,
-                uporabnik INTEGER);
+                uporabnik INTEGER,
+                datum TEXT DEFAULT (DATE('now'))
+        );
 """)
-# dodaj tabelo nakup karte
 
 def pripravi_tabele(conn):
     return[
