@@ -113,7 +113,7 @@ class Termin(Tabela):
        self.conn.execute("""
             CREATE TABLE termini(
                 termin_id INTEGER PRIMARY KEY AUTOINCREMENT,
-                dvorana TEXT NOT NULL,
+                dvorana_id INTEGER,
                 datum TEXT NOT NULL,
                 ura_pricetka TEXT NOT NULL,
                 ura_konca TEXT NOT NULL
@@ -142,9 +142,7 @@ class RezervacijaUporabniki(Tabela):
             CREATE TABLE rezervacijaU(
                 rezervacijaU_id INTEGER PRIMARY KEY AUTOINCREMENT,
                 termin_id TEXT,
-                uporabnik_id INTEGER,
-                vrsta_vadbe TEXT,
-                kapacitetea INTEGER,
+                uporabnik_id INTEGER
             );
 """)
 class KupljeneKarte(Tabela):
