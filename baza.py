@@ -121,7 +121,7 @@ class Termin(Tabela):
   """)
 
 class RezervacijaTrener(Tabela):
-    ime = 'rezervacijaTren'
+    ime = 'rezervacijaT'
     podatki = 'podatki/rezervacijeT.csv'
 
     def ustvari(self):
@@ -134,7 +134,7 @@ class RezervacijaTrener(Tabela):
 """)
 
 class RezervacijaUporabniki(Tabela):
-    ime = 'rezervacijaUpor'
+    ime = 'rezervacijaU'
     podatki = 'podatki/rezervacijeU.csv'
 
     def ustvari(self):

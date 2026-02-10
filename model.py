@@ -3,7 +3,7 @@
 
 class Uporabnik:
     """
-    Razred za Uporabnik
+    Razred za Uporabnika
     """
     def __init__(self, conn, ime, priimek, email, telefon, uporabnik_id = None):
         self.conn = conn
@@ -68,7 +68,7 @@ class Uporabnik:
         self.conn.commit()
 
 class Trener:
-    """
+    """ razred za tremerja
     """
     def __init__(self, conn, ime, priimek, speciallizacija, trener_id = None): 
         self.conn = conn
@@ -80,20 +80,54 @@ class Trener:
     # metode:
     # prijava
     # rezervacija termina
+    def rezerviraj_termin(self, termin_id):
+        '''rezervacija termina
+        '''
+        self.conn.execute("""
+            INSERT INTO rezervacijaT (trener_id, termin)
+                VALUES (?, ?)
+            """, (self.trener_id, termin_id))
+        
+        self.conn.commit()
     # je na wordu
 
 class Termin:
     """
+    Razred za termin
     """
-    def __init__(self, dvorana, datum, ura_pricetka, ura_konca, termin_id):
+    def __init__(self, conn, dvorana_id, datum, ura_pricetka, ura_konca, termin_id):
+        self.conn = conn
         self.termin_id = termin_id
-        self.dvorana = dvorana
+        self.dvorana_id = dvorana_id
         self.datum = datum
-        self.ura_pric = ura_pricetka
+        self.ura_pricetka = ura_pricetka
         self.ura_konca = ura_konca
+
+    def shrani(self):
+        '''ustvarjanje termina
+        '''
+        cur = self.conn.execute("""
+            INSERT INTO termini (dvorana_id, datum, ura_pricetka, ura_konca)
+                VALUES (?, ?, ?, ?)
+            """, (self.dvorana_id, self.datumm, self.ura_pricetka, self.ura_konca))
+        
+        self.termin_id = cur.lastrowid
+        self.conn.commit()
 
 class Rezervacija:
     """
     Razred za rezervaicjo
     """
+    def __init__(self, conn):
+        self.conn = conn
+    
+    def rezervacije_uporabnika(self, uporabnik_id):
+        '''
+        '''
+        cur = self.conn.execute("""
+            SELECT * FROM rezervacijaU
+            WHERE uporabnik_id = ?
+            """, (uporabnik_id,))
+        return cur.fetchall()
+    
     
