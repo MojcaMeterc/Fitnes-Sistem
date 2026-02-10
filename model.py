@@ -66,6 +66,27 @@ class Uporabnik:
             """, (termin_id, self.uporabnik_id))
         
         self.conn.commit()
+    
+    # metoda za izpis uporabnikovih rezervacij
+    def rezervacije(self):
+        '''uporabnikove rezervacije
+        '''
+        cur = self.conn.execute("""
+            SELECT termin_id FROM rezervacijaU
+                WHERE uporabnik_id = ?
+            """, (self.uporabnik_id,))
+        
+        return cur.fetchall()
+    
+    # metoda za brisanje rezervacije
+    def preklici_rezervacijo(self, termin_id):
+        self.conn.execute("""
+            DELETE FROM rezervacijaU 
+                WHERE uporabnik_id = ? AND termin_id = ?
+            """, (self.uporabnik_id, termin_id))
+        
+        self.conn.commit()
+        
 
 class Trener:
     """ razred za tremerja
@@ -89,7 +110,19 @@ class Trener:
             """, (self.trener_id, termin_id))
         
         self.conn.commit()
-    # je na wordu
+    
+    @staticmethod
+    def vsi_tren(conn):
+        '''metoda za branje podatkov
+        '''
+        cur = conn.execute("""
+            SELECT termin_id, dvorana_id, datum, ura_pricetka, ura_konca
+            FROM termini
+                ORDER BY datum, ura_pricetka
+            """)
+        for vrstica in cur:
+            yield Termin(conn, vrstica[1], vrstica[2], vrstica[3], vrstica[4], vrstica[0])
+
 
 class Termin:
     """
@@ -103,7 +136,7 @@ class Termin:
         self.ura_pricetka = ura_pricetka
         self.ura_konca = ura_konca
 
-    def shrani(self):
+    def shrani_termin(self):
         '''ustvarjanje termina
         '''
         cur = self.conn.execute("""
@@ -114,9 +147,21 @@ class Termin:
         self.termin_id = cur.lastrowid
         self.conn.commit()
 
+    # metoda za preverjanje kapacitete termina
+    def stevilo_prijavljenih(self):
+        '''kapaciteta termina
+        '''
+        cur = self.conn.execute("""
+            SELECT COUNT(*) FROM rezervacijaU
+                WHERE termin_id = ?
+            """, (self.termin_id,))
+        
+        return cur.fetchone()[0]
+    
+
 class Rezervacija:
     """
-    Razred za rezervaicjo
+    Razred za rezervacijo
     """
     def __init__(self, conn):
         self.conn = conn
@@ -130,4 +175,47 @@ class Rezervacija:
             """, (uporabnik_id,))
         return cur.fetchall()
     
+class Karta:
+    """
+    Razred za karto
+    """
+    def __init__(self, conn, naziv, trajanje_dni, cena, karta_id=None):
+        self.conn= conn
+        self.karta_id = karta_id
+        self.naziv = naziv
+        self.trajanje_dni = trajanje_dni
+        self.cena = cena
+    
+    def shrani_karto(self):
+        '''
+        '''
+        cur = self.conn.execute("""
+            INSERT INTO karta (naziv, trajanje_dni, cena)
+                VALUES (?, ?, ?)
+            """, (self.naziv, self.trajanje_dni, self.cena))
+        
+        self.karta_id = cur.lastrowid
+        self.conn.commit()
+
+class Dvorana:
+    """
+    Razred za dvorano
+    """
+    def __init__(self, conn, naziv, kapaciteta, dvorana_id=None):
+        self.conn = conn
+        self.dvorana_id = dvorana_id
+        self.naziv = naziv
+        self.kapaciteta = kapaciteta
+
+    def shrani_dvorano(self):
+        cur = self.conn.execute("""
+            INSERT INTO dvorane (naziv, kapaciteta)
+                VALUES (?, ?)
+            """, (self.naziv, self.kapaciteta))
+        
+        self.dvorana_id = cur.lastrowid
+        self.conn.commit()
+
+
+
     
