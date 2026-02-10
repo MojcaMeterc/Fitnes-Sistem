@@ -121,7 +121,7 @@ class Termin(Tabela):
   """)
 
 class RezervacijaTrener(Tabela):
-    ime = 'rezervacijeTrener'
+    ime = 'rezervacijaTren'
     podatki = 'podatki/rezervacijeT.csv'
 
     def ustvari(self):
@@ -134,7 +134,7 @@ class RezervacijaTrener(Tabela):
 """)
 
 class RezervacijaUporabniki(Tabela):
-    ime = 'rezervacijeUporabniki'
+    ime = 'rezervacijaUpor'
     podatki = 'podatki/rezervacijeU.csv'
 
     def ustvari(self):
@@ -146,7 +146,7 @@ class RezervacijaUporabniki(Tabela):
             );
 """)
 class KupljeneKarte(Tabela):
-    ime = 'kupljeneKarte'
+    ime = 'kupljenaKarta'
 
     def ustvari(self):
         self.conn.execute("""
