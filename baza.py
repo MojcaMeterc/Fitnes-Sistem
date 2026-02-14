@@ -151,9 +151,9 @@ class KupljeneKarte(Tabela):
     def ustvari(self):
         self.conn.execute("""
             CREATE TABLE kupljenaKarta(
-                karta_id INTEGER PRIMARY KEY  AUTOINCREMENT,
-                vsta_karte INTEGER,
-                uporabnik INTEGER,
+                kupljenaKarta_id INTEGER PRIMARY KEY  AUTOINCREMENT,
+                vrsta_karte_id INTEGER,
+                uporabnik_id INTEGER,
                 datum TEXT DEFAULT (DATE('now'))
         );
 """)
