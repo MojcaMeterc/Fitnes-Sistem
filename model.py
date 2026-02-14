@@ -86,7 +86,18 @@ class Uporabnik:
             """, (self.uporabnik_id, termin_id))
         
         self.conn.commit()
-        
+
+    def moje_rezervacije(self):
+        '''prikaz rezervacij določenega uporabnika
+        '''
+        sql = """
+                SELECT termini.datum, termini.ura_pricetkam termini.ura_konca
+                FROM rezervacijaU
+                JOIN termini ON rezervacijaU.termin_id = termini.termin_id
+                WHERE rezervacijaU.uporabnik_id = ?
+            """
+        return self.conn.execute(sql, (self.uporabnik_id,))
+
 
 class Trener:
     """ razred za tremerja
@@ -123,6 +134,19 @@ class Trener:
         for vrstica in cur:
             yield Termin(conn, vrstica[1], vrstica[2], vrstica[3], vrstica[4], vrstica[0])
 
+    @staticmethod
+    def stevilo_rezervacij(conn):
+        '''število rezervacij po trenerjih
+        '''
+        sql = """
+                SELECT trener.ime, trener.priimek, COUNT(rezervacijaU.termin_id)
+                FROM trener
+                LEFT JOIN rezervacijaT ON trener.trener_id = rezervacijaT.trener_id
+                LEFT JOIN rezervacijaU ON rezervacijaT.termin = rezervacijaU.termin_id
+                GROUP BY trener.trener_id
+            """
+        return conn.execute(sql)
+    
 
 class Termin:
     """
@@ -157,6 +181,37 @@ class Termin:
             """, (self.termin_id,))
         
         return cur.fetchone()[0]
+    
+    @staticmethod
+    def vsi_s_podatki(conn):
+        '''seznam vseh terminov s trenerji in dvoranami
+        '''
+        sql = """
+            SELECT termini.termin_id,
+                    termini.datum,
+                    termini.ura_pricetka,
+                    termini.ura_konca,
+                    dvorane.naziv,
+                    trener.ime,
+                    trener.priimek
+            FROM termini
+            LEFT JOIN dvorane ON termini.dvorana_id = dvorana.dvorana_id
+            LEFT JOIN rezervacijaT ON termini.termin_id 0 rezervacijaT.termin
+            LEFT JOIN trener ON rezervacijaT.trener_id = trener.trener_id
+            ORDER BY termini.datum, termini.ura_pricetka
+        """
+        return conn.execute(sql)
+    
+    @staticmethod
+    def prosti_termini(conn):
+        '''prosti termini (brez rezervacij)
+        '''
+        sql = """
+                SELECT * FROM termini
+                LEFT JOIN rezervacijaU ON termini.termin_id = rezervacijaU.termin_id
+                WHERE rezervacijaU.termin_id IS NULL
+            """
+        return conn.execute(sql)
     
 
 class Rezervacija:
