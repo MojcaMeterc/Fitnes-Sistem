@@ -129,7 +129,7 @@ class RezervacijaTrener(Tabela):
             CREATE TABLE rezervacijaT(
                 rezervacijaT_id INTEGER PRIMARY KEY AUTOINCREMENT,
                 trener_id INTEGER,
-                termin TEXT
+                termin_id TEXT
             );
 """)
 
