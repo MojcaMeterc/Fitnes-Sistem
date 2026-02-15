@@ -116,7 +116,9 @@ class Termin(Tabela):
                 dvorana_id INTEGER,
                 datum TEXT NOT NULL,
                 ura_pricetka TEXT NOT NULL,
-                ura_konca TEXT NOT NULL
+                ura_konca TEXT NOT NULL,
+                        
+                FOREIGN KEY (dvorana_id) REFERENCES dvorane(dvorana_id)
             );
   """)
 
@@ -129,7 +131,10 @@ class RezervacijaTrener(Tabela):
             CREATE TABLE rezervacijaT(
                 rezervacijaT_id INTEGER PRIMARY KEY AUTOINCREMENT,
                 trener_id INTEGER,
-                termin TEXT
+                termin INTEGER,
+
+                FOREIGN KEY (trener_id) REFERENCES trener(trener_id),
+                FOREIGN KEY (termin) REFERENCES termini(termin_id)
             );
 """)
 
@@ -141,10 +146,14 @@ class RezervacijaUporabniki(Tabela):
         self.conn.execute("""
             CREATE TABLE rezervacijaU(
                 rezervacijaU_id INTEGER PRIMARY KEY AUTOINCREMENT,
-                termin_id TEXT,
-                uporabnik_id INTEGER
+                termin_id INTEGER,
+                uporabnik_id INTEGER,
+                          
+                FOREIGN KEY (termin_id) REFERENCES termini(termin_id),
+                FOREIGN KEY (uporabnik_id) REFERENCES uporabniki(uporabnik_id)
             );
 """)
+        
 class KupljeneKarte(Tabela):
     ime = 'kupljenaKarta'
 
@@ -154,7 +163,10 @@ class KupljeneKarte(Tabela):
                 karta_id INTEGER PRIMARY KEY  AUTOINCREMENT,
                 vsta_karte INTEGER,
                 uporabnik INTEGER,
-                datum TEXT DEFAULT (DATE('now'))
+                datum TEXT DEFAULT (DATE('now')),
+                          
+                FOREIGN KEY (vrsta_karte) REFERENCES karta(karta_id),
+                FOREIGN KEY (uporabnik) REFERENCES uporabniki(uporabnik_id)
         );
 """)
 

@@ -97,6 +97,30 @@ class Uporabnik:
                 WHERE rezervacijaU.uporabnik_id = ?
             """
         return self.conn.execute(sql, (self.uporabnik_id,))
+    
+    def aktivne_karte(self):
+        '''vse aktivne karte uporabnika
+        '''
+        sql = """
+                SELECT karta.naziv, kk.datum, karta.trajanje_dni FROM kupljenaKarta AS kk
+                JOIN karta ON kk.vrsta_karte = karta.karta_id
+                WHERE kk.uporabnik = ?
+            """
+        return self.conn.execute(sql, (self.uporabnik_id,))
+    
+    def iztek_naslednje(self):
+        '''kdaj se izteče naslednja karta
+        '''
+        sql = """
+                SELECT DATE(kk.datum, '+' || karta.trajanje_dni || 'days')
+                FROM kupljenaKarta AS kk
+                JOIN karta ON kk.vrsta_karte = karta.karta_id
+                WHERE kk.uporabnik = ?
+                ORDER BY kk.datum DESC  
+                LIMIT 1
+            """
+        return self.conn.execute(sql, (self.uporabnik_id,)).fetchone()
+        
 
 
 class Trener:
@@ -251,6 +275,18 @@ class Karta:
         
         self.karta_id = cur.lastrowid
         self.conn.commit()
+    
+    @staticmethod
+    def mesecni_prihodki(conn):
+        '''mesečni prihodki
+        '''
+        sql = """
+                SELECT strftime('%Y-%m', datum) as mesec, SUM(karta.cena) 
+                FROM kupljenaKarta AS kk
+                JOIN karta ON kk.vrsta_karte = karta.karta_id
+                GROUP BY mesec
+            """
+        return conn.execute(sql)
 
 class Dvorana:
     """
