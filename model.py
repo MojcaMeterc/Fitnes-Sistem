@@ -1,4 +1,6 @@
-#importi...
+import sqlite3
+import hashlib
+from datetime import datetime, timedelta
 
 
 class Uporabnik:
@@ -128,7 +130,7 @@ class Trener:
     """
     def __init__(self, conn, ime, priimek, speciallizacija, trener_id = None): 
         self.conn = conn
-        self.trener_id = None
+        self.trener_id = trener_id
         self.ime = ime
         self.priimek = priimek
         self.special = speciallizacija
@@ -219,8 +221,8 @@ class Termin:
                     trener.ime,
                     trener.priimek
             FROM termini
-            LEFT JOIN dvorane ON termini.dvorana_id = dvorana.dvorana_id
-            LEFT JOIN rezervacijaT ON termini.termin_id 0 rezervacijaT.termin
+            LEFT JOIN dvorane ON termini.dvorana_id = dvorane.dvorana_id
+            LEFT JOIN rezervacijaT ON termini.termin_id = rezervacijaT.termin
             LEFT JOIN trener ON rezervacijaT.trener_id = trener.trener_id
             ORDER BY termini.datum, termini.ura_pricetka
         """
@@ -236,6 +238,17 @@ class Termin:
                 WHERE rezervacijaU.termin_id IS NULL
             """
         return conn.execute(sql)
+    
+    def je_prostor(self):
+        '''kapaciteta dvorane
+        '''
+        sql = """
+                SELECT dvorana.kapaciteta FROM termini
+                JOIN dvorane ON termini.dvorana_id = dvorane.dvorana_id
+                WHERE termini.termin_id = ?
+            """
+        kapaciteta = self.conn.execute(sql, (self.termin_idm,)).fetchone()[0]
+        return self.stevilo_prijavljenih() < kapaciteta
     
 
 class Rezervacija:
