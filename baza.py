@@ -131,7 +131,10 @@ class RezervacijaTrener(Tabela):
             CREATE TABLE rezervacijaT(
                 rezervacijaT_id INTEGER PRIMARY KEY AUTOINCREMENT,
                 trener_id INTEGER,
-                termin INTEGER
+                termin INTEGER,
+                
+                FOREIGN KEY (trener_id) REFERENCES trener(trener_id),
+                FOREIGN KEY (termin) REFERENCES termini(termin_id)
             );
 """)
 
