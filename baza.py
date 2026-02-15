@@ -163,7 +163,10 @@ class KupljeneKarte(Tabela):
                 karta_id INTEGER PRIMARY KEY  AUTOINCREMENT,
                 vsta_karte INTEGER,
                 uporabnik INTEGER,
-                datum TEXT DEFAULT (DATE('now'))
+                datum TEXT DEFAULT (DATE('now')),
+                          
+                FOREIGN KEY (vrsta_karte) REFERENCES karta(karta_id),
+                FOREIGN KEY (uporabnik) REFERENCES uporabniki(uporabnik_id)
         );
 """)
 
