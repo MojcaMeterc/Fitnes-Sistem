@@ -131,10 +131,7 @@ class RezervacijaTrener(Tabela):
             CREATE TABLE rezervacijaT(
                 rezervacijaT_id INTEGER PRIMARY KEY AUTOINCREMENT,
                 trener_id INTEGER,
-                termin INTEGER,
-
-                FOREIGN KEY (trener_id) REFERENCES trener(trener_id),
-                FOREIGN KEY (termin) REFERENCES termini(termin_id)
+                termin INTEGER
             );
 """)
 
@@ -163,10 +160,7 @@ class KupljeneKarte(Tabela):
                 karta_id INTEGER PRIMARY KEY  AUTOINCREMENT,
                 vsta_karte INTEGER,
                 uporabnik INTEGER,
-                datum TEXT DEFAULT (DATE('now')),
-                          
-                FOREIGN KEY (vrsta_karte) REFERENCES karta(karta_id),
-                FOREIGN KEY (uporabnik) REFERENCES uporabniki(uporabnik_id)
+                datum TEXT DEFAULT (DATE('now'))
         );
 """)
 
