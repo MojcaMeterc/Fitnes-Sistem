@@ -166,7 +166,8 @@ def pripravi_tabele(conn):
         Karta(conn),
         Termin(conn),
         RezervacijaTrener(conn),
-        RezervacijaUporabniki(conn)
+        RezervacijaUporabniki(conn),
+        KupljeneKarte(conn)
     ]
 
 def ustvari_bazo(conn):
@@ -178,6 +179,7 @@ def ustvari_bazo(conn):
         t.ustvari()
     for t in tabele:
         t.uvozi()
+    conn.commit()
 
 if __name__ == '__main__':
     conn = sqlite3.connect('fitnes.db')
