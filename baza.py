@@ -40,6 +40,8 @@ class Tabela:
             bralnik = csv.reader(f)
             stolpci = next(bralnik)
             for vrstica in bralnik:
+                if not vrstica or all(v.strip() == '' for v in vrstica):
+                    continue
                 podatki = {
                     k: None if v == "" else v
                     for k, v in zip(stolpci, vrstica)
@@ -100,7 +102,7 @@ class Karta(Tabela):
             CREATE TABLE karta(
                 karta_id INTEGER PRIMARY KEY AUTOINCREMENT,
                 naziv TEXT NOT NULL,
-                trajanje INTEGER NOT NULL CHECK(trajanje_dni > 0),
+                trajanje INTEGER NOT NULL CHECK(trajanje > 0),
                 cena REAL NOT NULL CHECK(cena > 0)
             );
         """)
@@ -113,7 +115,7 @@ class Termin(Tabela):
        self.conn.execute("""
             CREATE TABLE termini(
                 termin_id INTEGER PRIMARY KEY AUTOINCREMENT,
-                dvorana_id INTEGER,
+                dvorana TEXT NOT NULL,
                 datum TEXT NOT NULL,
                 ura_pricetka TEXT NOT NULL,
                 ura_konca TEXT NOT NULL
