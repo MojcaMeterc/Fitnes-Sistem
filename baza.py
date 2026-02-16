@@ -100,7 +100,7 @@ class Karta(Tabela):
             CREATE TABLE karta(
                 karta_id INTEGER PRIMARY KEY AUTOINCREMENT,
                 naziv TEXT NOT NULL,
-                trajanje_dni INTEGER NOT NULL CHECK(trajanje_dni > 0),
+                trajanje INTEGER NOT NULL CHECK(trajanje_dni > 0),
                 cena REAL NOT NULL CHECK(cena > 0)
             );
         """)
