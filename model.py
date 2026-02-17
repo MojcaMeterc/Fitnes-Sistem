@@ -114,7 +114,7 @@ class Uporabnik:
         '''kdaj se izteče naslednja karta
         '''
         sql = """
-                SELECT DATE(kk.datum, '+' || karta.trajanje_dni || 'days')
+                SELECT DATE(kk.datum, '+' || karta.trajanje || ' dni')
                 FROM kupljenaKarta AS kk
                 JOIN karta ON kk.vrsta_karte_id = karta.karta_id
                 WHERE kk.uporabnik_id = ?
@@ -138,13 +138,13 @@ class Trener:
     # metode:
     # prijava
     # rezervacija termina
-    def rezerviraj_termin(self, termin_id):
+    def izberi_termin(self, termin):
         '''rezervacija termina
         '''
         self.conn.execute("""
             INSERT INTO rezervacijaT (trener_id, termin)
                 VALUES (?, ?)
-            """, (self.trener_id, termin_id))
+            """, (self.trener_id, termin))
         
         self.conn.commit()
     
@@ -243,7 +243,7 @@ class Termin:
         '''kapaciteta dvorane
         '''
         sql = """
-                SELECT dvorana.kapaciteta FROM termini
+                SELECT dvorane.kapaciteta FROM termini
                 JOIN dvorane ON termini.dvorana_id = dvorane.dvorana_id
                 WHERE termini.termin_id = ?
             """
@@ -294,7 +294,7 @@ class Karta:
         '''mesečni prihodki
         '''
         sql = """
-                SELECT strftime('%Y-%m', datum) as mesec, SUM(karta.cena) 
+                SELECT strftime('%Y-%m', kk.datum) as mesec, SUM(karta.cena) 
                 FROM kupljenaKarta AS kk
                 JOIN karta ON kk.vrsta_karte = karta.karta_id
                 GROUP BY mesec
