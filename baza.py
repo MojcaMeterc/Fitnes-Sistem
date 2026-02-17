@@ -60,6 +60,9 @@ class Uporabniki(Tabela):
                 priimek TEXT NOT NULL,
                 email TEXT UNIQUE,
                 telefon TEXT UNIQUE,
+
+                vrsta_karte INTEGER,
+                izbran_termin INTEGER
                 );
      """)
 
@@ -166,8 +169,7 @@ def pripravi_tabele(conn):
         Karta(conn),
         Termin(conn),
         RezervacijaTrener(conn),
-        RezervacijaUporabniki(conn),
-        KupljeneKarte(conn)
+        RezervacijaUporabniki(conn)
     ]
 
 def ustvari_bazo(conn):
