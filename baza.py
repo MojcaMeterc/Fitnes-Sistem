@@ -40,6 +40,8 @@ class Tabela:
             bralnik = csv.reader(f)
             stolpci = next(bralnik)
             for vrstica in bralnik:
+                if not vrstica or all(v.strip() == '' for v in vrstica):
+                    continue
                 podatki = {
                     k: None if v == "" else v
                     for k, v in zip(stolpci, vrstica)
@@ -97,7 +99,7 @@ class Karta(Tabela):
             CREATE TABLE karta(
                 karta_id INTEGER PRIMARY KEY AUTOINCREMENT,
                 naziv TEXT NOT NULL,
-                trajanje_dni INTEGER NOT NULL CHECK(trajanje_dni > 0),
+                trajanje INTEGER NOT NULL CHECK(trajanje > 0),
                 cena REAL NOT NULL CHECK(cena > 0)
             );
         """)
@@ -110,47 +112,36 @@ class Termin(Tabela):
        self.conn.execute("""
             CREATE TABLE termini(
                 termin_id INTEGER PRIMARY KEY AUTOINCREMENT,
-                dvorana_id INTEGER,
+                dvorana TEXT NOT NULL,
                 datum TEXT NOT NULL,
                 ura_pricetka TEXT NOT NULL,
-                ura_konca TEXT NOT NULL,
-                        
-                FOREIGN KEY (dvorana_id) REFERENCES dvorane(dvorana_id)
+                ura_konca TEXT NOT NULL
             );
   """)
 
 class RezervacijaTrener(Tabela):
     ime = 'rezervacijaT'
-    podatki = 'podatki/rezervacijeT.csv'
 
     def ustvari(self):
         self.conn.execute("""
             CREATE TABLE rezervacijaT(
                 rezervacijaT_id INTEGER PRIMARY KEY AUTOINCREMENT,
                 trener_id INTEGER,
-                termin INTEGER,
-                
-                FOREIGN KEY (trener_id) REFERENCES trener(trener_id),
-                FOREIGN KEY (termin) REFERENCES termini(termin_id)
+                termin_id TEXT
             );
 """)
 
 class RezervacijaUporabniki(Tabela):
     ime = 'rezervacijaU'
-    podatki = 'podatki/rezervacijeU.csv'
 
     def ustvari(self):
         self.conn.execute("""
             CREATE TABLE rezervacijaU(
                 rezervacijaU_id INTEGER PRIMARY KEY AUTOINCREMENT,
-                termin_id INTEGER,
-                uporabnik_id INTEGER,
-                          
-                FOREIGN KEY (termin_id) REFERENCES termini(termin_id),
-                FOREIGN KEY (uporabnik_id) REFERENCES uporabniki(uporabnik_id)
+                termin_id TEXT,
+                uporabnik_id INTEGER
             );
 """)
-        
 class KupljeneKarte(Tabela):
     ime = 'kupljenaKarta'
 
@@ -158,7 +149,7 @@ class KupljeneKarte(Tabela):
         self.conn.execute("""
             CREATE TABLE kupljenaKarta(
                 karta_id INTEGER PRIMARY KEY  AUTOINCREMENT,
-                vrsta_karte INTEGER,
+                vsta_karte INTEGER,
                 uporabnik INTEGER,
                 datum TEXT DEFAULT (DATE('now')),
                           
@@ -188,6 +179,7 @@ def ustvari_bazo(conn):
         t.ustvari()
     for t in tabele:
         t.uvozi()
+    conn.commit()
 
 if __name__ == '__main__':
     conn = sqlite3.connect('fitnes.db')

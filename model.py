@@ -51,7 +51,7 @@ class Uporabnik:
     def kupi_karto(self, karta_id):
         '''nakup karte
         '''
-        self.conn.execute("""
+        self.conn.execute(""""
             INSERT INTO kupljenaKarta (vrsta_karte, uporabnik)
                 VALUES (?, ?)
             """, (karta_id, self.uporabnik_id))
@@ -93,7 +93,7 @@ class Uporabnik:
         '''prikaz rezervacij določenega uporabnika
         '''
         sql = """
-                SELECT termini.datum, termini.ura_pricetka, termini.ura_konca
+                SELECT termini.datum, termini.ura_pricetkam termini.ura_konca
                 FROM rezervacijaU
                 JOIN termini ON rezervacijaU.termin_id = termini.termin_id
                 WHERE rezervacijaU.uporabnik_id = ?
@@ -104,9 +104,9 @@ class Uporabnik:
         '''vse aktivne karte uporabnika
         '''
         sql = """
-                SELECT karta.naziv, kk.datum, karta.trajanje_dni FROM kupljenaKarta AS kk
-                JOIN karta ON kk.vrsta_karte = karta.karta_id
-                WHERE kk.uporabnik = ?
+                SELECT karta.naziv, kk.datum, karta.trajanje FROM kupljenaKarta AS kk
+                JOIN karta ON kk.vrsta_karte_id = karta.karta_id
+                WHERE kk.uporabnik_id = ?
             """
         return self.conn.execute(sql, (self.uporabnik_id,))
     
@@ -114,10 +114,10 @@ class Uporabnik:
         '''kdaj se izteče naslednja karta
         '''
         sql = """
-                SELECT DATE(kk.datum, '+' || karta.trajanje_dni || ' dni')
+                SELECT DATE(kk.datum, '+' || karta.trajanje_dni || 'days')
                 FROM kupljenaKarta AS kk
-                JOIN karta ON kk.vrsta_karte = karta.karta_id
-                WHERE kk.uporabnik = ?
+                JOIN karta ON kk.vrsta_karte_id = karta.karta_id
+                WHERE kk.uporabnik_id = ?
                 ORDER BY kk.datum DESC  
                 LIMIT 1
             """
