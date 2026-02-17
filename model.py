@@ -52,7 +52,7 @@ class Uporabnik:
         '''nakup karte
         '''
         self.conn.execute(""""
-            INSERT INTO kupljenaKarta (vrsta_karte, uporabnik)
+            INSERT INTO kupljenaKarta (vrsta_karte_id, uporabnik_id)
                 VALUES (?, ?)
             """, (karta_id, self.uporabnik_id))
         
@@ -93,7 +93,7 @@ class Uporabnik:
         '''prikaz rezervacij določenega uporabnika
         '''
         sql = """
-                SELECT termini.datum, termini.ura_pricetkam termini.ura_konca
+                SELECT termini.datum, termini.ura_pricetka, termini.ura_konca
                 FROM rezervacijaU
                 JOIN termini ON rezervacijaU.termin_id = termini.termin_id
                 WHERE rezervacijaU.uporabnik_id = ?
@@ -128,12 +128,12 @@ class Uporabnik:
 class Trener:
     """ razred za tremerja
     """
-    def __init__(self, conn, ime, priimek, speciallizacija, trener_id = None): 
+    def __init__(self, conn, ime, priimek, specializacija, trener_id = None): 
         self.conn = conn
         self.trener_id = trener_id
         self.ime = ime
         self.priimek = priimek
-        self.special = speciallizacija
+        self.special = specializacija
 
     # metode:
     # prijava
@@ -192,7 +192,7 @@ class Termin:
         cur = self.conn.execute("""
             INSERT INTO termini (dvorana_id, datum, ura_pricetka, ura_konca)
                 VALUES (?, ?, ?, ?)
-            """, (self.dvorana_id, self.datumm, self.ura_pricetka, self.ura_konca))
+            """, (self.dvorana_id, self.datum, self.ura_pricetka, self.ura_konca))
         
         self.termin_id = cur.lastrowid
         self.conn.commit()
@@ -247,7 +247,7 @@ class Termin:
                 JOIN dvorane ON termini.dvorana_id = dvorane.dvorana_id
                 WHERE termini.termin_id = ?
             """
-        kapaciteta = self.conn.execute(sql, (self.termin_idm,)).fetchone()[0]
+        kapaciteta = self.conn.execute(sql, (self.termin_id,)).fetchone()[0]
         return self.stevilo_prijavljenih() < kapaciteta
     
 
@@ -296,7 +296,7 @@ class Karta:
         sql = """
                 SELECT strftime('%Y-%m', datum) as mesec, SUM(karta.cena) 
                 FROM kupljenaKarta AS kk
-                JOIN karta ON kk.vrsta_karte = karta.karta_id
+                JOIN karta ON kk.vrsta_karte_id = karta.karta_id
                 GROUP BY mesec
             """
         return conn.execute(sql)
