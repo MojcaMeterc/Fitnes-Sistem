@@ -58,9 +58,6 @@ class Uporabniki(Tabela):
                 priimek TEXT NOT NULL,
                 email TEXT UNIQUE,
                 telefon TEXT UNIQUE,
-
-                vrsta_karte INTEGER,
-                izbran_termin INTEGER
                 );
      """)
 
@@ -161,7 +158,7 @@ class KupljeneKarte(Tabela):
         self.conn.execute("""
             CREATE TABLE kupljenaKarta(
                 karta_id INTEGER PRIMARY KEY  AUTOINCREMENT,
-                vsta_karte INTEGER,
+                vrsta_karte INTEGER,
                 uporabnik INTEGER,
                 datum TEXT DEFAULT (DATE('now')),
                           
@@ -178,7 +175,8 @@ def pripravi_tabele(conn):
         Karta(conn),
         Termin(conn),
         RezervacijaTrener(conn),
-        RezervacijaUporabniki(conn)
+        RezervacijaUporabniki(conn),
+        KupljeneKarte(conn)
     ]
 
 def ustvari_bazo(conn):
