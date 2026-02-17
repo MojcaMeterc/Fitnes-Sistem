@@ -52,7 +52,7 @@ class Uporabnik:
         '''nakup karte
         '''
         self.conn.execute("""
-            INSERT INTO KupljeneKarte (vrsta_karte_id , uporabnik_id )
+            INSERT INTO kupljenaKarta (vrsta_karte_id , uporabnik_id )
                 VALUES (?, ?)
             """, (karta_id, self.uporabnik_id))
         
@@ -104,9 +104,9 @@ class Uporabnik:
         '''vse aktivne karte uporabnika
         '''
         sql = """
-                SELECT karta.naziv, kk.datum, karta.trajanje_dni FROM kupljenaKarta AS kk
+                SELECT karta.naziv, kk.datum, karta.trajanje FROM kupljenaKarta AS kk
                 JOIN karta ON kk.vrsta_karte_id = karta.karta_id
-                WHERE kk.uporabnik = ?
+                WHERE kk.uporabnik_id = ?
             """
         return self.conn.execute(sql, (self.uporabnik_id,))
     
@@ -114,7 +114,7 @@ class Uporabnik:
         '''kdaj se izteče naslednja karta
         '''
         sql = """
-                SELECT DATE(kk.datum, '+' || karta.trajanje_dni || 'days')
+                SELECT DATE(kk.datum, '+' || karta.trajanje || 'days')
                 FROM kupljenaKarta AS kk
                 JOIN karta ON kk.vrsta_karte_id = karta.karta_id
                 WHERE kk.uporabnik_id = ?

@@ -21,7 +21,7 @@ def kupi_karto(conn, uporabnik):
     print("Razpoložljive karte:")
     for k in conn.execute("SELECT karta_id, naziv, trajanje, cena FROM karta"):
         print(f"{k[0]}: {k[1]}, trajanje {k[2]} dni, cena {k[3]} EUR")
-    karta_id = input("Vnesi ID karte, ki jo želiš kupiti:")
+    karta_id = input("Vnesi števliko karte, ki jo želiš kupiti:")
     try:
         uporabnik.kupi_karto(int(karta_id))
         print("Karta kupljena!")
