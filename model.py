@@ -116,7 +116,7 @@ class Uporabnik:
         sql = """
                 SELECT DATE(kk.datum, '+' || karta.trajanje || ' dni')
                 FROM kupljenaKarta AS kk
-                JOIN karta ON kk.vrsta_karte_id = karta.karta_id
+                JOIN karta ON kk.vrsta_karte = karta.karta_id
                 WHERE kk.uporabnik_id = ?
                 ORDER BY kk.datum DESC  
                 LIMIT 1
@@ -138,13 +138,13 @@ class Trener:
     # metode:
     # prijava
     # rezervacija termina
-    def izberi_termin(self, termin):
+    def izberi_termin(self, termin_id):
         '''rezervacija termina
         '''
         self.conn.execute("""
-            INSERT INTO rezervacijaT (trener_id, termin)
+            INSERT INTO rezervacijaT (trener_id, termin_id)
                 VALUES (?, ?)
-            """, (self.trener_id, termin))
+            """, (self.trener_id, termin_id))
         
         self.conn.commit()
     
@@ -222,7 +222,7 @@ class Termin:
                     trener.priimek
             FROM termini
             LEFT JOIN dvorane ON termini.dvorana_id = dvorane.dvorana_id
-            LEFT JOIN rezervacijaT ON termini.termin_id = rezervacijaT.termin
+            LEFT JOIN rezervacijaT ON termini.termin_id = rezervacijaT.termin_id
             LEFT JOIN trener ON rezervacijaT.trener_id = trener.trener_id
             ORDER BY termini.datum, termini.ura_pricetka
         """

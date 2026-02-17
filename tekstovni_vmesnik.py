@@ -15,7 +15,14 @@ def rezerviraj_termin_U(conn, uporabnik):
     except Exception as e:
         print("Napaka pri rezervaciji:", e)
 
-#rezervacija kot trener
+def rezerviraj_termin_T(conn, trener):
+    prikazi_proste_termine(conn)
+    termin_id = input("Vnesi ID termina, ki ga želiš rezervirati: ")
+    try:
+        trener.izberi_termin(int(termin_id))
+        print("Termin rezerviran!")
+    except Exception as e:
+        print("Napaka pri rezervaciji:", e)
 
 def kupi_karto(conn, uporabnik):
     print("Razpoložljive karte:")
@@ -67,7 +74,7 @@ def meni_trener(conn, trener):
         if izbira == "1":
             prikazi_proste_termine(conn)
         elif izbira == "2":
-            rezerviraj_termin_U(conn, trener)
+            rezerviraj_termin_T(conn, trener)
         elif izbira == "3":
             break
         else:
