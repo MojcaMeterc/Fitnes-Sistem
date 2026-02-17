@@ -59,7 +59,7 @@ class Uporabniki(Tabela):
                 ime TEXT NOT NULL,
                 priimek TEXT NOT NULL,
                 email TEXT UNIQUE,
-                telefon TEXT UNIQUE,
+                telefon TEXT UNIQUE
                 );
      """)
 
@@ -112,6 +112,7 @@ class Termin(Tabela):
        self.conn.execute("""
             CREATE TABLE termini(
                 termin_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                dvorana_id INTEGER NOT NULL,
                 datum TEXT NOT NULL,
                 ura_pricetka TEXT NOT NULL,
                 ura_konca TEXT NOT NULL,
@@ -127,9 +128,11 @@ class RezervacijaTrener(Tabela):
         self.conn.execute("""
             CREATE TABLE rezervacijaT(
                 rezervacijaT_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                termin_id INTEGER NOT NULL,
+                trener_id INTEGER NOT NULL,
                 
                 FOREIGN KEY (trener_id) REFERENCES trener(trener_id),
-                FOREIGN KEY (termin) REFERENCES termini(termin_id)
+                FOREIGN KEY (termin_id) REFERENCES termini(termin_id)
             );
 """)
 
@@ -140,9 +143,10 @@ class RezervacijaUporabniki(Tabela):
         self.conn.execute("""
             CREATE TABLE rezervacijaU(
                 rezervacijaU_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                termin_id INTEGER NOT NULL,
+                uporabnik_id INTEGER NOT NULL,
                 FOREIGN KEY (termin_id) REFERENCES termini(termin_id),
                 FOREIGN KEY (uporabnik_id) REFERENCES uporabniki(uporabnik_id)
-            );
             );
 """)
 class KupljeneKarte(Tabela):
@@ -152,11 +156,13 @@ class KupljeneKarte(Tabela):
         self.conn.execute("""
             CREATE TABLE kupljenaKarta(
                 karta_id INTEGER PRIMARY KEY  AUTOINCREMENT,
+                vrsta_karte INTEGER NOT NULL,
+                uporabnik_id INTEGER NOT NULL,
 
                 datum TEXT DEFAULT (DATE('now')),
                           
                 FOREIGN KEY (vrsta_karte) REFERENCES karta(karta_id),
-                FOREIGN KEY (uporabnik) REFERENCES uporabniki(uporabnik_id)
+                FOREIGN KEY (uporabnik_id) REFERENCES uporabniki(uporabnik_id)
         );
 """)
 
