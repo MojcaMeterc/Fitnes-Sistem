@@ -62,6 +62,11 @@ class Uporabnik:
     def izberi_termin(self, termin_id):
         '''izbira termina
         '''
+        if not self.ima_veljavno_karto():
+            print("Nimate veljavne karte.")
+            print("Pritisni (*) za nakup karte.")
+            return
+        
         self.conn.execute("""
             INSERT INTO rezervacijaU (termin_id, uporabnik_id)
                 VALUES (?, ?)
@@ -122,6 +127,24 @@ class Uporabnik:
                 LIMIT 1
             """
         return self.conn.execute(sql, (self.uporabnik_id,)).fetchone()
+    
+    def ima_veljavno_karto(self):
+        '''metoda preveri ali ima uporabnik veljavno karto ali ne
+        '''
+        sql = """
+                SELECT DATE(kk.datum, '+' || karta.trajanje || ' dni') FROM kupljenaKarta AS kk
+                JOIN karta ON kk.vrsta_karte = karta.karta_id
+                WHERE kk.uporabnik_id = ?
+                ORDER BY kk.datum DESC
+                LIMIT 1
+            """
+        vrst = self.conn.execute(sql, (self.uporabnik_id,)).fetchone()
+
+        if not vrst:
+            return False
+        
+        iztek = datetime.strptime(vrst[0], "%Y-%m-%d").date()
+        return iztek >= datetime.now().date()
         
 
 

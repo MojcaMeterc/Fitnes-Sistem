@@ -7,6 +7,14 @@ def prikazi_proste_termine(conn):
         print(f"{t[0]}: dvorana {t[1]}, {t[2]} {t[3]} - {t[4]}")
 
 def rezerviraj_termin_U(conn, uporabnik):
+    '''funkcija termin uspešno rezervira ali javi napako
+    '''
+    if not uporabnik.ima_veljavno_karto():
+        izbira = input("Nimate veljavne karte.  (*) za nakup: ")
+        if izbira == "*":
+            kupi_karto(conn, uporabnik)
+        return 
+    
     prikazi_proste_termine(conn)
     termin_id = input("Vnesi ID termina, ki ga želiš rezervirati: ")
     try:
@@ -16,6 +24,8 @@ def rezerviraj_termin_U(conn, uporabnik):
         print("Napaka pri rezervaciji:", e)
 
 def rezerviraj_termin_T(conn, trener):
+    '''funkcija termin uspešno rezervira ali javi napako
+    '''
     prikazi_proste_termine(conn)
     termin_id = input("Vnesi ID termina, ki ga želiš rezervirati: ")
     try:
