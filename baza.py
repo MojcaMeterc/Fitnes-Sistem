@@ -60,9 +60,6 @@ class Uporabniki(Tabela):
                 priimek TEXT NOT NULL,
                 email TEXT UNIQUE,
                 telefon TEXT UNIQUE,
-
-                vrsta_karte INTEGER,
-                izbran_termin INTEGER
                 );
      """)
 
@@ -115,10 +112,11 @@ class Termin(Tabela):
        self.conn.execute("""
             CREATE TABLE termini(
                 termin_id INTEGER PRIMARY KEY AUTOINCREMENT,
-                dvorana TEXT NOT NULL,
                 datum TEXT NOT NULL,
                 ura_pricetka TEXT NOT NULL,
-                ura_konca TEXT NOT NULL
+                ura_konca TEXT NOT NULL,
+                        
+                FOREIGN KEY (dvorana_id) REFERENCES dvorane(dvorana_id)
             );
   """)
 
@@ -130,7 +128,10 @@ class RezervacijaTrener(Tabela):
             CREATE TABLE rezervacijaT(
                 rezervacijaT_id INTEGER PRIMARY KEY AUTOINCREMENT,
                 trener_id INTEGER,
-                termin_id TEXT
+                termin INTEGER,
+                
+                FOREIGN KEY (trener_id) REFERENCES trener(trener_id),
+                FOREIGN KEY (termin) REFERENCES termini(termin_id)
             );
 """)
 
@@ -141,8 +142,9 @@ class RezervacijaUporabniki(Tabela):
         self.conn.execute("""
             CREATE TABLE rezervacijaU(
                 rezervacijaU_id INTEGER PRIMARY KEY AUTOINCREMENT,
-                termin_id TEXT,
-                uporabnik_id INTEGER
+                FOREIGN KEY (termin_id) REFERENCES termini(termin_id),
+                FOREIGN KEY (uporabnik_id) REFERENCES uporabniki(uporabnik_id)
+            );
             );
 """)
 class KupljeneKarte(Tabela):
@@ -169,7 +171,8 @@ def pripravi_tabele(conn):
         Karta(conn),
         Termin(conn),
         RezervacijaTrener(conn),
-        RezervacijaUporabniki(conn)
+        RezervacijaUporabniki(conn),
+        KupljeneKarte(conn)
     ]
 
 def ustvari_bazo(conn):
