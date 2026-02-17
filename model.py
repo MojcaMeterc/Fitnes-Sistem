@@ -119,7 +119,7 @@ class Uporabnik:
         '''kdaj se izteče naslednja karta
         '''
         sql = """
-                SELECT DATE(kk.datum, '+' || karta.trajanje || ' dni')
+                SELECT DATE(kk.datum, '+' || karta.trajanje || ' days')
                 FROM kupljenaKarta AS kk
                 JOIN karta ON kk.vrsta_karte = karta.karta_id
                 WHERE kk.uporabnik_id = ?
@@ -132,7 +132,7 @@ class Uporabnik:
         '''metoda preveri ali ima uporabnik veljavno karto ali ne
         '''
         sql = """
-                SELECT DATE(kk.datum, '+' || karta.trajanje || ' dni') FROM kupljenaKarta AS kk
+                SELECT DATE(kk.datum, '+' || karta.trajanje || ' days') FROM kupljenaKarta AS kk
                 JOIN karta ON kk.vrsta_karte = karta.karta_id
                 WHERE kk.uporabnik_id = ?
                 ORDER BY kk.datum DESC
@@ -140,7 +140,7 @@ class Uporabnik:
             """
         vrst = self.conn.execute(sql, (self.uporabnik_id,)).fetchone()
 
-        if not vrst:
+        if not vrst or vrst[0] is None:
             return False
         
         iztek = datetime.strptime(vrst[0], "%Y-%m-%d").date()
