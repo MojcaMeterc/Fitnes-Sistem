@@ -63,7 +63,7 @@ class Uporabnik:
         '''izbira termina
         '''
         self.conn.execute("""
-            INSERT INTO rezervacijaU (tremin_id, uporabnik_id)
+            INSERT INTO rezervacijaU (termin_id, uporabnik_id)
                 VALUES (?, ?)
             """, (termin_id, self.uporabnik_id))
         
