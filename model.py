@@ -51,8 +51,8 @@ class Uporabnik:
     def kupi_karto(self, karta_id):
         '''nakup karte
         '''
-        self.conn.execute(""""
-            INSERT INTO kupljenaKarta (vrsta_karte_id, uporabnik_id)
+        self.conn.execute("""
+            INSERT INTO kupljenaKarta (vrsta_karte, uporabnik_id)
                 VALUES (?, ?)
             """, (karta_id, self.uporabnik_id))
         
@@ -105,7 +105,7 @@ class Uporabnik:
         '''
         sql = """
                 SELECT karta.naziv, kk.datum, karta.trajanje FROM kupljenaKarta AS kk
-                JOIN karta ON kk.vrsta_karte_id = karta.karta_id
+                JOIN karta ON kk.vrsta_karte = karta.karta_id
                 WHERE kk.uporabnik_id = ?
             """
         return self.conn.execute(sql, (self.uporabnik_id,))
@@ -296,7 +296,7 @@ class Karta:
         sql = """
                 SELECT strftime('%Y-%m', datum) as mesec, SUM(karta.cena) 
                 FROM kupljenaKarta AS kk
-                JOIN karta ON kk.vrsta_karte_id = karta.karta_id
+                JOIN karta ON kk.vrsta_karte = karta.karta_id
                 GROUP BY mesec
             """
         return conn.execute(sql)
