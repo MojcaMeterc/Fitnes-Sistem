@@ -3,8 +3,17 @@ from model import Uporabnik, Trener, Termin, Karta
 
 def prikazi_proste_termine(conn):
     print("Prosti termini (naslednjih 14 dni):")
+
+    trenutni_datum = None
+
     for t in Termin.prosti_termini(conn, dni=14):
-        print(f"{t[0]}: dvorana {t[1]}, {t[2]} {t[3]} - {t[4]}")
+        termin_id, dvorana, datum, zacetek, konec = t
+
+        if datum != trenutni_datum:
+            trenutni_datum = datum
+            print(f"\n===== {datum} =====")
+        
+        print(f"{termin_id}: dvorana {dvorana} | {zacetek} - {konec}")
 
 def rezerviraj_termin_U(conn, uporabnik):
     '''funkcija termin uspešno rezervira ali javi napako

@@ -256,14 +256,14 @@ class Termin:
         '''prosti termini (brez rezervacij) za naslednjih N dni
         '''
         sql = f"""
-                SELECT * FROM termini
+                SELECT termini.termin_id, dvorana_id, datum, ura_pricetka, ura_konca FROM termini
                 LEFT JOIN rezervacijaU ON termini.termin_id = rezervacijaU.termin_id
                 WHERE rezervacijaU.termin_id IS NULL
-                AND termini.datum BETWEEN DATE('now') 
-                AND DATE('now', '+{dni} days')
+                AND termini.datum >= DATE('now') 
+                AND termini.datum <= DATE('now', '+' || ? || ' days')
                 ORDER BY termini.datum, termini.ura_pricetka
             """
-        return conn.execute(sql)
+        return conn.execute(sql, (dni,))
     
     def je_prostor(self):
         '''kapaciteta dvorane
