@@ -2,6 +2,8 @@ import sqlite3
 import hashlib
 from datetime import datetime, timedelta
 
+def hash_geslo(geslo):
+    return hashlib.sha256(geslo.encode()).hexdigest()
 
 class Uporabnik:
     """
@@ -20,27 +22,31 @@ class Uporabnik:
     
     # metode:
     # ustvari račun
-    def ustvari_racun(self):
+    def ustvari_racun(self, geslo):
         ''' ustvarjanje računa
         '''
+        geslo_hash = hash_geslo(geslo)
+
         cur = self.conn.execute("""
-            INSERT INTO uporabniki (ime, priimek, email, telefon)
+            INSERT INTO uporabniki (ime, priimek, email, telefon, geslo_hash)
             VALUES (?, ?, ?, ?)
-            """, (self.ime, self.priimek, self.email, self.telefon))
+            """, (self.ime, self.priimek, self.email, self.telefon, geslo_hash))
         
         self.uporabnik_id = cur.lastrowid # ID zadnje dodane vrstice
         self.conn.commit() # trajno shranimo spremembe v bazo
     
     # prijava
     @staticmethod
-    def prijava(conn, email):
+    def prijava(conn, email, geslo):
         ''' prijava po emailu
         '''
+        geslo_hash = hash_geslo(geslo)
+
         cur = conn.execute("""
             SELECT uporabnik_id, ime, priimek, email, telefon
             FROM uporabniki
-                WHERE email = ?
-        """, (email,))
+                WHERE email = ? AND geslo_hash = ?
+        """, (email, geslo_hash))
 
         vrstica = cur.fetchone()
         if vrstica:

@@ -59,9 +59,10 @@ class Uporabniki(Tabela):
                 ime TEXT NOT NULL,
                 priimek TEXT NOT NULL,
                 email TEXT UNIQUE,
-                telefon TEXT UNIQUE
-                );
-     """)
+                telefon TEXT UNIQUE,
+                geslo_hash TEXT
+            );
+        """)
 
 class Trener(Tabela):
     ime = 'trener'
@@ -131,8 +132,8 @@ class RezervacijaTrener(Tabela):
                 termin INTEGER NOT NULL,
                 trener_id INTEGER NOT NULL,
                 
-                FOREIGN KEY (termin) REFERENCES termini(termin_id)
-                FOREIGN KEY (trener_id) REFERENCES trener(trener_id),
+                FOREIGN KEY (termin) REFERENCES termini(termin_id),
+                FOREIGN KEY (trener_id) REFERENCES trener(trener_id)
             );
 """)
 
