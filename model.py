@@ -37,16 +37,16 @@ class Uporabnik:
     
     # prijava
     @staticmethod
-    def prijava(conn, email, geslo):
+    def prijava(conn, email): #geslo):
         ''' prijava po emailu
         '''
-        geslo_hash = hash_geslo(geslo)
+        #geslo_hash = hash_geslo(geslo)
 
         cur = conn.execute("""
             SELECT uporabnik_id, ime, priimek, email, telefon
             FROM uporabniki
-                WHERE email = ? AND geslo_hash = ?
-        """, (email, geslo_hash))
+                WHERE email = ?
+        """, (email,)) #geslo_hash))
 
         vrstica = cur.fetchone()
         if vrstica:
@@ -68,11 +68,19 @@ class Uporabnik:
     def izberi_termin(self, termin_id):
         '''izbira termina
         '''
+        termin = Termin(self.conn, None, None, None, None, termin_id)
+
+        # preveri veljavnost karte
         if not self.ima_veljavno_karto():
             print("Nimate veljavne karte.")
             print("Pritisni (*) za nakup karte.")
             return
         
+        # preveri kapaciteto dvorane
+        if not termin.je_prostor():
+            raise Exception("Žal, dvorana je polna. Izberite drug termin.")
+
+        # doda rezervacijo        
         self.conn.execute("""
             INSERT INTO rezervacijaU (termin_id, uporabnik_id)
                 VALUES (?, ?)

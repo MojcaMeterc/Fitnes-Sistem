@@ -59,8 +59,7 @@ class Uporabniki(Tabela):
                 ime TEXT NOT NULL,
                 priimek TEXT NOT NULL,
                 email TEXT UNIQUE,
-                telefon TEXT UNIQUE,
-                geslo_hash TEXT
+                telefon TEXT UNIQUE
             );
         """)
 
