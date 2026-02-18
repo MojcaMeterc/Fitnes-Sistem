@@ -252,13 +252,16 @@ class Termin:
         return conn.execute(sql)
     
     @staticmethod
-    def prosti_termini(conn):
-        '''prosti termini (brez rezervacij)
+    def prosti_termini(conn, dni=14):
+        '''prosti termini (brez rezervacij) za naslednjih N dni
         '''
-        sql = """
+        sql = f"""
                 SELECT * FROM termini
                 LEFT JOIN rezervacijaU ON termini.termin_id = rezervacijaU.termin_id
                 WHERE rezervacijaU.termin_id IS NULL
+                AND termini.datum BETWEEN DATE('now') 
+                AND DATE('now', '+{dni} days')
+                ORDER BY termini.datum, termini.ura_pricetka
             """
         return conn.execute(sql)
     

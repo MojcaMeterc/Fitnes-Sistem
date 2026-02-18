@@ -2,8 +2,8 @@ import sqlite3
 from model import Uporabnik, Trener, Termin, Karta 
 
 def prikazi_proste_termine(conn):
-    print("Prosti termini:")
-    for t in Termin.prosti_termini(conn):
+    print("Prosti termini (naslednjih 14 dni):")
+    for t in Termin.prosti_termini(conn, dni=14):
         print(f"{t[0]}: dvorana {t[1]}, {t[2]} {t[3]} - {t[4]}")
 
 def rezerviraj_termin_U(conn, uporabnik):
