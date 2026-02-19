@@ -60,7 +60,7 @@ class Uporabniki(Tabela):
                 priimek TEXT NOT NULL,
                 email TEXT UNIQUE,
                 telefon TEXT UNIQUE,
-                geslo_hash TEXT NOT NULL
+                geslo_hash TEXT
             );
         """)
 
@@ -76,7 +76,7 @@ class Trener(Tabela):
                 priimek TEXT NOT NULL,
                 email TEXT,
                 specializacija TEXT NOT NULL,
-                geslo_hash
+                geslo_hash TEXT
             );
         """)
 

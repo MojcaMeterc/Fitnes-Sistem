@@ -1,16 +1,16 @@
-trener_id,ime,priimek,specializacija
-1,Franklyn,Joselevitz,osebni trener
-2,Mildrid,Gaythorpe,kondicijski
-3,Roselia,Terzi,spinning
-4,Tersina,Dring,pilates
-5,Roz,Whitten,osebni trener
-6,Peterus,Chaters,HIT
-7,Elliott,Battlestone,spinning
-8,Rana,Kearn,pilates
-9,Pauli,Kyttor,spinning
-10,Karlan,Filchakov,joga
-11,Floyd,Ogborn,hyrox
-12,Der,Oloshin,osebni trener
-13,Dewitt,Crudgington,svetovalec (prehranski)
-14,Melvyn,Baudouin,HIT
-15,Aylmar,Macieja,HIT
+trener_id,ime,priimek,email,specializacija
+1,Franklyn,Joselevitz,franklyn.joselevitz@gmail.com,osebni trener
+2,Mildrid,Gaythorpe,Mildrid.Gaythorpe@gmail.com,kondicijski
+3,Roselia,Terzi,roselia.terzi@gmail.com,spinning
+4,Tersina,Dring,tersina.dring@gmail.com,pilates
+5,Roz,Whitten,roz.whitten@gmail.com,osebni trener
+6,Peterus,Chaters,peterus.chaters@gmail.com,HIT
+7,Elliott,Battlestone,elliott.battlestone@gmail.com,spinning
+8,Rana,Kearn,rana.kearn@gmail.com,pilates
+9,Pauli,Kyttor,pauli.kyttor@gmail.com,spinning
+10,Karlan,Filchakov,karlan.filchakov@gmail.com,joga
+11,Floyd,Ogborn,floyd.ogborn@gmail.com,hyrox
+12,Der,Oloshin,der.oloshin@gmail.com,osebni trener
+13,Dewitt,Crudgington,dewitt.crudgington@gmail.com,svetovalec (prehranski)
+14,Melvyn,Baudouin,melvyn.baudouin@gmail.com,HIT
+15,Aylmar,Macieja,aylmar.macieja@gmail.com,HIT
