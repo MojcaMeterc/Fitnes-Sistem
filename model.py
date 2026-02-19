@@ -29,7 +29,7 @@ class Uporabnik:
 
         cur = self.conn.execute("""
             INSERT INTO uporabniki (ime, priimek, email, telefon, geslo_hash)
-            VALUES (?, ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?)
             """, (self.ime, self.priimek, self.email, self.telefon, geslo_hash))
         
         self.uporabnik_id = cur.lastrowid # ID zadnje dodane vrstice
@@ -37,16 +37,17 @@ class Uporabnik:
     
     # prijava
     @staticmethod
-    def prijava(conn, email): #geslo):
+    def prijavaU(conn, email, geslo): #geslo):
         ''' prijava po emailu
         '''
-        #geslo_hash = hash_geslo(geslo)
+        geslo_hash = hash_geslo(geslo)
 
         cur = conn.execute("""
             SELECT uporabnik_id, ime, priimek, email, telefon
             FROM uporabniki
-                WHERE email = ?
-        """, (email,)) #geslo_hash))
+            WHERE email = ? AND geslo_hash = ?
+        """, (email, geslo_hash))
+
 
         vrstica = cur.fetchone()
         if vrstica:
@@ -165,16 +166,35 @@ class Uporabnik:
 class Trener:
     """ razred za tremerja
     """
-    def __init__(self, conn, ime, priimek, specializacija, trener_id = None): 
+    def __init__(self, conn, ime, priimek, email, specializacija, trener_id = None): 
         self.conn = conn
         self.trener_id = trener_id
         self.ime = ime
         self.priimek = priimek
+        self.email = email
         self.special = specializacija
 
     # metode:
     # prijava
     # rezervacija termina
+    @staticmethod
+    def prijava(conn, email, geslo): #geslo):
+        ''' Prijava trennerja
+        '''
+        geslo_hash = hash_geslo(geslo)
+
+        cur = conn.execute("""
+            SELECT trener_id, ime, priimek
+            FROM trener
+            WHERE email = ? AND geslo_hash = ?
+        """, (email, geslo_hash))
+    
+        
+        vrstica = cur.fetchone()
+        if vrstica:
+            return Trener(conn, vrstica[1], vrstica[2], vrstica[3], vrstica[4], vrstica[0])
+        return None
+
     def izberi_termin(self, termin_id):
         '''rezervacija termina
         '''
