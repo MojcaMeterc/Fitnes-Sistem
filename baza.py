@@ -60,7 +60,7 @@ class Uporabniki(Tabela):
                 priimek TEXT NOT NULL,
                 email TEXT UNIQUE,
                 telefon TEXT UNIQUE,
-                geslo_hash TEXT
+                geslo_hash TEXT NOT NULL
             );
         """)
 
@@ -74,9 +74,9 @@ class Trener(Tabela):
                 trener_id INTEGER PRIMARY KEY AUTOINCREMENT,
                 ime TEXT NOT NULL,
                 priimek TEXT NOT NULL,
-                email TEXT,
+                email TEXT NOT NULL,
                 specializacija TEXT NOT NULL,
-                geslo_hash TEXT
+                geslo_hash TEXT NOT NULL
             );
         """)
 
