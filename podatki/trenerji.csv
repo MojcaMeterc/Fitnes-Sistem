@@ -1,4 +1,4 @@
-trener_id,ime,priimek,email,specializacija,geslo
+trener_id,ime,priimek,email,specializacija,geslo_hash
 1,Franklyn,Joselevitz,franklyn.joselevitz@gmail.com,osebni trener,$2a$04$VzkmqHw5EIF38NgtSboDkeGE9IBUfkFM/O5QaddtP2EfRj4qK8eAa
 2,Mildrid,Gaythorpe,Mildrid.Gaythorpe@gmail.com,kondicijski,$2a$04$5MM1t.ZhrxSUqgoXFBAHxOJFoUICziO.EtsY/7LDn.Bw9uagZykHS
 3,Roselia,Terzi,roselia.terzi@gmail.com,spinning,$2a$04$J3ASfQr6AURDM68CJjPw/OpxDkkVqF0OmvYoC5bgIdmjn4NdxLHpS

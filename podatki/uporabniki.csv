@@ -1,4 +1,4 @@
-id,ime,priimek,email,telefon,geslo
+uporabnik_id,ime,priimek,email,telefon,geslo_hash
 1,Terencio,Fenwick,tfenwick0@mtv.com,386-540-9873,$2a$04$tn9NJ4uZLiYYA3jNLUI6POBLrsHKrSYjXMZsr0MB.odfkoac0z.z6
 2,Tessi,McElree,tmcelree1@tuttocitta.it,903-553-5986,$2a$04$V.m4ANyRhpEjziEEuZ4lROz8I1hzcT2c.bZGQN2iviIMqMAJ3nZSy
 3,Cathyleen,Cinderey,ccinderey2@sciencedirect.com,234-716-0047,$2a$04$.5z0rABAETGKB0XlcG1izOLRbcvLBgGeDE/hblRIygE/ypsrerVq6
