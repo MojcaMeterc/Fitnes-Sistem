@@ -37,7 +37,7 @@ class Uporabnik:
     
     # prijava
     @staticmethod
-    def prijavaU(conn, email, geslo): #geslo):
+    def prijava(conn, email, geslo): #geslo):
         ''' prijava po emailu
         '''
         geslo_hash = hash_geslo(geslo)
@@ -184,7 +184,7 @@ class Trener:
         geslo_hash = hash_geslo(geslo)
 
         cur = conn.execute("""
-            SELECT trener_id, ime, priimek
+            SELECT trener_id, ime, priimek, email, specializacija
             FROM trener
             WHERE email = ? AND geslo_hash = ?
         """, (email, geslo_hash))

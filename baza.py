@@ -74,9 +74,9 @@ class Trener(Tabela):
                 trener_id INTEGER PRIMARY KEY AUTOINCREMENT,
                 ime TEXT NOT NULL,
                 priimek TEXT NOT NULL,
-                email TEXT NOT NULL,
+                email TEXT,
                 specializacija TEXT NOT NULL,
-                geslo_hash TEXT NOT NULL
+                geslo_hash
             );
         """)
 
