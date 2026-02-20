@@ -21,7 +21,9 @@ except FileNotFoundError:
 conn = sqlite3.connect("fitnes.db")
 conn.row_factory = sqlite3.Row  #(da lahko dostopamo do imenov stolpcev)
 
-# za login
+#-------
+# LOGIN/LOGOUT
+#-------
 def prijavi_uporabnika(uporabnik):
     bottle.response.set_cookie('uporabnik', uporabnik.ime, path='/', secret=SKRIVNOST)
     bottle.response.set_cookie('uid', str(uporabnik.uporabnik_id), path='/', secret=SKRIVNOST)
@@ -33,12 +35,54 @@ def zahtevaj_prijavo():
         bottle.redirect('/prijava/')
     return int(uid)
 
+@bottle.get('/odjava/')
+def odjava():
+    bottle.response.delete_cookie('uporabnik', path="/")
+    bottle.response.delete_cookie('uid', path='/')
+    bottle.redirect('/')
+
+#------
+#STATIC
+#------
+
 @bottle.get('/static/<filename:path>')
 def static(filename):
     return bottle.static_file(filename, root='static')
 
-# prijava
+#---------
+# REGISTRACIJA
+#------------
 @bottle.get('/prijava/')
 def prijava():
     return bottle.template('prijava.html', napaka=None, email="")
+
+@bottle.post('/prijava/')
+def prijava_post():
+    email = bottle.request.form.getunicode('email')
+    geslo = bottle.request.form.getunicode('geslo')
+    uporabnik = Uporabnik.prijava(conn, email, geslo)
+    if uporabnik:
+        prijavi_uporabnika(uporabnik)
+    else:
+        return bottle.templet('prijava.html', napaka = 'Napčen mail ali geslo')
+    
+@bottle.get('/registracija/')
+def registracija():
+    return bottle.templet('/registracija.html', napaka = 'Napačen mail ali geslo')
+
+@bottle.post('/registracija')
+def registracija_post():
+    ime = bottle.request.form.getunicode('ime')
+    priimek = bottle.request.form.getunicode('priiemk')
+    email = bottle.request.form.getunicode('gemail')
+    telefon = bottle.request.form.getunicode('email')
+    geslo = bottle.request.form.getunicode('geslo')
+    try:
+        uporabnik = Uporabnik(conn, ime, email, telefon)
+        uporabnik.ustvari_racun(geslo)
+        prijavi_uporabnika(uporabnik)
+    except sqlite3.IntegrityError:
+        return bottle.templet('registracija.html', napaka = 'Email ali tefon že obstaja')
+    
+    
 
