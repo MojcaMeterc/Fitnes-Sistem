@@ -21,6 +21,10 @@ except FileNotFoundError:
 conn = sqlite3.connect("fitnes.db")
 conn.row_factory = sqlite3.Row  #(da lahko dostopamo do imenov stolpcev)
 
+@bottle.get('/')
+def zacetna_stran():
+    return bottle.template('zacetna_stran.html')
+
 #-------
 # LOGIN/LOGOUT
 #-------
@@ -64,25 +68,27 @@ def prijava_post():
     if uporabnik:
         prijavi_uporabnika(uporabnik)
     else:
-        return bottle.templet('prijava.html', napaka = 'Napčen mail ali geslo')
+        return bottle.template('prijava.html', napaka = 'Napčen mail ali geslo')
     
 @bottle.get('/registracija/')
 def registracija():
-    return bottle.templet('/registracija.html', napaka = 'Napačen mail ali geslo')
+    return bottle.template('registracija.html', napaka = None)
 
-@bottle.post('/registracija')
+@bottle.post('/registracija/')
 def registracija_post():
     ime = bottle.request.form.getunicode('ime')
-    priimek = bottle.request.form.getunicode('priiemk')
-    email = bottle.request.form.getunicode('gemail')
-    telefon = bottle.request.form.getunicode('email')
+    priimek = bottle.request.form.getunicode('priimek')
+    email = bottle.request.form.getunicode('email')
+    telefon = bottle.request.form.getunicode('telefon')
     geslo = bottle.request.form.getunicode('geslo')
     try:
-        uporabnik = Uporabnik(conn, ime, email, telefon)
+        uporabnik = Uporabnik(conn, ime, priimek, email, telefon)
         uporabnik.ustvari_racun(geslo)
         prijavi_uporabnika(uporabnik)
     except sqlite3.IntegrityError:
-        return bottle.templet('registracija.html', napaka = 'Email ali tefon že obstaja')
+        return bottle.template('registracija.html', napaka = 'Email ali telefonska številka že obstaja')
     
     
+
+
 
