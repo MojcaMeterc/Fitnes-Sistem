@@ -21,9 +21,15 @@ except FileNotFoundError:
 conn = sqlite3.connect("fitnes.db")
 conn.row_factory = sqlite3.Row  #(da lahko dostopamo do imenov stolpcev)
 
+bottle.TEMPLATE_PATH.insert(0, './view')
+
+@bottle.get('/static/<filename:path>')
+def static(filename):
+    return bottle.static_file(filename, root='static')
+
 @bottle.get('/')
 def zacetna_stran():
-    return bottle.template('zacetna_stran.html')
+    return bottle.template('spletna_stran.html')
 
 #-------
 # LOGIN/LOGOUT
@@ -45,13 +51,7 @@ def odjava():
     bottle.response.delete_cookie('uid', path='/')
     bottle.redirect('/')
 
-#------
-#STATIC
-#------
 
-@bottle.get('/static/<filename:path>')
-def static(filename):
-    return bottle.static_file(filename, root='static')
 
 #---------
 # REGISTRACIJA
@@ -87,6 +87,10 @@ def registracija_post():
         prijavi_uporabnika(uporabnik)
     except sqlite3.IntegrityError:
         return bottle.template('registracija.html', napaka = 'Email ali telefonska številka že obstaja')
+    
+
+# ZAGON APLIKACIJE
+bottle.run(host='localhost', port=8080, debug=True)
     
     
 
