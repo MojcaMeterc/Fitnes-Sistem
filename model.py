@@ -178,7 +178,7 @@ class Trener:
     # prijava
     # rezervacija termina
     @staticmethod
-    def prijava(conn, email, geslo): #geslo):
+    def prijava(conn, email, geslo):
         ''' Prijava trennerja
         '''
         geslo_hash = hash_geslo(geslo)
