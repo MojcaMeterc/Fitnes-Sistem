@@ -22,7 +22,7 @@ header a{
 .hero{
     text-align: center;
     position: relative;
-    height: 60vh;
+    height: 70vh;
     background-image: url('/static/slike/fitnes-ozadje.jpg');
     background-size: cover;
     background-position: center;
