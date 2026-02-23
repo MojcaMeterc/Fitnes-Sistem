@@ -13,7 +13,7 @@ header{
 }
 
 header a{
-    color: white;
+    color: rgb(255, 255, 255);
     text-decoration: none;
     margin-left: 15px;
     font-weight: bold;
@@ -56,7 +56,7 @@ header a{
 .btn{
     display: inline-block;
     padding: 17px 35px;
-    background-color: #af1941;
+    background-color: #AAC4F5;
     color: black;
     text-decoration: none;
     font-size: 1.5rem;
@@ -74,13 +74,16 @@ header a{
 /*Naslov ponudbe*/
 .ponudba{
     padding: 60px 20px;
-    background-color: antiquewhite;
+    background-color: #F4F8FF;
 }
 
 .ponudba h2{
     font-size: 2.5rem;
     margin-bottom: 40px;
-    background-color: #AAC4F5;
+    background-color: #eaeff9;
+    text-align: center;
+    padding: 20px 0;
+    width: 100%;
 }
 
 /*postavitev kartice*/
@@ -93,7 +96,7 @@ header a{
 
 /*posamezna karta*/
 .karta{
-    background-color: #105ff1;
+    background-color: #D2E0FB;
     padding: 30px;
     width: 280px;
     max-width: 100%;

@@ -29,7 +29,7 @@ def static(filename):
 
 @bottle.get('/')
 def zacetna_stran():
-    return bottle.template('spletna_stran.html')
+    return bottle.template('spletna_stran.html', random=random.randint(1, 10000))
 
 #-------
 # LOGIN/LOGOUT
