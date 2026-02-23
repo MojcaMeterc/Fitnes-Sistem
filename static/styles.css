@@ -72,12 +72,12 @@ header a{
 
 
 /*Naslov ponudbe*/
-.ponudba{
+.fitnes{
     padding: 60px 20px;
     background-color: #F4F8FF;
 }
 
-.ponudba h2{
+.fitnes h2{
     font-size: 2.5rem;
     margin-bottom: 40px;
     background-color: #eaeff9;
@@ -103,6 +103,9 @@ header a{
     border-radius: 12px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s, box-shadow  0.3s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 /*hover efekt*/
@@ -114,10 +117,12 @@ header a{
 .karta h3{
     font-size: 1.5rem;
     margin-bottom: 15px;
+    text-align: center;
 }
 
 .karta p{
     margin: 10px 0;
+    text-align: center;
 }
 
 .cena{
@@ -135,6 +140,7 @@ header a{
     text-decoration: none;
     border-radius: 6px;
     transition: background 0.3s;
+
 }
 
 .btn-mail:hover{
