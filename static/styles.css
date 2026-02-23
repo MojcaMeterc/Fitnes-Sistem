@@ -56,12 +56,13 @@ header a{
 .btn{
     display: inline-block;
     padding: 17px 35px;
-    background-color: #d1daeb;
+    background-color: #af1941;
     color: black;
     text-decoration: none;
     font-size: 1.5rem;
     font-weight: bold;
     border-radius: 5px;
+    transition: all 0.3s;
 }
 
 .btn:hover{
@@ -69,10 +70,70 @@ header a{
     cursor: pointer;
 }
 
+
+/*Naslov ponudbe*/
 .ponudba{
+    padding: 60px 20px;
+    background-color: antiquewhite;
+}
+
+.ponudba h2{
+    font-size: 2.5rem;
+    margin-bottom: 40px;
+    background-color: #AAC4F5;
+}
+
+/*postavitev kartice*/
+.karte{
     display: flex;
     justify-content: center;
-    gap: 20px;
-    padding: 50px 20px;
+    gap: 30px;
     flex-wrap: wrap;
+}
+
+/*posamezna karta*/
+.karta{
+    background-color: #105ff1;
+    padding: 30px;
+    width: 280px;
+    max-width: 100%;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow  0.3s;
+}
+
+/*hover efekt*/
+.karta:hover{
+    transform: translateY(-10px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+}
+
+.karta h3{
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+}
+
+.karta p{
+    margin: 10px 0;
+}
+
+.cena{
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin: 20px 0;
+}
+
+/*manjši gumb*/
+.btn-mail{
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #AAC4F5;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    transition: background 0.3s;
+}
+
+.btn-mail:hover{
+    background-color: #7ea0e0;
 }
