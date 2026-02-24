@@ -1,7 +1,7 @@
 % rebase('osnovna.html', title='Registracija', random=random)
 
-<div class="reg-ovitek">
-    <div class="prijava-html"
+<div class="prijava-ovitek">
+    <div class="prijava-vsebina">
 
         <h2>Registracija</h2>
 
@@ -9,7 +9,7 @@
             <p style="color: red;">{{napaka}}</p>
         % end
 
-        <form method="post" action="/registracija/" class="reg-forma">
+        <form method="post" action="/registracija/" class="prijava-forma">
             <div class="skupina">
                 <label class="oznaka">Ime:</label>
                 <input type="text" name="ime" class="vnos" required>
@@ -32,7 +32,7 @@
 
             <div class="skupina">
                 <label class="oznaka">Geslo:</label>
-                <input type="text" name="geslo" class="vnos" required>
+                <input type="password" name="geslo" class="vnos" required>
             </div>
 
             <div class="skupina">

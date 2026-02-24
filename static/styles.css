@@ -146,3 +146,108 @@ header a{
 .btn-mail:hover{
     background-color: #7ea0e0;
 }
+
+/* PRIJAVA/REGISTRACIJA*/
+
+body{
+    margin: 0;
+    font-family: Lato, sans-serif;
+    background: #c8c8c8;
+}
+
+/*OZADJE */
+.prijava-ovitek{
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: url("/static/slike/prijava.jpg") no-repeat center;
+    background-size: cover;
+}
+
+.prijava-vsebina{
+    width: 100%;
+    max-width: 500px;
+    padding: 50px 40px;
+    background: rgba(0, 0, 0, 0.8);
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+    color: white;
+}
+
+.naslov{
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 28px;
+}
+
+.napaka{
+    color: #ff4d4d;
+    text-align: center;
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+.prijava-forma{
+    width: 100%;
+}
+
+.skupina{
+    margin-bottom: 20px;
+}
+
+.oznaka{
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: #ccc;
+}
+
+/*vnosno polje*/
+.vnos{
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 25px;
+    background: rgba(255,255,255,0.15);
+    color: white;
+    font-size: 14px;
+}
+
+.vnos:focus{
+    outline: none;
+    background: rgba(255,255,255,0.25);
+}
+
+/*gumb*/
+.gumb{
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 25px;
+    background: #AAC4F5;
+    color: white;
+    font-weight: bold;
+    font-size: 15px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.gumb:hover{
+    background: #AAC4F5;
+}
+
+.spodnja-povezava{
+    text-align: center;
+    margin-top: 15px;
+}
+
+.spodnja-povezava a{
+    color: #4cc9f0;
+    text-decoration: none;
+}
+
+.spodnja-povezava a:hover{
+    text-decoration: underline;
+}
