@@ -1,0 +1,18 @@
+% rebase('spletna_stran.html, title='Prijava', ime=ime)
+
+<h2>Prijava</h2>
+
+<form method="post">
+    <label>Email:</label>
+    <input type="email" name="email" value="{{email}}" required>
+
+    <label>Gelso:</label>
+    <input type="password" name="geslo" required>
+
+    <button type="submit">Prijava</button>
+</form>
+
+% if napaka:
+    <p style="color:red;">{{napaka}}</p>
+% end
+

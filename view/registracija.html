@@ -1,0 +1,27 @@
+% rebase('spletna_stran.html', title='Registracija', ime=None)
+
+<h2>Registracija</h2>
+
+<form method="post">
+    <label>Ime:</label>
+    <input type="text" name="ime" required>
+
+    <label>Priimek:</label>
+    <input type="text" name="priimek" required>
+
+    <label>Email:</label>
+    <input type="email" name="email" required>
+
+    <label>Telefon:</label>
+    <input type="text" name="telefon" required>
+
+    <label>Geslo:</label>
+    <input type="password" name="geslo" required>
+
+    <button type="submit">Ustvari račun</button>
+</form>
+
+% if napaka:
+    <p style="color: red;">{{napaka}}</p>
+% end
+/*??*/
