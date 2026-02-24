@@ -1,8 +1,14 @@
-% rebase('spletna_stran.html', title='Registracija', ime=None)
+% rebase('osnovna.html', title='Registracija', random=random)
 
+<section class="registracija">
 <h2>Registracija</h2>
 
-<form method="post">
+    % if napaka:
+        <p style="color: red;">{{napaka}}</p>
+    % end
+
+<form method="post" action="/registracija/">
+
     <label>Ime:</label>
     <input type="text" name="ime" required>
 
@@ -20,8 +26,4 @@
 
     <button type="submit">Ustvari račun</button>
 </form>
-
-% if napaka:
-    <p style="color: red;">{{napaka}}</p>
-% end
-/*??*/
+</section>

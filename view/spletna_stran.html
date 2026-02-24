@@ -1,65 +1,46 @@
-<!DOCTYPE html>
-<html lang = "sl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Moj Fitnes</title>
-    <link rel="stylesheet" href="/static/styles.css?v={{random}}">
-    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Montserrat:wght@700&display=swap" rel="stylesheet">
-</head>
+% rebase('osnovna.html, title='Moj Fitnes', random=random)
 
-<body>
-    <header>
-        <nav>
-            <a href="/prijava">Prijava</a>
-            <a href="/registracija/">Registracija</a>
-        </nav>
-    </header>
+<!---glani naslov-->
+<section class="hero">
+    <div class="hero-overlay"></div>
+    <div class="hero-vsebina">
+        <h1>Moj Fitnes</h1>
+        <a href="/registracija/" class="btn">Včlani se</a>
+    </div>
+</section>
 
-    <!---glani naslov-->
-    <section class="hero">
-        <div class="hero-overlay"></div>
-        <div class="hero-vsebina">
-            <h1>Moj Fitnes</h1>
-            <a href="/registracija/" class="btn">Včlani se</a>
+<!--Ponudba storitev-->
+<section class="fitnes">
+    <h2>FITNES KARTE</h2>
+    <div class="karte">
+
+        <div class="karta">
+            <h3>Dnevna karta</h3>
+            <p>Poln dostop do fitnesa za 1 dan</p>
+            <p class="cena"> 5€</p>
+            <a href="/registracija/" class="btn-mail"> Izberi</a>
         </div>
-    </section>
 
-    <!--Ponudba storitev-->
-    <section class="fitnes">
-        <h2>FITNES KARTE</h2>
-        <div class="karte">
-
-            <div class="karta">
-                <h3>Dnevna karta</h3>
-                <p>Poln dostop do fitnesa za 1 dan</p>
-                <p class="cena"> 5€</p>
-                <a href="/registracija/" class="btn-mail"> Izberi</a>
-            </div>
-
-            <div class="karta">
-                <h3>Mesečna karta karta</h3>
-                <p>Neomejen dostop 31 dni</p>
-                <p class="cena"> 35€</p>
-                <a href="/registracija/" class="btn-mail"> Izberi</a>
-            </div>
-
-            <div class="karta">
-                <h3>Letna karta</h3>
-                <p>Neomejen dostop za 365 dni</p>
-                <p class="cena"> 300€</p>
-                <a href="/registracija/" class="btn-mail"> Izberi</a>
-            </div>
+        <div class="karta">
+            <h3>Mesečna karta karta</h3>
+            <p>Neomejen dostop 31 dni</p>
+            <p class="cena"> 35€</p>
+            <a href="/registracija/" class="btn-mail"> Izberi</a>
         </div>
-    </section>
 
-    <section class=""
+        <div class="karta">
+            <h3>Letna karta</h3>
+            <p>Neomejen dostop za 365 dni</p>
+            <p class="cena"> 300€</p>
+            <a href="/registracija/" class="btn-mail"> Izberi</a>
+        </div>
+    </div>
+</section>
 
-</body>
 
 
 
 
 
-    
+
 </html>

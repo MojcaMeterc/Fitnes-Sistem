@@ -58,21 +58,22 @@ def odjava():
 #------------
 @bottle.get('/prijava/')
 def prijava():
-    return bottle.template('prijava.html', napaka=None, email="")
+    return bottle.template('prijava.html', napaka=None, random=random.randint(1, 10000))
 
 @bottle.post('/prijava/')
 def prijava_post():
     email = bottle.request.form.getunicode('email')
     geslo = bottle.request.form.getunicode('geslo')
+
     uporabnik = Uporabnik.prijava(conn, email, geslo)
     if uporabnik:
         prijavi_uporabnika(uporabnik)
     else:
-        return bottle.template('prijava.html', napaka = 'Napčen mail ali geslo')
+        return bottle.template('prijava.html', napaka = 'Napčen mail ali geslo', random=random.randint(1, 10000))
     
 @bottle.get('/registracija/')
 def registracija():
-    return bottle.template('registracija.html', napaka = None)
+    return bottle.template('registracija.html', napaka = None, random=random.randint(1, 10000))
 
 @bottle.post('/registracija/')
 def registracija_post():
@@ -86,8 +87,8 @@ def registracija_post():
         uporabnik.ustvari_racun(geslo)
         prijavi_uporabnika(uporabnik)
     except sqlite3.IntegrityError:
-        return bottle.template('registracija.html', napaka = 'Email ali telefonska številka že obstaja')
-    
+        return bottle.template('registracija.html', napaka = 'Email ali telefonska številka že obstaja', random=random.randint(1, 10000))
+      
 
 # ZAGON APLIKACIJE
 bottle.run(host='localhost', port=8080, debug=True)

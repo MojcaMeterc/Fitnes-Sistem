@@ -1,18 +1,23 @@
-% rebase('spletna_stran.html, title='Prijava', ime=ime)
+% rebase('osnovna.html, title='Prijava', random=random)
 
-<h2>Prijava</h2>
+<section class="prijava">
+    <h2>Prijava</h2>
 
-<form method="post">
-    <label>Email:</label>
-    <input type="email" name="email" value="{{email}}" required>
+    % if napaka:
+        <p style="color:red;">{{napaka}}</p>
+    % end
 
-    <label>Gelso:</label>
-    <input type="password" name="geslo" required>
+    <form method="post">
+        <label>Email:</label>
+        <input type="email" name="email" required><br><br>
 
-    <button type="submit">Prijava</button>
-</form>
+        <label>Gelso:</label>
+        <input type="password" name="geslo" required><br><br>
 
-% if napaka:
-    <p style="color:red;">{{napaka}}</p>
-% end
+        <button type="submit">Prijava</button>
+    </form>
+</section>
+
+
+
 
