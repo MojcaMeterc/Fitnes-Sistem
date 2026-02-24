@@ -1,21 +1,42 @@
 % rebase('osnovna.html', title='Prijava', random=random)
 
-<section class="prijava">
-    <h2>Prijava</h2>
+<div class="prijava-ovitek">
+    <div class="prijava-vsebina">
 
-    % if napaka:
+        <h2 class="naslov">Prijava</h2>
+
+        % if napaka:
         <p style="color:red;">{{napaka}}</p>
-    % end
+        % end
 
-    <form method="post">
-        <label>Email:</label>
-        <input type="email" name="email" required><br><br>
+    <form method="post" action="/priavaja/" class="prijava-forma">
+        <div class="skupina">
+            <label class="oznaka">Email</label>
+            <input type="email" name="email" class="vnos" required>
+        </div>
 
-        <label>Gelso:</label>
-        <input type="password" name="geslo" required><br><br>
+        <div class="skupina">
+            <label class="oznaka">Geslo</label>
+            <input type="geslo" name="geslo" class="vnos" required>
+        </div>
 
-        <button type="submit">Prijava</button>
+        <div class="skupina">
+            <button type="submit" class="gumb">Prijava</button>
+        </div>
+
+        <div class="spodnja-povezava">
+            <p>Še nimate računa? <a href="/registracija/">Registrijaj se</a></p>
+        </div>
+
+
     </form>
+
+    </div>
+</div>
+
+
+
+
 </section>
 
 

@@ -1,29 +1,47 @@
 % rebase('osnovna.html', title='Registracija', random=random)
 
-<section class="registracija">
-<h2>Registracija</h2>
+<div class="reg-ovitek">
+    <div class="prijava-html"
 
-    % if napaka:
-        <p style="color: red;">{{napaka}}</p>
-    % end
+        <h2>Registracija</h2>
 
-<form method="post" action="/registracija/">
+        % if napaka:
+            <p style="color: red;">{{napaka}}</p>
+        % end
 
-    <label>Ime:</label>
-    <input type="text" name="ime" required>
+        <form method="post" action="/registracija/" class="reg-forma">
+            <div class="skupina">
+                <label class="oznaka">Ime:</label>
+                <input type="text" name="ime" class="vnos" required>
+            </div>
 
-    <label>Priimek:</label>
-    <input type="text" name="priimek" required>
+            <div class="skupina">
+                <label class="oznaka">Priimek:</label>
+                <input type="text" name="priimek" class="vnos" required>
+            </div>
 
-    <label>Email:</label>
-    <input type="email" name="email" required>
+            <div class="skupina">
+                <label class="oznaka">Email:</label>
+                <input type="text" name="email" class="vnos" required>
+            </div>
 
-    <label>Telefon:</label>
-    <input type="text" name="telefon" required>
+            <div class="skupina">
+                <label class="oznaka">Telefon:</label>
+                <input type="text" name="telefon" class="vnos" required>
+            </div>
 
-    <label>Geslo:</label>
-    <input type="password" name="geslo" required>
+            <div class="skupina">
+                <label class="oznaka">Geslo:</label>
+                <input type="text" name="geslo" class="vnos" required>
+            </div>
 
-    <button type="submit">Ustvari račun</button>
-</form>
-</section>
+            <div class="skupina">
+                <button type="submit" class="gumb">Ustvari račun</button>
+            </div>
+
+            <div class="spodnja-povezava">
+                <p>Že imate račun? <a href="/prijava/">Prijavi se</a></p>
+            </div>
+        </form>
+    </div>
+</div>
