@@ -331,11 +331,11 @@ class Karta:
     """
     Razred za karto
     """
-    def __init__(self, conn, naziv, trajanje_dni, cena, karta_id=None):
+    def __init__(self, conn, naziv, trajanje, cena, karta_id=None):
         self.conn= conn
         self.karta_id = karta_id
         self.naziv = naziv
-        self.trajanje_dni = trajanje_dni
+        self.trajanje = trajanje
         self.cena = cena
     
     def shrani_karto(self):

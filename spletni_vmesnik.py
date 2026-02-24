@@ -52,7 +52,6 @@ def odjava():
     bottle.redirect('/')
 
 
-
 #---------
 # REGISTRACIJA
 #------------
@@ -62,12 +61,12 @@ def prijava():
 
 @bottle.post('/prijava/')
 def prijava_post():
-    email = bottle.request.form.getunicode('email')
-    geslo = bottle.request.form.getunicode('geslo')
+    email = bottle.request.forms.get('email')
+    geslo = bottle.request.forms.get('geslo')
 
     uporabnik = Uporabnik.prijava(conn, email, geslo)
     if uporabnik:
-        prijavi_uporabnika(uporabnik)
+        return prijavi_uporabnika(uporabnik)
     else:
         return bottle.template('prijava.html', napaka = 'Napčen mail ali geslo', random=random.randint(1, 10000))
     
@@ -77,11 +76,14 @@ def registracija():
 
 @bottle.post('/registracija/')
 def registracija_post():
-    ime = bottle.request.form.getunicode('ime')
-    priimek = bottle.request.form.getunicode('priimek')
-    email = bottle.request.form.getunicode('email')
-    telefon = bottle.request.form.getunicode('telefon')
-    geslo = bottle.request.form.getunicode('geslo')
+    if bottle.request.method != "POST":
+        return bottle.redirect("/registracija")
+    
+    ime = bottle.request.forms.get('ime')
+    priimek = bottle.request.forms.get('priimek')
+    email = bottle.request.forms.get('email')
+    telefon = bottle.request.forms.get('telefon')
+    geslo = bottle.request.forms.get('geslo')
     try:
         uporabnik = Uporabnik(conn, ime, priimek, email, telefon)
         uporabnik.ustvari_racun(geslo)
