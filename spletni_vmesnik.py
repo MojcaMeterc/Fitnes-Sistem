@@ -37,7 +37,7 @@ def zacetna_stran():
 def prijavi_uporabnika(uporabnik):
     bottle.response.set_cookie('uporabnik', uporabnik.ime, path='/', secret=SKRIVNOST)
     bottle.response.set_cookie('uid', str(uporabnik.uporabnik_id), path='/', secret=SKRIVNOST)
-    bottle.redirect('/')
+    bottle.redirect('/moj_racun/')
 
 def zahtevaj_prijavo():
     uid = bottle.request.get_cookie('uid', secret=SKRIVNOST)
@@ -91,6 +91,13 @@ def registracija_post():
     except sqlite3.IntegrityError:
         return bottle.template('registracija.html', napaka = 'Email ali telefonska številka že obstaja', random=random.randint(1, 10000))
       
+@bottle.get('/moj_racun/')
+def moj_racun():
+    uid = zahtevaj_prijavo()
+
+    ime = bottle.request.get_cookie('uporabnik', secret=SKRIVNOST)
+
+    return bottle.template('uporabnik_zacetna.html', ime=ime, random=random.randint(1, 10000))
 
 # ZAGON APLIKACIJE
 bottle.run(host='localhost', port=8080, debug=True)
