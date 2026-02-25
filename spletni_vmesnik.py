@@ -63,7 +63,7 @@ def prijava():
     ime =bottle.request.get_cookie('uporabnik', secret = SKRIVNOST)
     if not ime:
         ime = None #tako da vemo da ni nobem prijalvjen
-    return bottle.template('prijava.html',ime=ime, random=random.randint(1, 10000))
+    return bottle.template('prijava.html',ime=ime, napaka=None, random=random.randint(1, 10000))
 
 @bottle.post('/prijava/')
 def prijava_post():
@@ -84,7 +84,7 @@ def registracija():
     ime =bottle.request.get_cookie('uporabnik', secret = SKRIVNOST)
     if not ime:
         ime = None #tako da vemo da ni nobem prijalvjen
-    return bottle.template('registracija.html',ime=ime, random=random.randint(1, 10000))
+    return bottle.template('registracija.html',ime=ime, napaka=None, random=random.randint(1, 10000))
 
 @bottle.post('/registracija/')
 def registracija_post():
@@ -109,10 +109,13 @@ def registracija_post():
 @bottle.get('/moj_racun/')
 def moj_racun():
     uid = zahtevaj_prijavo()
+    uporabnik = Uporabnik.pridobi_po_id(conn, uid)
+    if not uporabnik:
+        bottle.redirect('/')
 
-    ime = bottle.request.get_cookie('uporabnik', secret=SKRIVNOST)
+    ime = f"{uporabnik.ime} {uporabnik.priimek}"
 
-    return bottle.template('uporabnik_zacetna.html', ime=ime, random=random.randint(1, 10000))
+    return bottle.template('uporabnik_zacetna.html', ime=ime, priimek=uporabnik, email=uporabnik, telefon=uporabnik, random=random.randint(1, 10000))
 
 # ZAGON APLIKACIJE
 bottle.run(host='localhost', port=8080, debug=True)

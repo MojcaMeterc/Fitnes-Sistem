@@ -5,7 +5,7 @@
 
         <h2>Registracija</h2>
 
-        % if napaka:
+        % if defined('napaka') and napaka:
             <p style="color: red;">{{napaka}}</p>
         % end
 

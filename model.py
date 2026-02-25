@@ -161,7 +161,22 @@ class Uporabnik:
         iztek = datetime.strptime(vrst[0], "%Y-%m-%d").date()
         return iztek >= datetime.now().date()
         
-
+    @staticmethod
+    def pridobi_po_id(conn, uporabnik_id):
+        '''Vrne objekt uporabnik po ID-ju'''
+        sql = "SELECT * FROM uporabniki WHERE uporabnik_id = ?"
+        cur = conn.execute(sql, (uporabnik_id,))
+        vrstica = cur.fetchone()
+        if vrstica:
+            return Uporabnik(
+                conn,
+                vrstica['ime'],
+                vrstica['priimek'],
+                vrstica['email'],
+                vrstica['telefon'],
+                uporabnik_id = vrstica['uporabnik_id']   
+            )
+        return None
 
 class Trener:
     """ razred za tremerja
