@@ -7,17 +7,24 @@
     <link rel="stylesheet" href="/static/styles.css?v={{random}}">
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Montserrat:wght@700&display=swap" rel="stylesheet">
 </head>
+    <body>
+        % ime = ime if 'ime' in globals() else None
+        <header class="navigacija">
+            <div class="logo">
+                <a href="/">Moj Fitnes</a>
+            </div>
 
-<body>
-    <header>
-        <nav>
-            <a href="/">Domov</a>
-            <a href="/prijava/">Prijava</a>
-            <a href="/registracija/">Registracija</a>
-        </nav>
-    </header>
-
-    {{!base}}
-
+            <div class="menu">
+                % if ime:
+                    <span class="pozdrav">Pozdravljeni, {{ime}}!</span>
+                    <a href="/moj_racun/">Moj račun</a>
+                    <a href="/odjava/">Odjava</a>
+                % else:
+                    <a href="/prijava/">Prijava</a>
+                    <a href="/registracija/">Registracija</a>
+                % end
+            </div>
+        </header>
+        {{!base}}
 </body>
 </html>
