@@ -251,3 +251,62 @@ body{
 .spodnja-povezava a:hover{
     text-decoration: underline;
 }
+
+/*RAČUN*/
+
+.racun{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    background: linear-gradient(135deg, #1e1e1e, #2c2c2c);
+}
+
+.racun-kartica{
+    background: white;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    width: 350px;
+}
+
+.racun-kartica h2{
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.pozdrav{
+    margin-bottom: 30px;
+    font-size: 18px;
+    color: #555;
+}
+
+.racun-gumbi{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.racun-btn {
+    text-decoration: none;
+    padding: 12px;
+    border-radius: 8px;
+    background-color: #009dff;
+    color: white;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.racun-btn:hover{
+    background-color: #004de6;
+    transform: scale(1.05);
+}
+
+.odjava {
+    background-color: #009dff;
+}
+
+.odjava:hover{
+    background-color: #004de6;
+}
