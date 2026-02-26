@@ -1,20 +1,24 @@
 % rebase('osnovna.html', title='Moj račun', random=random)
 
-<div class="racun">
+<div class="racun-pri">
+    <div class="racun-info">
+        <h3>Moje inforamcije</h3>
+
+        <p><strong>Email:</strong> {{email}}</p>
+        <p><strong>Telefon:</strong> {{telefon}}</p>
+    </div>
+
+
     <div class="racun-kartica">
-        <h2>Moj račun</h2>
+        <h2>Pregled</h2>
         <p class="pozdrav">Pozdravljeni <strong>{{ime}}</strong></p>
 
-        <di class="racun-info">
-            <p><strong>Email:</strong>{{email}}</p>
-            <p>strong>Telefon:></p>
-        </di>
         <div class="racun-gumbi">
             <a href="/moje_karte/" class="racun-btn">Moje karte</a>
             <a href="/termini/" class="racun-btn">Prosti termini</a></li>
 
         </div>
     </div>
-</div>
 
-/*/
+
+</div>

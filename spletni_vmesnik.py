@@ -113,12 +113,12 @@ def moj_racun():
     uporabnik = Uporabnik.pridobi_po_id(conn, uid)
     if not uporabnik:
         bottle.redirect('/')
-    ime = f'{uporabnik.ime} {uporabnik.priimek}'
     return bottle.template('uporabnik_zacetna.html',
-                           ime=ime,
-                            email=uporabnik.email,
-                             telefon=uporabnik.telefon,
-                              random=random.randint(1,10000) )
+                           ime=uporabnik.ime,
+                           priimek=uporabnik.priimek,
+                           email=uporabnik.email,
+                           telefon=uporabnik.telefon,
+                           random=random.randint(1,10000) )
 # ZAGON APLIKACIJE
 bottle.run(host='localhost', port=8080, debug=True)
     
