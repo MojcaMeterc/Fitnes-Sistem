@@ -119,6 +119,13 @@ def moj_racun():
                            email=uporabnik.email,
                            telefon=uporabnik.telefon,
                            random=random.randint(1,10000) )
+
+@bottle.get('/ponudba/')
+def ponudba():
+    ime = bottle.request.get_cookie('uporabnik', secret=SKRIVNOST)
+    if not ime:
+        ime = None
+    return bottle.templet('ponudba.html', ime=ime, random=random.randint(1,1000))
 # ZAGON APLIKACIJE
 bottle.run(host='localhost', port=8080, debug=True)
     
