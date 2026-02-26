@@ -110,12 +110,15 @@ def registracija_post():
 @bottle.get('/moj_racun/')
 def moj_racun():
     uid = zahtevaj_prijavo()
-    ime_cookie = bottle.request.get_cookie('uporabnik', secret = SKRIVNOST)
-    if not ime_cookie:
+    uporabnik = Uporabnik.pridobi_po_id(conn, uid)
+    if not uporabnik:
         bottle.redirect('/')
-
-    return bottle.template('uporabnik_zacetna.html', ime=ime_cookie, random=random.randint(1, 10000))
-
+    ime = f'{uporabnik.ime} {uporabnik.priimek}'
+    return bottle.template('uporabnik_zacetna.html',
+                           ime=ime,
+                            email=uporabnik.email,
+                             telefon=uporabnik.telefon,
+                              random=random.randint(1,10000) )
 # ZAGON APLIKACIJE
 bottle.run(host='localhost', port=8080, debug=True)
     
