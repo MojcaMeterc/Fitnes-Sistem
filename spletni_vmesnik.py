@@ -29,7 +29,10 @@ def static(filename):
 
 @bottle.get('/')
 def zacetna_stran():
-    return bottle.template('spletna_stran.html', random=random.randint(1, 10000))
+    ime =bottle.request.get_cookie('uporabnik', secret = SKRIVNOST)
+    if not ime:
+        ime = None #tako da vemo da ni nobem prijalvjen
+    return bottle.template('spletna_stran.html',ime=ime, random=random.randint(1, 10000))
 
 #-------
 # LOGIN/LOGOUT
@@ -41,6 +44,7 @@ def prijavi_uporabnika(uporabnik):
 
 def zahtevaj_prijavo():
     uid = bottle.request.get_cookie('uid', secret=SKRIVNOST)
+    print("COOKIE UID", repr(uid))
     if not uid:
         bottle.redirect('/prijava/')
     return int(uid)
@@ -57,7 +61,10 @@ def odjava():
 #------------
 @bottle.get('/prijava/')
 def prijava():
-    return bottle.template('prijava.html', napaka=None, random=random.randint(1, 10000))
+    ime =bottle.request.get_cookie('uporabnik', secret = SKRIVNOST)
+    if not ime:
+        ime = None #tako da vemo da ni nobem prijalvjen
+    return bottle.template('prijava.html',ime=ime, napaka=None, random=random.randint(1, 10000))
 
 @bottle.post('/prijava/')
 def prijava_post():
@@ -68,11 +75,17 @@ def prijava_post():
     if uporabnik:
         prijavi_uporabnika(uporabnik)
     else:
-        return bottle.template('prijava.html', napaka = 'Napčen mail ali geslo', random=random.randint(1, 10000))
+        ime = bottle.request.get_cookie('uporabnik', secret = SKRIVNOST)
+        if not ime:
+            ime = None
+        return bottle.template('prijava.html', ime=ime, napaka = 'Napčen mail ali geslo', random=random.randint(1, 10000))
     
 @bottle.get('/registracija/')
 def registracija():
-    return bottle.template('registracija.html', napaka = None, random=random.randint(1, 10000))
+    ime =bottle.request.get_cookie('uporabnik', secret = SKRIVNOST)
+    if not ime:
+        ime = None #tako da vemo da ni nobem prijalvjen
+    return bottle.template('registracija.html',ime=ime, napaka=None, random=random.randint(1, 10000))
 
 @bottle.post('/registracija/')
 def registracija_post():
@@ -89,16 +102,23 @@ def registracija_post():
         prijavi_uporabnika(uporabnik)
 
     except sqlite3.IntegrityError:
-        return bottle.template('registracija.html', napaka = 'Email ali telefonska številka že obstaja', random=random.randint(1, 10000))
+        ime = bottle.request.get_cookie('uporabnik', secret = SKRIVNOST)
+        if not ime:
+            ime = None
+        return bottle.template('registracija.html', ime=ime, napaka = 'Email ali telefonska številka že obstaja', random=random.randint(1, 10000))
       
 @bottle.get('/moj_racun/')
 def moj_racun():
     uid = zahtevaj_prijavo()
-
-    ime = bottle.request.get_cookie('uporabnik', secret=SKRIVNOST)
-
-    return bottle.template('uporabnik_zacetna.html', ime=ime, random=random.randint(1, 10000))
-
+    uporabnik = Uporabnik.pridobi_po_id(conn, uid)
+    if not uporabnik:
+        bottle.redirect('/')
+    return bottle.template('uporabnik_zacetna.html',
+                           ime=uporabnik.ime,
+                           priimek=uporabnik.priimek,
+                           email=uporabnik.email,
+                           telefon=uporabnik.telefon,
+                           random=random.randint(1,10000) )
 # ZAGON APLIKACIJE
 bottle.run(host='localhost', port=8080, debug=True)
     
