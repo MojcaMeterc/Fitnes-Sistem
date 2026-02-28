@@ -125,7 +125,7 @@ def ponudba():
     ime = bottle.request.get_cookie('uporabnik', secret=SKRIVNOST)
     if not ime:
         ime = None
-    return bottle.templet('ponudba.html', ime=ime, random=random.randint(1,1000))
+    return bottle.template('ponudba.html', ime=ime, random=random.randint(1,1000))
 # ZAGON APLIKACIJE
 bottle.run(host='localhost', port=8080, debug=True)
     
