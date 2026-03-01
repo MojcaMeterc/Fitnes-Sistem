@@ -382,7 +382,7 @@ body{
     bottom: 0;
     width: 100%;
     background-color: rgba(170, 196, 245, 0.85);
-    color: #white;
+    color: white;
     text-align: center;
     padding: 10px 15px;
     font-size: 0.95rem;
@@ -460,7 +460,7 @@ body{
     margin-bottom: 10px;
     color: #333;
 }
-.pozdrav{
+.pozdrav-ponudba{
     color: #162660;
 }
 .kartaP p {
@@ -471,7 +471,7 @@ body{
 .kartaP .cena{
     font-size: 1.6rem;
     font-weight: bold;
-    color: #D0E6FD;
+    color: #162660;
     margin-top: 15px;
 }
 
