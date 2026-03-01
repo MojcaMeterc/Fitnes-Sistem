@@ -384,9 +384,10 @@ body{
     background-color: rgba(170, 196, 245, 0.85);
     color: white;
     text-align: center;
-    padding: 15px;
-    font-size: 1.1rem;
+    padding: 10px 15px;
+    font-size: 0.95rem;
     font-weight: bold;
+    box-sizing: border-box;
 }
 
 .btn-ponudba{
