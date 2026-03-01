@@ -411,3 +411,74 @@ body{
     background-color: #fea0e0;
 }
 
+/* STRAN PONUDBA */
+
+.ponudba-stran{
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    min-height: 100vh;
+    background: #576A8F;
+
+}
+
+.naslov-stran{
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.ponudba-stran h2{
+    font-size: 1.8rem;
+    margin:  40px 0 20px 0;
+    color: #333;
+    border-left: 5px solid #AAC4F5;
+    padding-left: 15px;
+}
+
+.grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.kartaP{
+    background: white;
+    border-radius: 12px;
+    padding: 25px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.kartaP:hover{
+    transform: translate(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.kartaP h3 {
+    font-size: 1,1rem;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.kartaP p {
+    color: #666;
+    margin: 5px 0;
+}
+
+.kartaP .cena{
+    font-size: 1.6rem;
+    font-weight: bold;
+    color: #AAC4F5;
+    margin-top: 15px;
+}
+
+.vadba-naslov{
+    font-size: 1.2rem;
+    color: #333;
+    margin: 25px 0 10px 0;
+    padding-left: 10px;
+    border-left: 3px solid #AAC4F5;
+}
