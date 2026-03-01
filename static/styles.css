@@ -2,18 +2,18 @@ body {
     font-family: Lato, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4
+    background-color: #f4f4f4;
 }
 
 header{
-    background-color: #333;
-    color: white;
+    background-color: #162660;
+    color: #F1E4D1;
     padding: 10px 20px;
     text-align: right;
 }
 
 header a{
-    color: rgb(255, 255, 255);
+    color: #F1E4D1;
     text-decoration: none;
     margin-left: 15px;
     font-weight: bold;
@@ -30,7 +30,7 @@ header a{
     display: flex;
     justify-content: center;
     align-items: center;
-    color: aliceblue;
+    color: #F1E4D1;
 }
 
 .hero-overlay{
@@ -56,8 +56,8 @@ header a{
 .btn{
     display: inline-block;
     padding: 17px 35px;
-    background-color: #AAC4F5;
-    color: black;
+    background-color: #162660;
+    color: #F1E4D1;
     text-decoration: none;
     font-size: 1.5rem;
     font-weight: bold;
@@ -66,7 +66,7 @@ header a{
 }
 
 .btn:hover{
-    background-color: #AAC4F5;
+    background-color: #162660c4;
     cursor: pointer;
 }
 
@@ -96,7 +96,7 @@ header a{
 
 /*posamezna karta*/
 .karta{
-    background-color: #D2E0FB;
+    background-color: #D0E6FD;
     padding: 30px;
     width: 280px;
     max-width: 100%;
@@ -135,8 +135,8 @@ header a{
 .btn-mail{
     display: inline-block;
     padding: 10px 20px;
-    background-color: #AAC4F5;
-    color: white;
+    background-color: #162660;
+    color: #F1E4D1;
     text-decoration: none;
     border-radius: 6px;
     transition: background 0.3s;
@@ -226,8 +226,8 @@ body{
     padding: 15px;
     border: none;
     border-radius: 25px;
-    background: #AAC4F5;
-    color: white;
+    background: #D0E6FD;
+    color: #162660;
     font-weight: bold;
     font-size: 15px;
     cursor: pointer;
@@ -244,7 +244,7 @@ body{
 }
 
 .spodnja-povezava a{
-    color: #4cc9f0;
+    color: #FFC5D3;
     text-decoration: none;
 }
 
@@ -279,7 +279,7 @@ body{
 .pozdrav{
     margin-bottom: 30px;
     font-size: 18px;
-    color: #555;
+    color: #D0E6FD;
 }
 
 .racun-gumbi{
@@ -292,7 +292,7 @@ body{
     text-decoration: none;
     padding: 12px;
     border-radius: 8px;
-    background-color: #009dff;
+    background-color: #162660;
     color: white;
     font-weight: bold;
     transition: 0.3s;
@@ -382,7 +382,7 @@ body{
     bottom: 0;
     width: 100%;
     background-color: rgba(170, 196, 245, 0.85);
-    color: white;
+    color: #white;
     text-align: center;
     padding: 10px 15px;
     font-size: 0.95rem;
@@ -400,7 +400,6 @@ body{
     font-weight: bold;
     font-size: 1rem;
     transition: 0.3s;
-    
 }
 
 .ponudba-gumb {
@@ -418,8 +417,7 @@ body{
     margin: 0 auto;
     padding: 40px 20px;
     min-height: 100vh;
-    background: #576A8F;
-
+    background-color: #D0E6FD;
 }
 
 .naslov-stran{
@@ -433,7 +431,7 @@ body{
     font-size: 1.8rem;
     margin:  40px 0 20px 0;
     color: #333;
-    border-left: 5px solid #AAC4F5;
+    border-left: 5px solid #162660;
     padding-left: 15px;
 }
 
@@ -444,7 +442,7 @@ body{
 }
 
 .kartaP{
-    background: white;
+    background: #F1E4D1;
     border-radius: 12px;
     padding: 25px;
     text-align: center;
@@ -462,7 +460,9 @@ body{
     margin-bottom: 10px;
     color: #333;
 }
-
+.pozdrav{
+    color: #162660;
+}
 .kartaP p {
     color: #666;
     margin: 5px 0;
@@ -471,7 +471,7 @@ body{
 .kartaP .cena{
     font-size: 1.6rem;
     font-weight: bold;
-    color: #AAC4F5;
+    color: #D0E6FD;
     margin-top: 15px;
 }
 
@@ -481,4 +481,9 @@ body{
     margin: 25px 0 10px 0;
     padding-left: 10px;
     border-left: 3px solid #AAC4F5;
+}
+
+::selection{
+    background-color: #162660;
+    color: #F1E4D1;
 }
