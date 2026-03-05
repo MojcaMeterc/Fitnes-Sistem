@@ -2,7 +2,7 @@ import sqlite3
 import random
 import json
 import bottle
-from model import Uporabnik, Trener, Karta
+from model import Uporabnik, Trener, Karta, Termin
 
 NASTAVITVE = 'nastavitve.json'
 
@@ -126,10 +126,55 @@ def ponudba():
     if not ime:
         ime = None
     return bottle.template('ponudba.html', ime=ime, random=random.randint(1,1000))
+
+@bottle.get('/moje_karte/')
+def moje_karte():
+    uid = zahtevaj_prijavo()
+    ime = bottle.request.get_cookie('uporabnik', secret=SKRIVNOST)
+
+    karte = [] # ZAČASNO DOKLER NE POVEŽEVA Z BAZO
+
+    return bottle.template('moje_karte.html', ime=ime, karte=karte, random=random.randint(1, 10000))
+
+@bottle.get('/prosti_termini/')
+def prosti_termini():
+    uid = zahtevaj_prijavo()
+    ime = bottle.request.get_cookie('uporabnik', secret=SKRIVNOST)
+
+    termini = Termin.prosti_termini(conn) 
+
+    return bottle.template('prosti_termini.html', ime=ime, termini=termini, random=random.randint(1, 10000))
+
+@bottle.post('/rezerviraj/')
+def rezerviraj():
+    uid = zahtevaj_prijavo()
+    termin_id = bottle.request.forms.get('termin_id')
+    uporabnik = Uporabnik.pridobi_po_id(conn, uid)
+
+    try:
+        uporabnik.izberi_termin(termin_id)
+
+    except Exception as e:
+        return str(e)
+    
+    bottle.redirect('/moje_rezervacije/')
+
+@bottle.get('/moje_rezervacije/')
+def moje_rezervacije():
+    uid = zahtevaj_prijavo()
+    uporabnik = Uporabnik.pridobi_po_id(conn, uid)
+    rezervacije = uporabnik.moje_rezervacije()
+    ime = uporabnik.ime
+
+    return bottle.template('moje_rezervacije.html', ime=ime, rezervacije=rezervacije, random=random.randint(1, 10000))
+
+
+    
 # ZAGON APLIKACIJE
 bottle.run(host='localhost', port=8080, debug=True)
     
-    
+
+
 
 
 

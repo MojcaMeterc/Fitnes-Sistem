@@ -1,0 +1,37 @@
+% rebase('osnovna.html', title='Prosti termini', ime=ime)
+
+<h2>Prosti termini</h2>
+
+% if termini:
+<table border="1">
+    <tr>
+        <th>Datum</th>
+        <th>Ura začetek</th>
+        <th>Ura konec</th>
+        <th></th>
+    </tr>
+
+    % for termin in termini:
+
+    <tr>
+        <td>{{termin['datum']}}</td>
+        <td>{{termin['ura_pricetka']}}</td>
+        <td>{{termin['ura_konca']}}</td>
+
+        <td>
+            <form action="/rezerviraj/" method="post">
+                <input type="hidden" name="termin_id" value="{{termin['termin_id']}}">
+
+                <button type="submit">
+                    Rezerviraj
+                </button>
+            </form>
+        </td>
+    </tr>
+    % end
+</table>
+
+% else:
+<p>Ni prostih terminov.</p>
+
+% end
