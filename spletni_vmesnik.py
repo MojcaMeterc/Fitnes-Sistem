@@ -165,7 +165,7 @@ def trener_zacetna():
                            ime=trener.ime, 
                            priimek=trener.priimek,
                            email = trener.email,
-                           specil = trener.special,
+                           specializacija = trener.special,
                            je_trener = True,
                            random = random.randint(1, 10000))
 
