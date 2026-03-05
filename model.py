@@ -5,6 +5,7 @@ from datetime import datetime, timedelta
 def hash_geslo(geslo):
     return hashlib.sha256(geslo.encode()).hexdigest()
 
+
 class Uporabnik:
     """
     Razred za Uporabnika
@@ -73,9 +74,7 @@ class Uporabnik:
 
         # preveri veljavnost karte
         if not self.ima_veljavno_karto():
-            print("Nimate veljavne karte.")
-            print("Pritisni (*) za nakup karte.")
-            return
+            raise Exception('Nimate veljavne karte')
         
         # preveri kapaciteto dvorane
         if not termin.je_prostor():
@@ -209,7 +208,7 @@ class Trener:
             return Trener(conn, vrstica[1], vrstica[2], vrstica[3], vrstica[4], vrstica[0])
         return None
     
-    
+    @staticmethod
     def pridobi_po_id(conn, trener_id):
         sql = "SELECT * FROM trener WHERE trener_id = ?"
         vrstica = conn.execute(sql, (trener_id,)).fetchone()
@@ -219,7 +218,6 @@ class Trener:
                 conn,
                 vrstica['ime'],
                 vrstica['priimek'],
-                vrstica['email'],
                 vrstica['email'],
                 vrstica['specializacija'],
                 trener_id = vrstica['trener_id']
@@ -237,21 +235,21 @@ class Trener:
         self.conn.commit()
     def moji_termini(self):
         sql = """
-                SELECT termin.termin_id,
-                    termin.datum,
-                    termin.ura_pricetka,
-                    termin.ura_konca,
+                SELECT termini.termin_id,
+                    termini.datum,
+                    termini.ura_pricetka,
+                    termini.ura_konca,
                     dvorane.naziv AS dvorana,
                     COUNT(rezervacijaU.termin_id) AS stevilo_prijavljenih
                 FROM rezervacijaT
-                JOIN termini ON rezervacijaT.termini_id = termini.termin_id
-                LEFT JOIN dvorane ON termini.dvorana_id = dvorane.dvorane_id
-                LEFT JOIN rezervacijaU ON termini.termini_id = rezervacijaU.termin.id
+                JOIN termini ON rezervacijaT.termin_id = termini.termin_id
+                LEFT JOIN dvorane ON termini.dvorana_id = dvorane.dvorana_id
+                LEFT JOIN rezervacijaU ON termini.termin_id = rezervacijaU.termin_id
                 WHERE rezervacijaT.trener_id = ?
                 GROUP BY termini.termin_id
                 ORDER BY termini.datum, termini.ura_pricetka
                 """
-        return self.coon.execute(sql, (self.trener_id)).fetchall()
+        return self.conn.execute(sql, (self.trener_id,)).fetchall()
 
 
     @staticmethod
@@ -334,27 +332,27 @@ class Termin:
         """
         return conn.execute(sql)
     
-@staticmethod
-def prosti_term_trener(conn, uporabnik_id):
-    sql = """
-        SELECT termin.termin_id,
-            termin.datum,
-            termin.ura_pricetka,
-            termin.ura_konca,
-            dvorane.naziv AS dvorana,
-            trener.ime AS trener_ime,
-            trener.priimek AS trene_priimek
-        FROM termini
-        JOIN rezervacijaT ON termini.termin_id = rezervacijaT.termin_id
-        JPIN trener ON rezervacijaT.trener_id = trener.trener_id
-        LEFT JOIN dvorane ON termini.dvorana_id = dvorana.dvorana_id
-        WHERE termini.termin_id NOT IN (
-            SELECT termi_id FROM rezervacijaU WHERE uproabnik_id = ?
-            )
-        AND termin.datum >= DATE('now')
-        ORDER BY termini.datum, termini.ura_pricetka
-        
-        """
+    @staticmethod
+    def prosti_term_trener(conn, uporabnik_id):
+        sql = """
+            SELECT termini.termin_id,
+                termini.datum,
+                termini.ura_pricetka,
+                termini.ura_konca,
+                dvorane.naziv AS dvorana,
+                trener.ime AS trener_ime,
+                trener.priimek AS trene_priimek
+            FROM termini
+            JOIN rezervacijaT ON termini.termin_id = rezervacijaT.termin_id
+            JOIN trener ON rezervacijaT.trener_id = trener.trener_id
+            LEFT JOIN dvorane ON termini.dvorana_id = dvorane.dvorana_id
+            WHERE termini.termin_id NOT IN (
+                SELECT termin_id FROM rezervacijaU WHERE uporabnik_id = ?
+                )
+            AND termini.datum >= DATE('now')
+            ORDER BY termini.datum, termini.ura_pricetka
+            """
+        return conn.execute(sql, (uporabnik_id,)).fetchall()
     
     def je_prostor(self):
         '''kapaciteta dvorane
