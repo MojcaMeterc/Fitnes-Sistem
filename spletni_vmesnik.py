@@ -27,19 +27,26 @@ bottle.TEMPLATE_PATH.insert(0, './view')
 def static(filename):
     return bottle.static_file(filename, root='static')
 
-@bottle.get('/')
-def zacetna_stran():
-    ime =bottle.request.get_cookie('uporabnik', secret = SKRIVNOST)
-    if not ime:
-        ime = None #tako da vemo da ni nobem prijalvjen
-    return bottle.template('spletna_stran.html',ime=ime, random=random.randint(1, 10000))
+#-------------------
+#  POMOŽNE FUNKCIJE
+#-------------------
 
-#-------
-# LOGIN/LOGOUT
-#-------
+def get_nav():
+    trener_ime = bottle.request.get_cookie('trener_ime', secret = SKRIVNOST)
+    if trener_ime:
+        return trener_ime, True
+    ime = bottle.request.get_cookie('uproabnik', secret = SKRIVNOST)
+    return ime, False
+
 def prijavi_uporabnika(uporabnik):
     bottle.response.set_cookie('uporabnik', uporabnik.ime, path='/', secret=SKRIVNOST)
     bottle.response.set_cookie('uid', str(uporabnik.uporabnik_id), path='/', secret=SKRIVNOST)
+    bottle.redirect('/moj_racun/')
+
+
+def prijavi_trenerja(trener):
+    bottle.response.set_cookie('trener_ime', trener.ime, path='/', secret = SKRIVNOST)
+    bottle.response.set_cookie('tid', str(trener.trener_id), path = '/', secret = SKRIVNOST)
     bottle.redirect('/moj_racun/')
 
 def zahtevaj_prijavo():
@@ -49,16 +56,45 @@ def zahtevaj_prijavo():
         bottle.redirect('/prijava/')
     return int(uid)
 
+def zahtevaj_trenerja():
+    tid = bottle.request.get_cookie('tid', secrect = SKRIVNOST)
+    if not tid:
+        bottle.redirect('/prijava/')
+    return int(tid)
+
+#-------------------
+#  JAVNA STRAN
+#-------------------
+
+@bottle.get('/')
+def zacetna_stran():
+    ime, je_trener() = get_nav()
+    return bottle.templete('spletna_stran.html', ime = ime, je_trener = je_trener,
+                           random = random.randint(1, 1000))
+
+@bottle.get('/ponudba')
+def ponudba():
+    ime, je_trener = get_nav()
+    return bottle.templete('spletna_stran.html', ime = ime, je_trener = je_trener,
+                           random = random.randint(1, 1000))
+
+#----------
+# ODJAVA
+#----------
+
 @bottle.get('/odjava/')
 def odjava():
     bottle.response.delete_cookie('uporabnik', path="/")
     bottle.response.delete_cookie('uid', path='/')
+    bottle.response.delete_cookie('trener', path="/")
+    bottle.response.delete_cookie('tid', path='/')
     bottle.redirect('/')
 
 
-#---------
-# REGISTRACIJA
-#------------
+#----------------------------------
+# PRIJAVA / REGISTRACIJA 
+#----------------------------------
+
 @bottle.get('/prijava/')
 def prijava():
     ime =bottle.request.get_cookie('uporabnik', secret = SKRIVNOST)
@@ -79,6 +115,25 @@ def prijava_post():
         if not ime:
             ime = None
         return bottle.template('prijava.html', ime=ime, napaka = 'Napčen mail ali geslo', random=random.randint(1, 10000))
+
+@bottle.get('/prijava_trener/')
+def prijava_trener():
+    bottle.redirect('/prijava/')
+
+@bottle.post('prijava_trener/')
+def prijava_trener_post():
+    email = bottle.request.forms.get('email')
+    geslo = bottle.request.forms.get('geslo')
+    trener = Trener.prijava(conn, email, geslo)
+    if trener:
+        prijava_trener(trener)
+    else:
+        ime, je_trener = get_nav()
+        return bottle.template('prijava.html', ime = ime, je_trener = je_trener,
+                               napaka = 'Napačen e-mail ali geslo',
+                               random = random.randint(1, 1000))
+
+
     
 @bottle.get('/registracija/')
 def registracija():
@@ -106,7 +161,22 @@ def registracija_post():
         if not ime:
             ime = None
         return bottle.template('registracija.html', ime=ime, napaka = 'Email ali telefonska številka že obstaja', random=random.randint(1, 10000))
-      
+
+#----------------
+# TRENER 
+#----------------
+@bottle.get('/trener/')
+
+@bottle.get('/trener/termini')
+def trener_termini():
+    tid = zahtevaj_trenerja()
+    trener = bottle.requst.get_cookie('trener_ime', secret = SKRIVNOST)
+    sql = """
+        SELECT"""
+
+
+
+
 @bottle.get('/moj_racun/')
 def moj_racun():
     uid = zahtevaj_prijavo()
@@ -119,6 +189,7 @@ def moj_racun():
                            email=uporabnik.email,
                            telefon=uporabnik.telefon,
                            random=random.randint(1,10000) )
+
 
 @bottle.get('/ponudba/')
 def ponudba():

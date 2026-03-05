@@ -203,11 +203,27 @@ class Trener:
             FROM trener
             WHERE email = ? AND geslo_hash = ?
         """, (email, geslo_hash))
-    
-        
+
         vrstica = cur.fetchone()
         if vrstica:
             return Trener(conn, vrstica[1], vrstica[2], vrstica[3], vrstica[4], vrstica[0])
+        return None
+    
+    
+    def pridobi_po_id(conn, trener_id):
+        sql = "SELECT * FROM trener WHERE trener_id = ?"
+        vrstica = conn.execute(sql, (trener_id,)).fetchone()
+
+        if vrstica:
+            return Trener(
+                conn,
+                vrstica['ime'],
+                vrstica['priimek'],
+                vrstica['email'],
+                vrstica['email'],
+                vrstica['specializacija'],
+                trener_id = vrstica['trener_id']
+            )
         return None
 
     def izberi_termin(self, termin_id):
@@ -219,7 +235,25 @@ class Trener:
             """, (self.trener_id, termin_id))
         
         self.conn.commit()
-    
+    def moji_termini(self):
+        sql = """
+                SELECT termin.termin_id,
+                    termin.datum,
+                    termin.ura_pricetka,
+                    termin.ura_konca,
+                    dvorane.naziv AS dvorana,
+                    COUNT(rezervacijaU.termin_id) AS stevilo_prijavljenih
+                FROM rezervacijaT
+                JOIN termini ON rezervacijaT.termini_id = termini.termin_id
+                LEFT JOIN dvorane ON termini.dvorana_id = dvorane.dvorane_id
+                LEFT JOIN rezervacijaU ON termini.termini_id = rezervacijaU.termin.id
+                WHERE rezervacijaT.trener_id = ?
+                GROUP BY termini.termin_id
+                ORDER BY termini.datum, termini.ura_pricetka
+                """
+        return self.coon.execute(sql, (self.trener_id)).fetchall()
+
+
     @staticmethod
     def vsi_tren(conn):
         '''metoda za branje podatkov
@@ -300,19 +334,27 @@ class Termin:
         """
         return conn.execute(sql)
     
-    @staticmethod
-    def prosti_termini(conn, dni=14):
-        '''prosti termini (brez rezervacij) za naslednjih N dni
-        '''
-        sql = f"""
-                SELECT termini.termin_id, dvorana_id, datum, ura_pricetka, ura_konca FROM termini
-                LEFT JOIN rezervacijaU ON termini.termin_id = rezervacijaU.termin_id
-                WHERE rezervacijaU.termin_id IS NULL
-                AND termini.datum >= DATE('now') 
-                AND termini.datum <= DATE('now', '+' || ? || ' days')
-                ORDER BY termini.datum, termini.ura_pricetka
-            """
-        return conn.execute(sql, (dni,))
+@staticmethod
+def prosti_term_trener(conn, uporabnik_id):
+    sql = """
+        SELECT termin.termin_id,
+            termin.datum,
+            termin.ura_pricetka,
+            termin.ura_konca,
+            dvorane.naziv AS dvorana,
+            trener.ime AS trener_ime,
+            trener.priimek AS trene_priimek
+        FROM termini
+        JOIN rezervacijaT ON termini.termin_id = rezervacijaT.termin_id
+        JPIN trener ON rezervacijaT.trener_id = trener.trener_id
+        LEFT JOIN dvorane ON termini.dvorana_id = dvorana.dvorana_id
+        WHERE termini.termin_id NOT IN (
+            SELECT termi_id FROM rezervacijaU WHERE uproabnik_id = ?
+            )
+        AND termin.datum >= DATE('now')
+        ORDER BY termini.datum, termini.ura_pricetka
+        
+        """
     
     def je_prostor(self):
         '''kapaciteta dvorane
@@ -325,7 +367,6 @@ class Termin:
         kapaciteta = self.conn.execute(sql, (self.termin_id,)).fetchone()[0]
         return self.stevilo_prijavljenih() < kapaciteta
     
-
 class Rezervacija:
     """
     Razred za rezervacijo

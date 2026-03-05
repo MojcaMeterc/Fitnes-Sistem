@@ -131,10 +131,10 @@ class RezervacijaTrener(Tabela):
         self.conn.execute("""
             CREATE TABLE rezervacijaT(
                 rezervacijaT_id INTEGER PRIMARY KEY AUTOINCREMENT,
-                termin INTEGER NOT NULL,
+                termin_id INTEGER NOT NULL,
                 trener_id INTEGER NOT NULL,
                 
-                FOREIGN KEY (termin) REFERENCES termini(termin_id),
+                FOREIGN KEY (termin_id) REFERENCES termini(termin_id),
                 FOREIGN KEY (trener_id) REFERENCES trener(trener_id)
             );
 """)
