@@ -487,3 +487,30 @@ body{
     background-color: #162660;
     color: #F1E4D1;
 }
+
+.vsebina {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.tabela {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 40px;
+}
+
+.tabela th, .tabela td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.tabela th {
+    background-color: #162660;
+    color: #F1E4D1;
+}
+
+.tabela tr:hover {
+    background-color: #f0f4ff;
+}

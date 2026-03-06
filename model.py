@@ -2,6 +2,7 @@ import sqlite3
 import hashlib
 from datetime import datetime, timedelta
 
+print("model.py")
 def hash_geslo(geslo):
     return hashlib.sha256(geslo.encode()).hexdigest()
 
@@ -253,7 +254,7 @@ class Trener:
 
 
     @staticmethod
-    def vsi_tren(conn):
+    def vsi_trenerji(conn):
         '''metoda za branje podatkov
         '''
         cur = conn.execute("""
@@ -304,13 +305,13 @@ class Admin:
         return None
     
     def vsi_trenerji(self):
-        return self.conn.exectue(
+        return self.conn.execute(
             "SELECT * FROM trener ORDER BY priimek"
         ).fetchall()
     
     def dodaj_trenerja(self, ime, priimek, email, specializacija, geslo):
         """Dodajanje trenerja kot admin"""
-        geslo_hash = hash_geslo()
+        geslo_hash = hash_geslo(geslo)
         self.conn.execute("""
             INSERT INTO trener (ime, priimek, email, specializacija, geslo_hash)
             VALUES(?, ?, ?, ?, ?)

@@ -1,0 +1,67 @@
+% rebase('osnovna.html', title = 'Admin - trenerji', random=random)
+
+<div class="vsebina">
+    <h2>Trenerji</h2>
+
+    %if trenerji:
+    <table class="tabela">
+        <tr>
+            <th>Ime</th>
+            <th>Priimek</th>
+            <th>Email</th>
+            <th>Specializacija</th>
+            <th></th>
+        </tr>
+
+        %for t in trenerji:
+        <tr>
+            <td>{{t['ime']}}</td>
+            <td>{{t['priimek']}}</td>
+            <td>{{t['email']}}</td>
+            <td>{{t['specializacija']}}</td>
+            <td>
+                <form action="/admin/izbrisi_trenerja/" method="post">
+                    <input type="hidden" name="trener_id" value="{{t['trener_id']}}">
+                    <button type="submit" class="gumb">Izbriši</button>
+                </form>
+            </td>
+        </tr>
+        % end
+    </table>
+
+    % else:
+    <p>Ni še nobenega trenerja</p>
+    % end
+
+    <h2>Dodaj trenerja</h2>
+    <form action="/admin/dodaj_trenerja/" method="post" class="prijava-forma">
+        <div class="skupina">
+            <label class="oznaka">Ime</label>
+            <input type="text" name="ime" class="vnos" required>
+        </div>
+
+        <div class="skupina">
+            <label class="oznaka">Priimek</label>
+            <input type="text" name="priimek" class="vnos" required>
+        </div>
+
+        <div class="skupina">
+            <label class="oznaka">Email</label>
+            <input type="email" name="email" class="vnos" required>
+        </div>
+
+        <div class="skupina">
+            <label class="oznaka">Specializacija</label>
+            <input type="text" name="specializacija" class="vnos" required>
+        </div>
+
+        <div class="skupina">
+            <label class="oznaka">Geslo</label>
+            <input type="password" name="geslo" class="vnos" required>
+        </div>
+
+        <div class="skupina">
+            <button type="submit" class="gumb">Dodaj trenerja</button>
+        </div>
+    </form>
+</div>
