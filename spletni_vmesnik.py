@@ -2,11 +2,10 @@ import sqlite3
 import random
 import json
 import bottle
-import importlib
-import model
-importlib.reload(model)
+import sys
 from model import Uporabnik, Trener, Karta, Termin, Admin
 
+bottle.BaseRequest.MEMFILE_MAX = 1024*1024
 NASTAVITVE = 'nastavitve.json'
 
 # PIŠKOTKI
@@ -145,13 +144,24 @@ def admin_dodaj_trenerja():
     aid = zahtevaj_admin()
     admin = Admin.pridobi_po_id(conn, aid)
 
-    ime = bottle.request.forms.get('ime')
-    priimek = bottle.request.forms.get('priimek')
+    ime = bottle.request.forms.getunicode('ime')
+    priimek = bottle.request.forms.getunicode('priimek')
     email = bottle.request.forms.get('email')
     specializacija = bottle.request.forms.get('specializacija')
     geslo = bottle.request.forms.get('geslo')
 
-    admin.dodaj_trenerja(ime, priimek, email, specializacija, geslo)
+    try:
+        admin.dodaj_trenerja(ime, priimek, email, specializacija, geslo)
+    except sqlite3.IntegrityError:
+        #email že obstaja
+        trenerji = admin.vsi_trenerji()
+        return bottle.template('admin_trenerji.html',
+                               ime=admin.ime,
+                               trenerji=trenerji,
+                               napaka='Trener s tem emailom že obstaja',
+                               je_trener=False,
+                               je_admin=True,
+                               random=random.randint(1, 10000))
     bottle.redirect('/admin/trenerji/')
 
 @bottle.post('/admin/izbrisi_trenerja/')
@@ -328,6 +338,7 @@ def moje_rezervacije():
 
     
 # ZAGON APLIKACIJE
+sys.stdout.reconfigure(encoding='utf-8')
 bottle.run(host='localhost', port=8080, debug=True)
     
 

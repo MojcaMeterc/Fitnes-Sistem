@@ -33,6 +33,10 @@
     <p>Ni še nobenega trenerja</p>
     % end
 
+    %if defined('napaka') and napaka:
+    <p style="color:red;">{{napaka}}</p>
+    %end
+    
     <h2>Dodaj trenerja</h2>
     <form action="/admin/dodaj_trenerja/" method="post" class="prijava-forma">
         <div class="skupina">

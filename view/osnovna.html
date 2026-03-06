@@ -10,6 +10,7 @@
     <body>
         % ime = ime if 'ime' in globals() else None
         % je_trener = je_trener if 'je_trener' in globals() else False
+        % je_admin = je_admin if 'je_admin' in globals() else False
         <header class="navigacija">
             <div class="logo">
                 <a href="/">Moj Fitnes</a>
@@ -18,8 +19,19 @@
             <div class="menu">
                 % if ime:
                     <span class="pozdrav">Pozdravljeni, {{ime}}!</span>
-                    <a href="/moj_racun/">Moj račun</a>
+
+                    % if je_admin:
+                        <a href="/admin/">Moj račun</a>
+                    
+                    % elif je_trener:
+                        <a href="/trener/">Moj račun</a>
+                    
+                    % else:
+                        <a href="/moj_racun/">Moj račun</a>
+
+                    % end
                     <a href="/odjava/">Odjava</a>
+                
                 % else:
                     <a href="/prijava/">Prijava</a>
                     <a href="/registracija/">Registracija</a>
