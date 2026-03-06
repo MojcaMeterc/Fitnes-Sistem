@@ -203,6 +203,12 @@ body{
     font-size: 14px;
     color: #ccc;
 }
+.oznakaT {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: #141414;
+}
 
 /*vnosno polje*/
 .vnos{

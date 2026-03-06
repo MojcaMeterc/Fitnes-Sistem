@@ -22,7 +22,7 @@
             <td>
                 <form action="/admin/izbrisi_trenerja/" method="post">
                     <input type="hidden" name="trener_id" value="{{t['trener_id']}}">
-                    <button type="submit" class="gumb">Izbriši</button>
+                    <button type="submit" class="gumb">ODSTRANI</button>
                 </form>
             </td>
         </tr>
@@ -36,27 +36,27 @@
     <h2>Dodaj trenerja</h2>
     <form action="/admin/dodaj_trenerja/" method="post" class="prijava-forma">
         <div class="skupina">
-            <label class="oznaka">Ime</label>
+            <label class="oznakaT">Ime</label>
             <input type="text" name="ime" class="vnos" required>
         </div>
 
         <div class="skupina">
-            <label class="oznaka">Priimek</label>
+            <label class="oznakaT">Priimek</label>
             <input type="text" name="priimek" class="vnos" required>
         </div>
 
         <div class="skupina">
-            <label class="oznaka">Email</label>
+            <label class="oznakaT">Email</label>
             <input type="email" name="email" class="vnos" required>
         </div>
 
         <div class="skupina">
-            <label class="oznaka">Specializacija</label>
+            <label class="oznakaT">Specializacija</label>
             <input type="text" name="specializacija" class="vnos" required>
         </div>
 
         <div class="skupina">
-            <label class="oznaka">Geslo</label>
+            <label class="oznakaT">Geslo</label>
             <input type="password" name="geslo" class="vnos" required>
         </div>
 
