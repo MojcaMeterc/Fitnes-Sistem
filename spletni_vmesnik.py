@@ -37,9 +37,9 @@ def get_nav():
         return admin_ime, False, True
     trener_ime = bottle.request.get_cookie('trener_ime', secret = SKRIVNOST)
     if trener_ime:
-        return trener_ime, True
+        return trener_ime, True, False
     ime = bottle.request.get_cookie('uporabnik', secret = SKRIVNOST)
-    return ime, False
+    return ime, False, False
 
 def prijavi_uporabnika(uporabnik):
     bottle.response.set_cookie('uporabnik', uporabnik.ime, path='/', secret=SKRIVNOST)
@@ -101,7 +101,7 @@ def odjava():
 def prijava_admin(admin):
     bottle.response.set_cookie('admin_ime', admin.ime, path='/', secret = SKRIVNOST)
     bottle.response.set_cookie('aid', str(admin.admin_id), path='/', secret=SKRIVNOST)
-    bottle.rederctt('/admin/')
+    bottle.redirect('/admin/')
 
 def zahtevaj_admin():
     aid = bottle.request.get_cookie('aid', secret = SKRIVNOST)
@@ -158,10 +158,10 @@ def admin_dodaj_trenerja():
     specializacija = bottle.request.forms.get('specializacija')
     geslo = bottle.request.forms.get('geslo')
 
-    admin.dodaj_trenjera(ime, priimek, email, specializacija, geslo)
+    admin.dodaj_trenerja(ime, priimek, email, specializacija, geslo)
     bottle.redirect('/admin/trenerji/')
 
-@bottle.post('/admin/izbris_trenerja/')
+@bottle.post('/admin/izbrisi_trenerja/')
 def admin_izbirs_trenerja():
     aid = zahtevaj_admin()
     admin = Admin.pridobi_po_id(conn, aid)
@@ -174,8 +174,9 @@ def admin_izbirs_trenerja():
 
 @bottle.get('/prijava/')
 def prijava():
-    ime, je_trener =get_nav()
-    return bottle.template('prijava.html', ime=ime, je_trener=je_trener, napaka=None, random=random.randint(1, 10000))
+    ime, je_trener, je_admin =get_nav()
+    return bottle.template('prijava.html', ime=ime, je_trener=je_trener, je_admin=je_admin,
+                           napaka=None, random=random.randint(1, 10000))
 
 @bottle.post('/prijava/')
 def prijava_post():
@@ -208,8 +209,8 @@ def prijava_trener_post():
     
 @bottle.get('/registracija/')
 def registracija():
-    ime, je_trener =get_nav()
-    return bottle.template('registracija.html', ime=ime, je_trener=je_trener, napaka=None, random=random.randint(1, 10000))
+    ime, je_trener, je_admin =get_nav()
+    return bottle.template('registracija.html', ime=ime, je_admin=je_admin, je_trener=je_trener, napaka=None, random=random.randint(1, 10000))
 
 @bottle.post('/registracija/')
 def registracija_post():
@@ -226,8 +227,8 @@ def registracija_post():
         prijavi_uporabnika(uporabnik)
 
     except sqlite3.IntegrityError:
-        ime, je_trener = get_nav()
-        return bottle.template('registracija.html', ime=ime, je_trener=je_trener, napaka = 'Email ali telefonska številka že obstaja', random=random.randint(1, 10000))
+        ime, je_trener, je_admin = get_nav()
+        return bottle.template('registracija.html', ime=ime, je_admin=je_admin, je_trener=je_trener, napaka = 'Email ali telefonska številka že obstaja', random=random.randint(1, 10000))
 
 #----------------
 # TRENER 
@@ -254,7 +255,7 @@ def trener_termini():
     trener = Trener.pridobi_po_id(conn, tid)
     termini = trener.moji_termini()
     return bottle.template('trener_termini.html', ime=trener_ime, je_trener = True,
-                            termini=termini, random=random.randint(1, 10000))
+                            je_admin=False, termini=termini, random=random.randint(1, 10000))
 
 @bottle.get('/trener/prosti_termini/')
 def trener_prosti_termini():
@@ -262,7 +263,7 @@ def trener_prosti_termini():
     trener_ime = bottle.request.get_cookie('trener_ime', secret = SKRIVNOST)
     termini = Termin.termini_brez_trenerja(conn)
     return bottle.template('trener_prosti_termini.html', ime=trener_ime, je_trener=True,
-                           termini=termini, random=random.randint(1, 10000))
+                           je_admin=False, termini=termini, random=random.randint(1, 10000))
 
 @bottle.post('/trener/izberi_termin/')
 def trener_izberi_termin():
@@ -299,7 +300,8 @@ def moje_karte():
 
     karte = [] # ZAČASNO DOKLER NE POVEŽEVA Z BAZO
 
-    return bottle.template('moje_karte.html', ime=ime, karte=karte, je_trener=False, random=random.randint(1, 10000))
+    return bottle.template('moje_karte.html', ime=ime, karte=karte,
+                           je_admin=False, je_trener=False, random=random.randint(1, 10000))
 
 @bottle.get('/prosti_termini/')
 def prosti_termini():
@@ -308,7 +310,7 @@ def prosti_termini():
 
     termini = Termin.prosti_term_trener(conn, uid) 
 
-    return bottle.template('prosti_termini.html', ime=ime, je_trener = False, 
+    return bottle.template('prosti_termini.html', ime=ime, je_trener = False, je_admin=False, 
                            termini=termini,random=random.randint(1,1000))
 
 @bottle.post('/rezerviraj/')
@@ -333,7 +335,7 @@ def moje_rezervacije():
     ime = uporabnik.ime
 
     return bottle.template('moje_rezervacije.html', ime=ime, rezervacije=rezervacije, 
-                           je_trener=False, random=random.randint(1, 10000))
+                           je_trener=False, je_admin=False, random=random.randint(1, 10000))
 
     
 # ZAGON APLIKACIJE

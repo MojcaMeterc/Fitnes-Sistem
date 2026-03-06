@@ -308,7 +308,7 @@ class Admin:
             "SELECT * FROM trener ORDER BY priimek"
         ).fetchall()
     
-    def dodaj_trenjera(self, ime, priimek, email, specializacija, geslo):
+    def dodaj_trenerja(self, ime, priimek, email, specializacija, geslo):
         """Dodajanje trenerja kot admin"""
         geslo_hash = geslo_hash()
         self.conn.execute("""
