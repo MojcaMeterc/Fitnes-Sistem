@@ -277,6 +277,54 @@ class Trener:
             """
         return conn.execute(sql)
     
+class Admin:
+    def __init__(self, conn, ime, email, admin_id = None):
+        self.conn = conn
+        self.admin_id = admin_id
+        self.ime = ime
+        self.email = email
+    
+    @staticmethod
+    def prijava(conn, email, geslo):
+        geslo_hash = hash_geslo(geslo)
+        vrstica = conn.execute("""
+                SELECT admin_id, ime, email FROM admin
+                WHERE email = ? AND geslo = ?
+                """, (email, geslo_hash)).fetchone()
+        if vrstica:
+            return Admin(conn, vrstica['ime'], vrstica['email'], vrstica['admin_id'])
+        return None
+    
+    @staticmethod
+    def pridobi_po_id(conn, admin_id):
+        vrstica = conn.execute(
+            """SELECT * FROM admin WHERE admin_id = ?""", (admin_id)).fetchone()
+        if vrstica:
+            return Admin(conn, vrstica['ime'], vrstica['email'], vrstica['admin_id'])
+        return None
+    
+    def vsi_trenerji(self):
+        return self.conn.exectue(
+            "SELECT * FROM trener ORDER BY priimek"
+        ).fetchall()
+    
+    def dodaj_trenjera(self, ime, priimek, email, specializacija, geslo):
+        """Dodajanje trenerja kot admin"""
+        geslo_hash = geslo_hash()
+        self.conn.execute("""
+            INSERT INTO trener (ime, priimek, email, specializacija, geslo_hash)
+            VALUE(?, ?, ?, ?, ?)
+            """, (ime, priimek, email, specializacija, geslo_hash))
+        self.conn.commit()
+
+    def izbirsi_trenerja(self, trener_id):
+        """Brisanje trenerja preko admina"""
+        self.conn.execute(
+            "DELETE FROM trener WHERE trener_id = ?", (trener_id))
+        self.conn.commit()
+    
+
+
 
 class Termin:
     """
@@ -364,7 +412,7 @@ class Termin:
                     dvorane.naziv AS dvorana
             FROM termini
             LEFT JOIN rezervacijaT ON termini.termin_id = rezervacijaT.termin_id
-            LEFT JOIN dvorane ON termini.dovrana_id = dvorane.dvorana_id
+            LEFT JOIN dvorane ON termini.dvorana_id = dvorane.dvorana_id
             WHERE rezervacijaT.termini_id IS NULL
             AND termini.datum >= DATE('now')
             ORDER BY termin.datum, termini.ura_pricetka"""

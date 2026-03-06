@@ -86,9 +86,9 @@ class Admin(Tabela):
     def ustvari(self):
         self.conn.execute("""
             CREATE TABLE admin(
-                admin_id INTEGER PRIMARY KEY AUTOICREMENT,
+                admin_id INTEGER PRIMARY KEY AUTOINCREMENT,
                 ime TEXT NOT NULL,
-                email TEXT NOT NUL UNIQUE,
+                email TEXT NOT NULL UNIQUE,
                 geslo_hash TEXT NOT NULL)
             """)
 

@@ -2,7 +2,7 @@ import sqlite3
 import random
 import json
 import bottle
-from model import Uporabnik, Trener, Karta, Termin
+from model import Uporabnik, Trener, Karta, Termin, Admin
 
 NASTAVITVE = 'nastavitve.json'
 
@@ -32,6 +32,9 @@ def static(filename):
 #-------------------
 
 def get_nav():
+    admin_ime = bottle.request.get_cookie('admin_ime', secret = SKRIVNOST)
+    if admin_ime:
+        return admin_ime, False, True
     trener_ime = bottle.request.get_cookie('trener_ime', secret = SKRIVNOST)
     if trener_ime:
         return trener_ime, True
@@ -68,14 +71,14 @@ def zahtevaj_trenerja():
 
 @bottle.get('/')
 def zacetna_stran():
-    ime, je_trener = get_nav()
-    return bottle.template('spletna_stran.html', ime = ime, je_trener = je_trener,
+    ime, je_trener, je_admin = get_nav()
+    return bottle.template('spletna_stran.html', ime = ime, je_trener = je_trener, je_admin=je_admin,
                            random = random.randint(1, 1000))
 
 @bottle.get('/ponudba/')
 def ponudba():
-    ime, je_trener = get_nav()
-    return bottle.template('ponudba.html', ime = ime, je_trener = je_trener,
+    ime, je_trener, je_admin = get_nav()
+    return bottle.template('ponudba.html', ime = ime, je_trener = je_trener, je_admin=je_admin,
                            random = random.randint(1, 1000))
 
 #----------
@@ -88,9 +91,83 @@ def odjava():
     bottle.response.delete_cookie('uid', path='/')
     bottle.response.delete_cookie('trener_ime', path="/")
     bottle.response.delete_cookie('tid', path='/')
+    bottle.response.delete_cookie('admin_ime', path="/")
+    bottle.response.delete_cookie('aid', path='/')
     bottle.redirect('/')
 
+#--------------
+# ADMIN
+#--------------
+def prijava_admin(admin):
+    bottle.response.set_cookie('admin_ime', admin.ime, path='/', secret = SKRIVNOST)
+    bottle.response.set_cookie('aid', str(admin.admin_id), path='/', secret=SKRIVNOST)
+    bottle.rederctt('/admin/')
 
+def zahtevaj_admin():
+    aid = bottle.request.get_cookie('aid', secret = SKRIVNOST)
+    if not aid:
+        bottle.redirect('/prijava/')
+    return int(aid)
+
+@bottle.post('/prijava_admin/')
+def prijava_admin_post():
+    email = bottle.request.forms.get('email')
+    geslo = bottle.request.forms.get('geslo')
+    admin = Admin.prijava(conn, email, geslo)
+
+    if admin:
+        prijava_admin(admin)
+    else:
+        ime, je_trener, je_admin = get_nav()
+        return bottle.template('prijava.html', ime=ime, je_trener=je_trener, 
+                               je_admin=je_admin, napaka = 'Napčen mail ali geslo', random=random.randint(1, 10000))
+
+@bottle.get('/admin/')
+def admin_zacetna():
+    aid = zahtevaj_admin()
+    admin = Admin.pridobi_po_id(conn, aid)
+    if not admin:
+        bottle.redirect('/prijava/')
+    return bottle.template('admin_zacetna.html',
+                           ime=admin.ime,
+                           email=admin.email,
+                           je_trener=False,
+                           je_admin=True,
+                           random=random.randint(1, 10000))
+
+@bottle.get('/admin/trenerji/')
+def admin_trenerji():
+    aid = zahtevaj_admin()
+    admin = Admin.pridobi_po_id(conn, aid)
+    trenerji = admin.vsi_trenerji()
+    return bottle.template('admin_trenerji.html',
+                           ime=admin.ime,
+                           trenerji=trenerji,
+                           je_trener=False,
+                           je_admin=True,
+                           random=random.randint(1, 10000))
+
+@bottle.post('/admin/dodaj_trenerja/')
+def admin_dodaj_trenerja():
+    aid = zahtevaj_admin()
+    admin = Admin.pridobi_po_id(conn, aid)
+
+    ime = bottle.request.forms.get('ime')
+    priimek = bottle.request.forms.get('priimek')
+    email = bottle.request.forms.get('email')
+    specializacija = bottle.request.forms.get('specializacija')
+    geslo = bottle.request.forms.get('geslo')
+
+    admin.dodaj_trenjera(ime, priimek, email, specializacija, geslo)
+    bottle.redirect('/admin/trenerji/')
+
+@bottle.post('/admin/izbris_trenerja/')
+def admin_izbirs_trenerja():
+    aid = zahtevaj_admin()
+    admin = Admin.pridobi_po_id(conn, aid)
+    trener_id = bottle.request.forms.get('trener_id')
+    admin.izbirsi_trenerja(trener_id)
+    bottle.redirect('/admin/trenerji/')
 #----------------------------------
 # PRIJAVA / REGISTRACIJA 
 #----------------------------------
@@ -109,8 +186,8 @@ def prijava_post():
     if uporabnik:
         prijavi_uporabnika(uporabnik)
     else:
-        ime, je_trener = get_nav()
-        return bottle.template('prijava.html', ime=ime, je_trener=je_trener, napaka = 'Napčen mail ali geslo', random=random.randint(1, 10000))
+        ime, je_trener, je_admin = get_nav()
+        return bottle.template('prijava.html', ime=ime, je_trener=je_trener, je_admin=je_admin, napaka = 'Napčen mail ali geslo', random=random.randint(1, 10000))
 
 @bottle.get('/prijava_trener/')
 def prijava_trener():
@@ -124,8 +201,8 @@ def prijava_trener_post():
     if trener:
         prijavi_trenerja(trener)
     else:
-        ime, je_trener = get_nav()
-        return bottle.template('prijava.html', ime = ime, je_trener = je_trener,
+        ime, je_trener, je_admin = get_nav()
+        return bottle.template('prijava.html', ime = ime, je_trener = je_trener, je_admin=je_admin,
                                napaka = 'Napačen e-mail ali geslo',
                                random = random.randint(1, 1000))
     
@@ -167,6 +244,7 @@ def trener_zacetna():
                            email = trener.email,
                            specializacija = trener.special,
                            je_trener = True,
+                           je_admin=False,
                            random = random.randint(1, 10000))
 
 @bottle.get('/trener/termini/')
@@ -195,7 +273,7 @@ def trener_izberi_termin():
     bottle.redirect('/trener/termini/')
 
 #------------
-# UPROABNIK 
+# UPORABNIK 
 #------------
 
 @bottle.get('/moj_racun/')
@@ -210,6 +288,7 @@ def moj_racun():
                            email=uporabnik.email,
                            telefon=uporabnik.telefon,
                            je_trener = False,
+                           je_admin=False,
                            random=random.randint(1,10000) )
 
 
