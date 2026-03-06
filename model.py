@@ -354,6 +354,22 @@ class Termin:
             """
         return conn.execute(sql, (uporabnik_id,)).fetchall()
     
+    @staticmethod
+    def termini_brez_trenerja(conn):
+        sql = """
+            SELECT termini.termin_id,
+                    termini.datum,
+                    termini.ura_pricetka,
+                    termini.ura_konca,
+                    dvorane.naziv AS dvorana
+            FROM termini
+            LEFT JOIN rezervacijaT ON termini.termin_id = rezervacijaT.termin_id
+            LEFT JOIN dvorane ON termini.dovrana_id = dvorane.dvorana_id
+            WHERE rezervacijaT.termini_id IS NULL
+            AND termini.datum >= DATE('now')
+            ORDER BY termin.datum, termini.ura_pricetka"""
+        return conn.execute(sql).fetchall()
+    
     def je_prostor(self):
         '''kapaciteta dvorane
         '''

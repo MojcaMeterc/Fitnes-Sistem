@@ -86,7 +86,7 @@ def ponudba():
 def odjava():
     bottle.response.delete_cookie('uporabnik', path="/")
     bottle.response.delete_cookie('uid', path='/')
-    bottle.response.delete_cookie('trener', path="/")
+    bottle.response.delete_cookie('trener_ime', path="/")
     bottle.response.delete_cookie('tid', path='/')
     bottle.redirect('/')
 
