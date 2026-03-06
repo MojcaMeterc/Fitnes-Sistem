@@ -87,12 +87,12 @@ def ponudba():
 
 @bottle.get('/odjava/')
 def odjava():
-    bottle.response.delete_cookie('uporabnik', path="/")
-    bottle.response.delete_cookie('uid', path='/')
-    bottle.response.delete_cookie('trener_ime', path="/")
-    bottle.response.delete_cookie('tid', path='/')
-    bottle.response.delete_cookie('admin_ime', path="/")
-    bottle.response.delete_cookie('aid', path='/')
+    bottle.response.delete_cookie('uporabnik', path="/", secret = SKRIVNOST)
+    bottle.response.delete_cookie('uid', path='/', secret = SKRIVNOST)
+    bottle.response.delete_cookie('trener_ime', path="/", secret = SKRIVNOST)
+    bottle.response.delete_cookie('tid', path='/', secret = SKRIVNOST)
+    bottle.response.delete_cookie('admin_ime', path="/", secret = SKRIVNOST)
+    bottle.response.delete_cookie('aid', path='/', secret = SKRIVNOST)
     bottle.redirect('/')
 
 #--------------
