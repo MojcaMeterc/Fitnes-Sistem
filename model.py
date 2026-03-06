@@ -289,7 +289,7 @@ class Admin:
         geslo_hash = hash_geslo(geslo)
         vrstica = conn.execute("""
                 SELECT admin_id, ime, email FROM admin
-                WHERE email = ? AND geslo = ?
+                WHERE email = ? AND geslo_hash = ?
                 """, (email, geslo_hash)).fetchone()
         if vrstica:
             return Admin(conn, vrstica['ime'], vrstica['email'], vrstica['admin_id'])
@@ -298,7 +298,7 @@ class Admin:
     @staticmethod
     def pridobi_po_id(conn, admin_id):
         vrstica = conn.execute(
-            """SELECT * FROM admin WHERE admin_id = ?""", (admin_id)).fetchone()
+            """SELECT * FROM admin WHERE admin_id = ?""", (admin_id,)).fetchone()
         if vrstica:
             return Admin(conn, vrstica['ime'], vrstica['email'], vrstica['admin_id'])
         return None
@@ -310,21 +310,19 @@ class Admin:
     
     def dodaj_trenerja(self, ime, priimek, email, specializacija, geslo):
         """Dodajanje trenerja kot admin"""
-        geslo_hash = geslo_hash()
+        geslo_hash = hash_geslo()
         self.conn.execute("""
             INSERT INTO trener (ime, priimek, email, specializacija, geslo_hash)
-            VALUE(?, ?, ?, ?, ?)
+            VALUES(?, ?, ?, ?, ?)
             """, (ime, priimek, email, specializacija, geslo_hash))
         self.conn.commit()
 
     def izbirsi_trenerja(self, trener_id):
         """Brisanje trenerja preko admina"""
         self.conn.execute(
-            "DELETE FROM trener WHERE trener_id = ?", (trener_id))
+            "DELETE FROM trener WHERE trener_id = ?", (trener_id,))
         self.conn.commit()
     
-
-
 
 class Termin:
     """
@@ -413,9 +411,9 @@ class Termin:
             FROM termini
             LEFT JOIN rezervacijaT ON termini.termin_id = rezervacijaT.termin_id
             LEFT JOIN dvorane ON termini.dvorana_id = dvorane.dvorana_id
-            WHERE rezervacijaT.termini_id IS NULL
+            WHERE rezervacijaT.termin_id IS NULL
             AND termini.datum >= DATE('now')
-            ORDER BY termin.datum, termini.ura_pricetka"""
+            ORDER BY termini.datum, termini.ura_pricetka"""
         return conn.execute(sql).fetchall()
     
     def je_prostor(self):

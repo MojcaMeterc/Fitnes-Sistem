@@ -109,19 +109,6 @@ def zahtevaj_admin():
         bottle.redirect('/prijava/')
     return int(aid)
 
-@bottle.post('/prijava_admin/')
-def prijava_admin_post():
-    email = bottle.request.forms.get('email')
-    geslo = bottle.request.forms.get('geslo')
-    admin = Admin.prijava(conn, email, geslo)
-
-    if admin:
-        prijava_admin(admin)
-    else:
-        ime, je_trener, je_admin = get_nav()
-        return bottle.template('prijava.html', ime=ime, je_trener=je_trener, 
-                               je_admin=je_admin, napaka = 'Napčen mail ali geslo', random=random.randint(1, 10000))
-
 @bottle.get('/admin/')
 def admin_zacetna():
     aid = zahtevaj_admin()
@@ -182,30 +169,26 @@ def prijava():
 def prijava_post():
     email = bottle.request.forms.get('email')
     geslo = bottle.request.forms.get('geslo')
-    uporabnik = Uporabnik.prijava(conn, email, geslo)
 
-    if uporabnik:
-        prijavi_uporabnika(uporabnik)
-    else:
-        ime, je_trener, je_admin = get_nav()
-        return bottle.template('prijava.html', ime=ime, je_trener=je_trener, je_admin=je_admin, napaka = 'Napčen mail ali geslo', random=random.randint(1, 10000))
-
-@bottle.get('/prijava_trener/')
-def prijava_trener():
-    bottle.redirect('/prijava/')
-
-@bottle.post('/prijava_trener/')
-def prijava_trener_post():
-    email = bottle.request.forms.get('email')
-    geslo = bottle.request.forms.get('geslo')
+    admin = Admin.prijava(conn, email, geslo)
+    if admin:
+        prijava_admin(admin)
+        return
+    
     trener = Trener.prijava(conn, email, geslo)
     if trener:
         prijavi_trenerja(trener)
-    else:
-        ime, je_trener, je_admin = get_nav()
-        return bottle.template('prijava.html', ime = ime, je_trener = je_trener, je_admin=je_admin,
-                               napaka = 'Napačen e-mail ali geslo',
-                               random = random.randint(1, 1000))
+        return
+
+    uporabnik = Uporabnik.prijava(conn, email, geslo)
+    if uporabnik:
+        prijavi_uporabnika(uporabnik)
+        return
+    
+    ime, je_trener, je_admin = get_nav()
+    return bottle.template('prijava.html', ime=ime, je_trener=je_trener, 
+                           je_admin=je_admin, napaka = 'Napčen mail ali geslo', random=random.randint(1, 10000))
+
     
 @bottle.get('/registracija/')
 def registracija():

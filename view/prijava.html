@@ -12,16 +12,6 @@
     <form method="post" action="/prijava/" class="prijava-forma">
 
         <div class="skupina">
-            <label class="oznaka">Prijava kot</label>
-            <select name="vloga" class="vnos" onchange=
-                "this.form.action = this.value === 'trener' ? '/prijava_trener/' : '/prijava/' ">
-            
-                <option value="uporabnik">uporabnik</option>
-                <option value="trener">Trener</option>
-            </select>
-        </div>
-
-        <div class="skupina">
             <label class="oznaka">Email</label>
             <input type="email" name="email" class="vnos" required>
         </div>
