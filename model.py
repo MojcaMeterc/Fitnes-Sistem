@@ -414,7 +414,7 @@ class Karta:
         cur = self.conn.execute("""
             INSERT INTO karta (naziv, trajanje_dni, cena)
                 VALUES (?, ?, ?)
-            """, (self.naziv, self.trajanje_dni, self.cena))
+            """, (self.naziv, self.trajanje, self.cena))
         
         self.karta_id = cur.lastrowid
         self.conn.commit()

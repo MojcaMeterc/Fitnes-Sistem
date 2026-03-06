@@ -80,6 +80,19 @@ class Trener(Tabela):
             );
         """)
 
+class Admin(Tabela):
+    ime = 'admin'
+    podatki = 'podatki/admin.csv'
+
+    def ustvari(self):
+        self.conn.execute("""
+            CREATE TABLE admin(
+                admin_id INTEGER PRIMARY KEY AUTOICREMENT,
+                ime TEXT NOT NULL,
+                email TEXT NOT NUL UNIQUE,
+                geslo_hash TEXT NOT NULL)
+            """)
+
 class Dvorane(Tabela):
     ime = 'dvorane'
     podatki = 'podatki/dvorane.csv'
@@ -173,6 +186,7 @@ def pripravi_tabele(conn):
     return[
         Uporabniki(conn),
         Trener(conn),
+        Admin(conn),
         Dvorane(conn),
         Karta(conn),
         Termin(conn),
