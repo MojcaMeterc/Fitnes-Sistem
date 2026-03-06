@@ -2,7 +2,6 @@ import sqlite3
 import hashlib
 from datetime import datetime, timedelta
 
-print("model.py")
 def hash_geslo(geslo):
     return hashlib.sha256(geslo.encode()).hexdigest()
 
@@ -254,7 +253,7 @@ class Trener:
 
 
     @staticmethod
-    def vsi_trenerji(conn):
+    def vsi_tren(conn):
         '''metoda za branje podatkov
         '''
         cur = conn.execute("""
@@ -279,49 +278,47 @@ class Trener:
         return conn.execute(sql)
     
 class Admin:
-    def __init__(self, conn, ime, email, admin_id = None):
+    def __init__(self, conn, ime, email, admin_id=None):
         self.conn = conn
         self.admin_id = admin_id
         self.ime = ime
         self.email = email
-    
+
     @staticmethod
     def prijava(conn, email, geslo):
         geslo_hash = hash_geslo(geslo)
-        vrstica = conn.execute("""
-                SELECT admin_id, ime, email FROM admin
-                WHERE email = ? AND geslo_hash = ?
-                """, (email, geslo_hash)).fetchone()
+        vrstica = conn.execute(
+            "SELECT admin_id, ime, email FROM admin WHERE email = ? AND geslo_hash = ?",
+            (email, geslo_hash)).fetchone()
         if vrstica:
             return Admin(conn, vrstica['ime'], vrstica['email'], vrstica['admin_id'])
         return None
-    
+
     @staticmethod
     def pridobi_po_id(conn, admin_id):
         vrstica = conn.execute(
-            """SELECT * FROM admin WHERE admin_id = ?""", (admin_id,)).fetchone()
+            "SELECT * FROM admin WHERE admin_id = ?",
+            (admin_id,)).fetchone()
         if vrstica:
             return Admin(conn, vrstica['ime'], vrstica['email'], vrstica['admin_id'])
         return None
-    
+
     def vsi_trenerji(self):
         return self.conn.execute(
             "SELECT * FROM trener ORDER BY priimek"
         ).fetchall()
-    
+
     def dodaj_trenerja(self, ime, priimek, email, specializacija, geslo):
-        """Dodajanje trenerja kot admin"""
         geslo_hash = hash_geslo(geslo)
-        self.conn.execute("""
-            INSERT INTO trener (ime, priimek, email, specializacija, geslo_hash)
-            VALUES(?, ?, ?, ?, ?)
-            """, (ime, priimek, email, specializacija, geslo_hash))
+        self.conn.execute(
+            "INSERT INTO trener (ime, priimek, email, specializacija, geslo_hash) VALUES (?, ?, ?, ?, ?)",
+            (ime, priimek, email, specializacija, geslo_hash))
         self.conn.commit()
 
-    def izbirsi_trenerja(self, trener_id):
-        """Brisanje trenerja preko admina"""
+    def izbrisi_trenerja(self, trener_id):
         self.conn.execute(
-            "DELETE FROM trener WHERE trener_id = ?", (trener_id,))
+            "DELETE FROM trener WHERE trener_id = ?",
+            (trener_id,))
         self.conn.commit()
     
 

@@ -2,6 +2,9 @@ import sqlite3
 import random
 import json
 import bottle
+import importlib
+import model
+importlib.reload(model)
 from model import Uporabnik, Trener, Karta, Termin, Admin
 
 NASTAVITVE = 'nastavitve.json'
@@ -125,7 +128,10 @@ def admin_zacetna():
 @bottle.get('/admin/trenerji/')
 def admin_trenerji():
     aid = zahtevaj_admin()
+    print("AID:", aid)
     admin = Admin.pridobi_po_id(conn, aid)
+    print(admin)
+    print(type(admin))
     trenerji = admin.vsi_trenerji()
     return bottle.template('admin_trenerji.html',
                            ime=admin.ime,
@@ -153,7 +159,7 @@ def admin_izbirs_trenerja():
     aid = zahtevaj_admin()
     admin = Admin.pridobi_po_id(conn, aid)
     trener_id = bottle.request.forms.get('trener_id')
-    admin.izbirsi_trenerja(trener_id)
+    admin.izbrisi_trenerja(trener_id)
     bottle.redirect('/admin/trenerji/')
 #----------------------------------
 # PRIJAVA / REGISTRACIJA 
