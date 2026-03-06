@@ -82,7 +82,6 @@ class Trener(Tabela):
 
 class Admin(Tabela):
     ime = 'admin'
-    podatki = 'podatki/admin.csv'
 
     def ustvari(self):
         self.conn.execute("""
