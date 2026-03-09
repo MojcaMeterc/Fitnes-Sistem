@@ -272,7 +272,7 @@ class Trener:
                 SELECT trener.ime, trener.priimek, COUNT(rezervacijaU.termin_id)
                 FROM trener
                 LEFT JOIN rezervacijaT ON trener.trener_id = rezervacijaT.trener_id
-                LEFT JOIN rezervacijaU ON rezervacijaT.termin = rezervacijaU.termin_id
+                LEFT JOIN rezervacijaU ON rezervacijaT.termin_id = rezervacijaU.termin_id
                 GROUP BY trener.trener_id
             """
         return conn.execute(sql)
