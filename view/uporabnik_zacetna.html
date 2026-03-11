@@ -1,24 +1,69 @@
 % rebase('osnovna.html', title='Moj račun', random=random)
 
-<div class="racun-pri">
-    <div class="racun-info">
-        <h3>Moje inforamcije</h3>
+<div class="racun-mreza">
 
-        <p><strong>Email:</strong> {{email}}</p>
-        <p><strong>Telefon:</strong> {{telefon}}</p>
-    </div>
+    <div class="racun-zgoraj">
+        <div class="racun-kartica">
+            <h3>Moje inforamcije</h3>
+            <p><strong>Email:</strong> {{email}}</p>
+            <p><strong>Telefon:</strong> {{telefon}}</p>
+        </div>
 
 
-    <div class="racun-kartica">
-        <h2>Pregled</h2>
-        <p class="pozdrav">Pozdravljeni <strong>{{ime}}</strong></p>
-
-        <div class="racun-gumbi">
-            <a href="/moje_karte/" class="racun-btn">Moje karte</a>
-            <a href="/prosti_termini/" class="racun-btn">Prosti termini</a>
-            <a href="/moje_rezervacije/" class="racun-btn">Moje rezervacije</a>
+        <div class="racun-kartica">
+            <h2>Pregled</h2>
+            <p class="pozdrav">Pozdravljeni <strong>{{ime}}</strong></p>
+            <div class="racun-gumbi">
+                <a href="/prosti_termini/" class="racun-btn">Prosti termini</a>
+            </div>
         </div>
     </div>
 
+    <div class="racun-sekcija">
+        <h3>Moje karte</h3>
+        % if karte:
+            <table class="tabela">
+                <thead><tr><th>Naziv</th><th>Datum nakupa</th><th>Veljavna še</th></tr></thead>
+                <tbody>
+                    % for karta in karte:
+                    <tr>
+                        <td>{{karta[0]}}</td>
+                        <td>{{karta[1]}}</td>
+                        <td>{{karta[2]}}</td></tr>
+                    % end
+                </tbody>
+            </table>
+        % else:
+            <p>Nimate veljavne karte.</p>
+        % end
+        <a href="/ponudba/" class="racun-btn">Kupi / podaljšaj karto</a>
+    </div>
 
+    <div class="racun-sekcija">
+        <h3>Moje rezervacije</h3>
+        % if rezervacije:
+            <table class="tabela">
+                <thead>
+                    <tr>
+                        <th>Datum</th>
+                        <th>Začetek</th>
+                        <th>Konec</th>
+                        <th>Vrsta vadbe</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    % for r in rezervacije:
+                    <tr>
+                        <td>{{r['datum']}}</td>
+                        <td>{{r['ura_pricetka']}}</td>
+                        <td>{{r['ura_konca']}}</td>
+                        <td>{{r['dvorana']}}</td></tr>
+                    % end
+                </tbody>
+            </table>
+        % else:
+            <p>Nimate rezerviranega nobenega termina.</p>
+        % end
+
+    </div>
 </div>

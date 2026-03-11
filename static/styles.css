@@ -253,6 +253,21 @@ header a{
 }
 
 /*RAČUN*/
+.racun-mreza{
+    display: grid;
+    grid-template: 1fr 1fr;
+    gap: 20px;
+    padding: 20px;
+}
+
+.racun-zgoraj{
+    display: flex;
+    gap: 20px;
+}
+
+.racun-zgoraj > div {
+    flex: 1;
+}
 
 .racun{
     display: flex;
@@ -452,6 +467,12 @@ header a{
     text-align: center;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
     transition: transform 0.3s, box-shadow 0.3s;
+    display: flex;
+    flex-direction: column;
+}
+
+.kartaP .racun-btn{
+    margin-top: auto;
 }
 
 .kartaP:hover{

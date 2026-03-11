@@ -12,33 +12,66 @@
                 <h3>Dnevna karta</h3>
                 <p>1 dan</p>
                 <p class="cena">5 €</p>
+                % if not uid:
+                    <a href="/registracija/" class="racun-btn">Kupi</a>
+                % else:
+                    <a href="/kupi/1/" class="racun-btn">Kupi</a>
+                % end
             </div>
 
             <div class="kartaP">
                 <h3>Mesečna karta</h3>
                 <p>30 dni</p>
                 <p class="cena">35 €</p>
+                % if not uid:
+                    <a href="/registracija/" class="racun-btn">Kupi</a>
+                % elif dni_do_izteka is None or dni_do_izteka <= 10:
+                    <a href="/kupi/2/" class="racun-btn">Kupi</a>
+                % else:
+                    <a href="#" class="racun-btn">podaljšaj (še {{dni_do_izteka}} dni</a>
+                % end
             </div>
 
             <div class="kartaP">
                 <h3>Letna karta</h3>
                 <p>365 dni</p>
                 <p class="cena">300 €</p>
+                % if not uid:
+                    <a href="/registracija/" class="racun-btn">Kupi</a>
+                % elif dni_do_izteka is None or dni_do_izteka <= 10:
+                    <a href="/kupi/2/" class="racun-btn">Kupi</a>
+                % else:
+                    <a href="#" class="racun-btn">podaljšaj (še {{dni_do_izteka}} dni</a>
+                % end
             </div>
         </div>
 
         <h2>Posamezne vadbe</h2>
         <h3 class="vadba-naslov">Pilates</h3>
             <div class="grid">
+
                 <div class="kartaP">
                     <h3>Pilates 1x</h3>
                     <p class="cena">8 €</p>
+                    % if not uid:
+                        <a href="/registracija/" class="racun-btn">Kupi</a>
+                    % else:
+                        <a href="/kupi/5/" class="racun-btn">Kupi</a>
+                    % end
                 </div>
+
 
                 <div class="kartaP">
                     <h3>Pilates mesečna</h3>
                     <p>30 dni</p>
                     <p class="cena">45 €</p>
+                    % if not uid:
+                        <a href="/registracija/" class="racun-btn">Kupi</a>
+                    % elif dni_do_izteka is None or dni_do_izteka <= 10:
+                        <a href="/kupi/6/" class="racun-btn">Kupi</a>
+                    % else:
+                        <a href="#" class="racun-btn">podaljšaj (še {{dni_do_izteka}} dni</a>
+                    % end
                 </div>
             </div>
         
@@ -47,12 +80,24 @@
             <div class="kartaP">
                 <h3>Joga 1x</h3>
                 <p class="cena">7 €</p>
+                % if not uid:
+                    <a href="/registracija/" class="racun-btn">Kupi</a>
+                % else:
+                    <a href="/kupi/7/" class="racun-btn">Kupi</a>
+                % end
             </div>
         
             <div class="kartaP">
                 <h3>Joga mesečna</h3>
                 <p>30 dni</p>
                 <p class="cena">40 €</p>
+                % if not uid:
+                    <a href="/registracija/" class="racun-btn">Kupi</a>
+                % elif dni_do_izteka is None or dni_do_izteka <= 10:
+                    <a href="/kupi/8/" class="racun-btn">Kupi</a>
+                % else:
+                    <a href="#" class="racun-btn">podaljšaj (še {{dni_do_izteka}} dni</a>
+                % end
             </div>
         </div>
 
@@ -61,14 +106,25 @@
             <div class="kartaP">
                 <h3>Spinning 1x</h3>
                 <p class="cena">9 €</p>
+                % if not uid:
+                    <a href="/registracija/" class="racun-btn">Kupi</a>
+                % else:
+                    <a href="/kupi/9/" class="racun-btn">Kupi</a>
+                % end
             </div>
 
             <div class="kartaP">
                 <h3>Spinning mesečna</h3>
                 <p>30 dni</p>
                 <p class="cena">50 €</p>
+                % if not uid:
+                    <a href="/registracija/" class="racun-btn">Kupi</a>
+                % elif dni_do_izteka is None or dni_do_izteka <= 10:
+                    <a href="/kupi/10/" class="racun-btn">Kupi</a>
+                % else:
+                    <a href="#" class="racun-btn">podaljšaj (še {{dni_do_izteka}} dni</a>
+                % end
             </div>
-
         </div>
 
         <h2>Paketne ponudbe</h2>
@@ -81,6 +137,13 @@
                     <li>Dostop do pilatesa (10 obiskov)</li>
                 </ul>
                 <p class="cena">60 €</p>
+                % if not uid:
+                    <a href="/registracija/" class="racun-btn">Kupi</a>
+                % elif dni_do_izteka is None or dni_do_izteka <= 10:
+                    <a href="/kupi/11/" class="racun-btn">Kupi</a>
+                % else:
+                    <a href="#" class="racun-btn">podaljšaj (še {{dni_do_izteka}} dni</a>
+                % end
             </div>
 
             <div class="kartaP">
@@ -91,6 +154,13 @@
                     <li>Dostop do joge (20 obiskov)</li>
                 </ul>
                 <p class="cena">110€</p>
+                % if not uid:
+                    <a href="/registracija/" class="racun-btn">Kupi</a>
+                % elif dni_do_izteka is None or dni_do_izteka <= 10:
+                    <a href="/kupi/12/" class="racun-btn">Kupi</a>
+                % else:
+                    <a href="#" class="racun-btn">podaljšaj (še {{dni_do_izteka}} dni</a>
+                % end
             </div>
 
             <div class="kartaP">
@@ -101,6 +171,13 @@
                     <li>Dostop do skupinksih vadb (30 obiskov)</li>
                 </ul>
                 <p class="cena">150 €</p>
+                % if not uid:
+                    <a href="/registracija/" class="racun-btn">Kupi</a>
+                % elif dni_do_izteka is None or dni_do_izteka <= 10:
+                    <a href="/kupi/13/" class="racun-btn">Kupi</a>
+                % else:
+                    <a href="#" class="racun-btn">podaljšaj (še {{dni_do_izteka}} dni</a>
+                % end
             </div>
 
             <div class="kartaP">
@@ -111,6 +188,13 @@
                     <li>Osebno trenerstvo (po dogovoru)</li>
                 </ul>
                 <p class="cena">260 €</p>
+                % if not uid:
+                    <a href="/registracija/" class="racun-btn">Kupi</a>
+                % elif dni_do_izteka is None or dni_do_izteka <= 10:
+                    <a href="/kupi/14/" class="racun-btn">Kupi</a>
+                % else:
+                    <a href="#" class="racun-btn">podaljšaj (še {{dni_do_izteka}} dni</a>
+                % end
             </div>
 
             <div class="kartaP">
@@ -122,6 +206,13 @@
                     <li>Prehranski strokovnjak (po dogovoru)</li>
                 </ul>
                 <p class="cena">400 €</p>
+                % if not uid:
+                    <a href="/registracija/" class="racun-btn">Kupi</a>
+                % elif dni_do_izteka is None or dni_do_izteka <= 10:
+                    <a href="/kupi/15/" class="racun-btn">Kupi</a>
+                % else:
+                    <a href="#" class="racun-btn">podaljšaj (še {{dni_do_izteka}} dni</a>
+                % end
             </div>
         </div>
     </div>

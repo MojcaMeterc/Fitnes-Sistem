@@ -1,0 +1,49 @@
+% rebase('osnovna.html', title='Prosti termini', random=random)
+
+<div class="racun-mreza">
+    <div class="racun-sekcija">
+        <form method="get" action="/trener/prosti_termini/">
+            <select name="dvorana_id" onchange="this.form.submit()">
+                <option value="">-- Vse dvorane --</option>
+                % for d in dvorane:
+                <option value="{{d['dvorana_id']}}" {{'selected' if dvorana_filter == str(d['dvorana_id']) else ''}}>{{d['naziv']}}</option>
+                % end
+            </select>
+        </form>
+        <h3>Prosti termini</h3>
+        % if termini:
+            <table class="tabela">
+                <thead>
+                    <tr>
+                        <th>Datum</th>
+                        <th>Začetek</th>
+                        <th>Konec</th>
+                        <th>Dvorana</th>
+                        <th>Rezerviraj</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    % for t in termini:
+                    <tr>
+                        <td>{{t['datum']}}</td>
+                        <td>{{t['ura_pricetka']}}</td>
+                        <td>{{t['ura_konca']}}</td>
+                        <td>{{t['dvorana']}}</td>
+                        <td>
+                            <form method="post" action="/trener/izberi_termin/">
+                                <input type="hidden" name="termin_id" value="{{t['termin_id']}}">
+                                <button type="submit" class="racun-btn">Rezerviraj</button>
+                            </form>
+                        </td>
+                    </tr>
+                    % end
+                </tbody>
+            </table>
+        % else:
+            <p>Trenurno ni prostih terminov.</p>
+        % end
+    </div>
+
+
+
+</div>

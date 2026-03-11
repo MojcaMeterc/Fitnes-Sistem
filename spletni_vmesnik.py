@@ -3,7 +3,7 @@ import random
 import json
 import bottle
 import sys
-from model import Uporabnik, Trener, Karta, Termin, Admin
+from model import Uporabnik, Trener, Karta, Termin, Admin, Dvorana
 
 bottle.BaseRequest.MEMFILE_MAX = 1024*1024
 NASTAVITVE = 'nastavitve.json'
@@ -20,7 +20,7 @@ except FileNotFoundError:
         json.dump({'skrivnost': SKRIVNOST}, f)
 
 # povezava z bazo
-conn = sqlite3.connect("fitnes.db")
+conn = sqlite3.connect("fitnes.db", check_same_thread=False)
 conn.row_factory = sqlite3.Row  #(da lahko dostopamo do imenov stolpcev)
 
 bottle.TEMPLATE_PATH.insert(0, './view')
@@ -80,7 +80,21 @@ def zacetna_stran():
 @bottle.get('/ponudba/')
 def ponudba():
     ime, je_trener, je_admin = get_nav()
-    return bottle.template('ponudba.html', ime = ime, je_trener = je_trener, je_admin=je_admin,
+    uid = bottle.request.get_cookie('uid', secret=SKRIVNOST)
+    dni_do_izteka = None
+    if uid:
+        uporabnik= Uporabnik.pridobi_po_id(conn, int(uid))
+        iztek=uporabnik.iztek_naslednje()
+        if iztek and iztek[0]:
+            from datetime import datetime
+            iztek_datum = datetime.strptime(iztek[0], "%Y-%m-%d").date()
+            dni_do_izteka = (iztek_datum - datetime.now().date()).days
+    return bottle.template('ponudba.html', 
+                           ime = ime,
+                           je_trener = je_trener,
+                           je_admin=je_admin,
+                           uid=uid,
+                           dni_do_izteka=dni_do_izteka,
                            random = random.randint(1, 1000))
 
 #----------
@@ -238,6 +252,7 @@ def trener_zacetna():
     trener = Trener.pridobi_po_id(conn, tid)
     if not trener:
         bottle.redirect('/prijava/')
+    termini = list(trener.moji_termini())
     return bottle.template('trener_zacetna.html', 
                            ime=trener.ime, 
                            priimek=trener.priimek,
@@ -245,6 +260,7 @@ def trener_zacetna():
                            specializacija = trener.special,
                            je_trener = True,
                            je_admin=False,
+                           termini=termini,
                            random = random.randint(1, 10000))
 
 @bottle.get('/trener/termini/')
@@ -260,9 +276,19 @@ def trener_termini():
 def trener_prosti_termini():
     tid = zahtevaj_trenerja()
     trener_ime = bottle.request.get_cookie('trener_ime', secret = SKRIVNOST)
-    termini = Termin.termini_brez_trenerja(conn)
-    return bottle.template('trener_prosti_termini.html', ime=trener_ime, je_trener=True,
-                           je_admin=False, termini=termini, random=random.randint(1, 10000))
+    dvorana_filter = bottle.request.query.get('dvorana_id')
+    if dvorana_filter:
+        dvorana_filter = int(dvorana_filter)
+    termini = Termin.termini_brez_trenerja(conn, dvorana_filter)
+    dvorane = Dvorana.vse_dvorane(conn)
+    return bottle.template('trener_prosti_termini.html',
+                           ime=trener_ime,
+                           je_trener=True,
+                           je_admin=False,
+                           termini=termini,
+                           dvorana_filter=dvorana_filter,
+                           dvorane=dvorane,
+                           random=random.randint(1, 10000))
 
 @bottle.post('/trener/izberi_termin/')
 def trener_izberi_termin():
@@ -270,7 +296,7 @@ def trener_izberi_termin():
     termin_id = bottle.request.forms.get('termin_id')
     trener = Trener.pridobi_po_id(conn, tid)
     trener.izberi_termin(termin_id)
-    bottle.redirect('/trener/termini/')
+    bottle.redirect('/trener/')
 
 #------------
 # UPORABNIK 
@@ -282,11 +308,15 @@ def moj_racun():
     uporabnik = Uporabnik.pridobi_po_id(conn, uid)
     if not uporabnik:
         bottle.redirect('/')
+    karte = list(uporabnik.aktivne_karte())
+    rezervacije = list(uporabnik.moje_rezervacije())
     return bottle.template('uporabnik_zacetna.html',
                            ime=uporabnik.ime,
                            priimek=uporabnik.priimek,
                            email=uporabnik.email,
                            telefon=uporabnik.telefon,
+                           karte=karte,
+                           rezervacije=rezervacije,
                            je_trener = False,
                            je_admin=False,
                            random=random.randint(1,10000) )
@@ -336,13 +366,18 @@ def moje_rezervacije():
     return bottle.template('moje_rezervacije.html', ime=ime, rezervacije=rezervacije, 
                            je_trener=False, je_admin=False, random=random.randint(1, 10000))
 
-    
+#-------
+# KARTE
+#------
+
+@bottle.get('/kupi/<karta_id>/')
+def kupi(karta_id):
+    """Omogoča nakup karte"""
+    uid = zahtevaj_prijavo()
+    uporabnik = Uporabnik.pridobi_po_id(conn, uid)
+    uporabnik.kupi_karto(karta_id)
+    bottle.redirect('/moj_racun/')
+
 # ZAGON APLIKACIJE
 sys.stdout.reconfigure(encoding='utf-8')
 bottle.run(host='localhost', port=8080, debug=True)
-    
-
-
-
-
-

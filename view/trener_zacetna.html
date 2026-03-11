@@ -1,19 +1,37 @@
 % rebase('osnovna.html', title='Trener - Nadzorna plošča', random=random)
 
-<div class="racun-pri">
-    <div class="racun-info">
-        <h3>Moje informacije</h3>
-        <p><strong>Email:</strong> {{email}}</p>
-        <p><strong>Specializacija:</strong> {{specializacija}}</p>
+<div class="racun-mreza">
+
+    <div class="racun-zgoraj">
+        <div class="racun-info">
+            <h3>Moje informacije</h3>
+            <p><strong>Email:</strong> {{email}}</p>
+            <p><strong>Specializacija:</strong> {{specializacija}}</p>
+        </div>
+
+        <div class="racun-kartica">
+            <h2>Nadzorna plošča</h2>
+            <p class="pozdrav">Pozdravljeni <strong>{{ime}}</strong></p>
+            <div class="racun-gumbi">
+                <a href="/trener/prosti_termini/" class="racun-btn">Prosti termini</a>
+            </div>
+        </div>
     </div>
 
-    <div class="racun-kartica">
-    <h2>Nadzorna plošča</h2>
-    <p class="pozdrav">Pozdravljeni <strong>{{ime}}</strong></p>
+    <div class="racun-sekcija">
+        <h3>Moje rezervacije</h3>
+        % if termini:
+            <table class="tabela">
+                <thead><tr><th>Datum</th><th>Začetek</th><th>Konec</th><th>Dvorana</th><th>Prijavljenih</th></tr></thead>
+                <tbody>
+                    % for t in termini:
+                    <tr><td>{{t[0]}}</td><td>{{t[1]}}</td><td>{{t[2]}}</td><td>{{t[4]}}</td><td>{{t[5]}}</td></tr>
+                    % end
+                </tbody>
+            </table>
+        % else:
+            <p>Nimate rezerviranega nobenega termina.</p>
+        % end
 
-        <div class="racun-gumbi">
-            <a href="/trener/termini/" class="racun-btn">Moji termini</a>
-            <a href="/trener/prosti_termini/" class="racun-btn">Prosti termini</a>
-        </div>
     </div>
 </div>
