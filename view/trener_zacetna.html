@@ -25,7 +25,12 @@
                 <thead><tr><th>Datum</th><th>Začetek</th><th>Konec</th><th>Dvorana</th><th>Prijavljenih</th></tr></thead>
                 <tbody>
                     % for t in termini:
-                    <tr><td>{{t[0]}}</td><td>{{t[1]}}</td><td>{{t[2]}}</td><td>{{t[4]}}</td><td>{{t[5]}}</td></tr>
+                    <tr>
+                        <td>{{t[1]}}</td>
+                        <td>{{t[2]}}</td>
+                        <td>{{t[3]}}</td>
+                        <td>{{t[4]}}</td>
+                        <td>{{t[5]}}</td></tr>
                     % end
                 </tbody>
             </table>

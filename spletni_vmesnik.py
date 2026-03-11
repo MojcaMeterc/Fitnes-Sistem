@@ -354,7 +354,7 @@ def rezerviraj():
     except Exception as e:
         return str(e)
     
-    bottle.redirect('/moje_rezervacije/')
+    bottle.redirect('/moj_racun/')
 
 @bottle.get('/moje_rezervacije/')
 def moje_rezervacije():
@@ -363,8 +363,12 @@ def moje_rezervacije():
     rezervacije = uporabnik.moje_rezervacije()
     ime = uporabnik.ime
 
-    return bottle.template('moje_rezervacije.html', ime=ime, rezervacije=rezervacije, 
-                           je_trener=False, je_admin=False, random=random.randint(1, 10000))
+    return bottle.template('moje_rezervacije.html',
+                           ime=ime,
+                           rezervacije=rezervacije, 
+                           je_trener=False,
+                           je_admin=False,
+                           random=random.randint(1, 10000))
 
 #-------
 # KARTE
