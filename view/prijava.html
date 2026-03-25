@@ -5,10 +5,12 @@
 
         <h2 class="naslov">Prijava</h2>
 
+        <!--prikaz napake, če obstaja-->
         % if defined('napaka') and napaka:
         <p style="color:red;">{{napaka}}</p>
         % end
-
+    
+        <!--prijavni obrazec-->
     <form method="post" action="/prijava/" class="prijava-forma">
 
         <div class="skupina">
@@ -25,8 +27,9 @@
             <button type="submit" class="gumb">Prijava</button>
         </div>
 
+        <!--povezava na registracijo-->
         <div class="spodnja-povezava">
-            <p>Še nimate računa? <a href="/registracija/">Registrijaj se</a></p>
+            <p>Še nimate računa? <a href="/registracija/">Registriraj se</a></p>
         </div>
 
 

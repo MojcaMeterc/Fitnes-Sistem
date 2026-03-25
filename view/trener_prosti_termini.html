@@ -2,6 +2,8 @@
 
 <div class="racun-mreza">
     <div class="racun-sekcija">
+
+        <!--filtriranje po dvoranah-->
         <form method="get" action="/trener/prosti_termini/">
             <select name="dvorana_id" onchange="this.form.submit()">
                 <option value="">-- Vse dvorane --</option>
@@ -12,6 +14,7 @@
         </form>
         <h3>Prosti termini</h3>
         % if termini:
+            <!--tabela terminov-->
             <table class="tabela">
                 <thead>
                     <tr>
@@ -40,7 +43,7 @@
                 </tbody>
             </table>
         % else:
-            <p>Trenurno ni prostih terminov.</p>
+            <p>Trenutno ni prostih terminov.</p>
         % end
     </div>
 

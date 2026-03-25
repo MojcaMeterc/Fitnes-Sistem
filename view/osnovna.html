@@ -8,18 +8,22 @@
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Montserrat:wght@700&display=swap" rel="stylesheet">
 </head>
     <body>
-        % ime = ime if 'ime' in globals() else None
-        % je_trener = je_trener if 'je_trener' in globals() else False
-        % je_admin = je_admin if 'je_admin' in globals() else False
+        <!--globalne spremenljivke (če niso podane iz backenda)-->
+        % ime = globals().get('ime')
+        % je_trener = globals().get('je_trener', False)
+        % je_admin = globals().get('je_admin', False)
+        
         <header class="navigacija">
             <div class="logo">
                 <a href="/">Moj Fitnes</a>
             </div>
 
+            <!--glavni meni-->
             <div class="menu">
                 % if ime:
                     <span class="pozdrav">Pozdravljeni, {{ime}}!</span>
 
+                    <!--prikaz ustreznega 'Moj račun' glede na vlogo-->
                     % if je_admin:
                         <a href="/admin/">Moj račun</a>
                     
@@ -38,6 +42,8 @@
                 % end
             </div>
         </header>
+
+        <!--tukaj pride vsebina posameznih strani-->
         {{!base}}
 </body>
 </html>

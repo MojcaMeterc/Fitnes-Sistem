@@ -3,6 +3,7 @@
 <div class="vsebina">
     <h2>Trenerji</h2>
 
+    <!--tabela vseh trenerjev-->
     %if trenerji:
     <table class="tabela">
         <tr>
@@ -13,6 +14,7 @@
             <th></th>
         </tr>
 
+        <!--zanka čez vse trenerje-->
         %for t in trenerji:
         <tr>
             <td>{{t['ime']}}</td>
@@ -20,6 +22,7 @@
             <td>{{t['email']}}</td>
             <td>{{t['specializacija']}}</td>
             <td>
+                <!--brisanje trenerja-->
                 <form action="/admin/izbrisi_trenerja/" method="post">
                     <input type="hidden" name="trener_id" value="{{t['trener_id']}}">
                     <button type="submit" class="gumb">ODSTRANI</button>
@@ -38,6 +41,7 @@
     %end
     
     <h2>Dodaj trenerja</h2>
+    <!--forma za dodajanje trenerja-->
     <form action="/admin/dodaj_trenerja/" method="post" class="prijava-forma">
         <div class="skupina">
             <label class="oznakaT">Ime</label>

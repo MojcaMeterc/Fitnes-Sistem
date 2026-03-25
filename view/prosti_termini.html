@@ -2,12 +2,13 @@
 
 <h2>Prosti termini</h2>
 
+<!--preveri ali obstajajo prosti termini-->
 % if termini:
 <table border="1">
     <tr>
         <th>Datum</th>
-        <th>Ura začetek</th>
-        <th>Ura konec</th>
+        <th>Ura začetka</th>
+        <th>Ura konca</th>
         <th>Vrsta vadbe</th>
         <th></th>
     </tr>
@@ -15,6 +16,7 @@
     % for termin in termini:
 
     <tr>
+        <!--podatki o posameznem terminu-->
         <td>{{termin['datum']}}</td>
         <td>{{termin['ura_pricetka']}}</td>
         <td>{{termin['ura_konca']}}</td>
