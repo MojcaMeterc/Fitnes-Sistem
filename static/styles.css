@@ -5,21 +5,21 @@ body {
     background-color: #ECBDC4;
 }
 
-header{
+header {
     background-color: #162660;
     color: #F1E4D1;
     padding: 10px 20px;
     text-align: right;
 }
 
-header a{
+header a {
     color: #F1E4D1;
     text-decoration: none;
     margin-left: 15px;
     font-weight: bold;
 }
 
-.hero{
+.hero {
     text-align: center;
     position: relative;
     height: 70vh;
@@ -33,7 +33,7 @@ header a{
     color: #F1E4D1;
 }
 
-.hero-overlay{
+.hero-overlay {
     position: absolute;
     top: 0;
     left: 0;
@@ -43,17 +43,17 @@ header a{
     z-index: 1;
 }
 
-.hero-vsebina{
+.hero-vsebina {
     position: relative;
     z-index: 2;
 }
 
-.hero h1{
+.hero h1 {
     font-size: 4rem;
     margin-bottom: 20px;
 }
 
-.btn{
+.btn {
     display: inline-block;
     padding: 17px 35px;
     background-color: #162660;
@@ -65,19 +65,19 @@ header a{
     transition: all 0.3s;
 }
 
-.btn:hover{
+.btn:hover {
     background-color: #162660c4;
     cursor: pointer;
 }
 
 
 /*Naslov ponudbe*/
-.fitnes{
+.fitnes {
     padding: 60px 20px;
     background-color: #F4F8FF;
 }
 
-.fitnes h2{
+.fitnes h2 {
     font-size: 2.5rem;
     margin-bottom: 40px;
     background-color: #eaeff9;
@@ -87,7 +87,7 @@ header a{
 }
 
 /*postavitev kartice*/
-.karte{
+.karte {
     display: flex;
     justify-content: center;
     gap: 30px;
@@ -95,7 +95,7 @@ header a{
 }
 
 /*posamezna karta*/
-.karta{
+.karta {
     background-color: #D0E6FD;
     padding: 30px;
     width: 280px;
@@ -109,30 +109,30 @@ header a{
 }
 
 /*hover efekt*/
-.karta:hover{
+.karta:hover {
     transform: translateY(-10px);
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
 }
 
-.karta h3{
+.karta h3 {
     font-size: 1.5rem;
     margin-bottom: 15px;
     text-align: center;
 }
 
-.karta p{
+.karta p {
     margin: 10px 0;
     text-align: center;
 }
 
-.cena{
+.cena {
     font-size: 1.8rem;
     font-weight: bold;
     margin: 20px 0;
 }
 
 /*manjši gumb*/
-.btn-mail{
+.btn-mail {
     display: inline-block;
     padding: 10px 20px;
     background-color: #162660;
@@ -143,14 +143,14 @@ header a{
 
 }
 
-.btn-mail:hover{
+.btn-mail:hover {
     background-color: #7ea0e0;
 }
 
 /* PRIJAVA/REGISTRACIJA*/
 
 /*OZADJE */
-.prijava-ovitek{
+.prijava-ovitek {
     width: 100%;
     min-height: 100vh;
     display: flex;
@@ -160,7 +160,7 @@ header a{
     background-size: cover;
 }
 
-.prijava-vsebina{
+.prijava-vsebina {
     width: 100%;
     max-width: 500px;
     padding: 50px 40px;
@@ -170,28 +170,28 @@ header a{
     color: white;
 }
 
-.naslov{
+.naslov {
     text-align: center;
     margin-bottom: 30px;
     font-size: 28px;
 }
 
-.napaka{
+.napaka {
     color: #ff4d4d;
     text-align: center;
     margin-bottom: 15px;
     font-weight: bold;
 }
 
-.prijava-forma{
+.prijava-forma {
     width: 100%;
 }
 
-.skupina{
+.skupina {
     margin-bottom: 20px;
 }
 
-.oznaka{
+.oznaka {
     display: block;
     margin-bottom: 8px;
     font-size: 14px;
@@ -205,7 +205,7 @@ header a{
 }
 
 /*vnosno polje*/
-.vnos{
+.vnos {
     width: 100%;
     padding: 14px;
     border: none;
@@ -215,13 +215,13 @@ header a{
     font-size: 14px;
 }
 
-.vnos:focus{
+.vnos:focus {
     outline: none;
     background: rgba(255,255,255,0.25);
 }
 
 /*gumb*/
-.gumb{
+.gumb {
     width: 100%;
     padding: 15px;
     border: none;
@@ -234,33 +234,33 @@ header a{
     transition: 0.3s;
 }
 
-.gumb:hover{
+.gumb:hover {
     background: #AAC4F5;
 }
 
-.spodnja-povezava{
+.spodnja-povezava {
     text-align: center;
     margin-top: 15px;
 }
 
-.spodnja-povezava a{
+.spodnja-povezava a {
     color: #FFC5D3;
     text-decoration: none;
 }
 
-.spodnja-povezava a:hover{
+.spodnja-povezava a:hover {
     text-decoration: underline;
 }
 
 /*RAČUN*/
-.racun-mreza{
+.racun-mreza {
     display: grid;
     grid-template: 1fr 1fr;
     gap: 20px;
     padding: 20px;
 }
 
-.racun-zgoraj{
+.racun-zgoraj {
     display: flex;
     gap: 20px;
 }
@@ -269,7 +269,7 @@ header a{
     flex: 1;
 }
 
-.racun{
+.racun {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -277,27 +277,18 @@ header a{
     background: linear-gradient(135deg, #1e1e1e, #2c2c2c);
 }
 
-.racun-kartica{
-    background: white;
-    padding: 40px;
-    border-radius: 15px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-    text-align: center;
-    width: 350px;
-}
-
-.racun-kartica h2{
+.racun-kartica h2 {
     margin-bottom: 15px;
     color: #333;
 }
 
-.pozdrav{
+.pozdrav {
     margin-bottom: 30px;
     font-size: 18px;
     color: #D0E6FD;
 }
 
-.racun-gumbi{
+.racun-gumbi {
     display: flex;
     flex-direction: column;
     gap: 15px;
@@ -313,7 +304,7 @@ header a{
     transition: 0.3s;
 }
 
-.racun-btn:hover{
+.racun-btn:hover {
     background-color: #004de6;
     transform: scale(1.05);
 }
@@ -322,7 +313,7 @@ header a{
     background-color: #009dff;
 }
 
-.odjava:hover{
+.odjava:hover {
     background-color: #004de6;
 }
 
@@ -348,7 +339,7 @@ header a{
     color: #333;
 }
 
-.racun-kartica{
+.racun-kartica {
     background: white;
     border-radius: 12px;
     padding: 2rem;
@@ -392,7 +383,7 @@ header a{
     display: block;
 }
 
-.ponudba-naziv{
+.ponudba-naziv {
     position: absolute;
     bottom: 0;
     width: 100%;
@@ -405,7 +396,7 @@ header a{
     box-sizing: border-box;
 }
 
-.btn-ponudba{
+.btn-ponudba {
     display: inline-block;
     padding: 12px 30px;
     background-color: #AAC4F5;
@@ -427,7 +418,7 @@ header a{
 
 /* STRAN PONUDBA */
 
-.ponudba-stran{
+.ponudba-stran {
     max-width: 100%;
     padding: 40px 20px;
     min-height: 100vh;
@@ -439,14 +430,14 @@ header a{
     margin: 0 auto;
 }
 
-.naslov-stran{
+.naslov-stran {
     text-align: left;
     font-size: 2.5rem;
     margin-bottom: 20px;
     color: #333;
 }
 
-.ponudba-stran h2{
+.ponudba-stran h2 {
     font-size: 1.8rem;
     margin:  40px 0 20px 0;
     color: #333;
@@ -454,13 +445,13 @@ header a{
     padding-left: 15px;
 }
 
-.grid{
+.grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 20px;
 }
 
-.kartaP{
+.kartaP {
     background: #F1E4D1;
     border-radius: 12px;
     padding: 25px;
@@ -471,36 +462,38 @@ header a{
     flex-direction: column;
 }
 
-.kartaP .racun-btn{
+.kartaP .racun-btn {
     margin-top: auto;
 }
 
-.kartaP:hover{
+.kartaP:hover {
     transform: translate(-5px);
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
 }
 
 .kartaP h3 {
-    font-size: 1,1rem;
+    font-size: 1.1rem;
     margin-bottom: 10px;
     color: #333;
 }
-.pozdrav-ponudba{
+
+.pozdrav-ponudba {
     color: #162660;
 }
+
 .kartaP p {
     color: #666;
     margin: 5px 0;
 }
 
-.kartaP .cena{
+.kartaP .cena {
     font-size: 1.6rem;
     font-weight: bold;
     color: #162660;
     margin-top: 15px;
 }
 
-.vadba-naslov{
+.vadba-naslov {
     font-size: 1.2rem;
     color: #333;
     margin: 25px 0 10px 0;
@@ -508,7 +501,7 @@ header a{
     border-left: 3px solid #AAC4F5;
 }
 
-::selection{
+::selection {
     background-color: #162660;
     color: #F1E4D1;
 }
@@ -523,6 +516,8 @@ header a{
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 40px;
+    border-radius: 12px;
+    overflow: hidden;
 }
 
 .tabela th, .tabela td {
@@ -540,14 +535,31 @@ header a{
     background-color: #f0f4ff;
 }
 
-.vsebinaPaketa{
+.btn-rezerviraj {
+    padding: 8px 16px;
+    background-color: #162660;
+    color: #F1E4D1;
+    border: none;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+}
+
+.btn-rezerviraj:hover {
+    background-color: #7ea0e0;
+    transform: scale(1.05);
+}
+
+.vsebinaPaketa {
     list-style: none;
     text-align: left;
     margin: 10px 0;
     padding-left: 20px;
     font-size: 10px;
 }
-.vsebinaPaketa li::before{
+
+.vsebinaPaketa li::before {
     content: '✔ ';
     color: #7ea0e0;
     font-weight: bold;

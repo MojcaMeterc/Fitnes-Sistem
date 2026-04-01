@@ -1,41 +1,42 @@
 % rebase('osnovna.html', title='Prosti termini', ime=ime)
 
-<h2>Prosti termini</h2>
+<div class="vsebina">
 
-<!--preveri ali obstajajo prosti termini-->
-% if termini:
-<table border="1">
-    <tr>
-        <th>Datum</th>
-        <th>Ura začetka</th>
-        <th>Ura konca</th>
-        <th>Vrsta vadbe</th>
-        <th></th>
-    </tr>
+    <h2>Prosti termini</h2>
 
-    % for termin in termini:
+    <!--preveri ali obstajajo prosti termini-->
+    % if termini:
+    <table class="tabela">
+        <tr>
+            <th>Datum</th>
+            <th>Ura začetka</th>
+            <th>Ura konca</th>
+            <th>Vrsta vadbe</th>
+            <th></th>
+        </tr>
 
-    <tr>
-        <!--podatki o posameznem terminu-->
-        <td>{{termin['datum']}}</td>
-        <td>{{termin['ura_pricetka']}}</td>
-        <td>{{termin['ura_konca']}}</td>
-        <td>{{termin['dvorana']}}</td>
+        % for termin in termini:
 
-        <td>
-            <form action="/rezerviraj/" method="post">
-                <input type="hidden" name="termin_id" value="{{termin['termin_id']}}">
+        <tr>
+            <!--podatki o posameznem terminu-->
+            <td>{{termin['datum']}}</td>
+            <td>{{termin['ura_pricetka']}}</td>
+            <td>{{termin['ura_konca']}}</td>
+            <td>{{termin['dvorana']}}</td>
 
-                <button type="submit">
-                    Rezerviraj
-                </button>
-            </form>
-        </td>
-    </tr>
+            <td>
+                <form action="/rezerviraj/" method="post">
+                    <input type="hidden" name="termin_id" value="{{termin['termin_id']}}">
+
+                    <button type="submit" class="btn-rezerviraj">Rezerviraj </button>
+                </form>
+            </td>
+        </tr>
+        % end
+    </table>
+
+    % else:
+    <p>Ni prostih terminov.</p>
+
     % end
-</table>
-
-% else:
-<p>Ni prostih terminov.</p>
-
-% end
+</div>
