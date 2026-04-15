@@ -10,6 +10,7 @@ NASTAVITVE = 'nastavitve.json'
 
 # PIŠKOTKI
 
+# naloži skrivnosti za piškotke
 try:
     with open(NASTAVITVE) as f:
         nastavitve = json.load(f)
@@ -19,12 +20,17 @@ except FileNotFoundError:
     with open(NASTAVITVE, "w") as f:
         json.dump({'skrivnost': SKRIVNOST}, f)
 
-# povezava z bazo
+#-------------------
+# BAZA
+#-------------------
+
+# povezava z SQL bazo 
 conn = sqlite3.connect("fitnes.db", check_same_thread=False)
-conn.row_factory = sqlite3.Row  #(da lahko dostopamo do imenov stolpcev)
+conn.row_factory = sqlite3.Row  # da lahko dostopamo do imenov stolpcev
 
 bottle.TEMPLATE_PATH.insert(0, './view')
 
+# Statične datoteke (CSS, slike)
 @bottle.get('/static/<filename:path>')
 def static(filename):
     return bottle.static_file(filename, root='static')
@@ -34,6 +40,8 @@ def static(filename):
 #-------------------
 
 def get_nav():
+    ''' Vrne podatke za navigacijo (ime, je_trener, je_admin)
+    '''
     admin_ime = bottle.request.get_cookie('admin_ime', secret = SKRIVNOST)
     if admin_ime:
         return admin_ime, False, True
@@ -44,17 +52,30 @@ def get_nav():
     return ime, False, False
 
 def prijavi_uporabnika(uporabnik):
+    '''Nastavi piškotke za uporabnika
+    '''
     bottle.response.set_cookie('uporabnik', uporabnik.ime, path='/', secret=SKRIVNOST)
     bottle.response.set_cookie('uid', str(uporabnik.uporabnik_id), path='/', secret=SKRIVNOST)
     bottle.redirect('/moj_racun/')
 
 
 def prijavi_trenerja(trener):
+    '''Nastavi piškotke za trenerja
+    '''
     bottle.response.set_cookie('trener_ime', trener.ime, path='/', secret = SKRIVNOST)
     bottle.response.set_cookie('tid', str(trener.trener_id), path = '/', secret = SKRIVNOST)
     bottle.redirect('/trener/')
 
+def prijava_admin(admin):
+    '''Nastavi pikotke za admina
+    '''
+    bottle.response.set_cookie('admin_ime', admin.ime, path='/', secret = SKRIVNOST)
+    bottle.response.set_cookie('aid', str(admin.admin_id), path='/', secret=SKRIVNOST)
+    bottle.redirect('/admin/')
+
 def zahtevaj_prijavo():
+    '''Preveri ali je uporabnik prijavljen
+    '''
     uid = bottle.request.get_cookie('uid', secret = SKRIVNOST)
     print("COOKIE UID", repr(uid))
     if not uid:
@@ -62,10 +83,20 @@ def zahtevaj_prijavo():
     return int(uid)
 
 def zahtevaj_trenerja():
+    '''Preveri ali je trener prijavljen
+    '''
     tid = bottle.request.get_cookie('tid', secret = SKRIVNOST)
     if not tid:
         bottle.redirect('/prijava/')
     return int(tid)
+
+def zahtevaj_admin():
+    '''Preveri ali je admin prijavljen
+    '''
+    aid = bottle.request.get_cookie('aid', secret = SKRIVNOST)
+    if not aid:
+        bottle.redirect('/prijava/')
+    return int(aid)
 
 #-------------------
 #  JAVNA STRAN
@@ -79,16 +110,22 @@ def zacetna_stran():
 
 @bottle.get('/ponudba/')
 def ponudba():
+    '''Prikaže ponudbo in preveri veljavnost karte
+    '''
     ime, je_trener, je_admin = get_nav()
     uid = bottle.request.get_cookie('uid', secret=SKRIVNOST)
+
     dni_do_izteka = None
+
     if uid:
         uporabnik= Uporabnik.pridobi_po_id(conn, int(uid))
         iztek=uporabnik.iztek_naslednje()
+
         if iztek and iztek[0]:
             from datetime import datetime
             iztek_datum = datetime.strptime(iztek[0], "%Y-%m-%d").date()
             dni_do_izteka = (iztek_datum - datetime.now().date()).days
+    
     return bottle.template('ponudba.html', 
                            ime = ime,
                            je_trener = je_trener,
@@ -103,34 +140,25 @@ def ponudba():
 
 @bottle.get('/odjava/')
 def odjava():
-    bottle.response.delete_cookie('uporabnik', path="/", secret = SKRIVNOST)
-    bottle.response.delete_cookie('uid', path='/', secret = SKRIVNOST)
-    bottle.response.delete_cookie('trener_ime', path="/", secret = SKRIVNOST)
-    bottle.response.delete_cookie('tid', path='/', secret = SKRIVNOST)
-    bottle.response.delete_cookie('admin_ime', path="/", secret = SKRIVNOST)
-    bottle.response.delete_cookie('aid', path='/', secret = SKRIVNOST)
+    '''Izbriše vse piškotke
+    '''
+    for cookie in ['uporabnik', 'uid', 'trener_ime', 'tid', 'admin_ime', 'aid']:
+        bottle.response.delete_cookie(cookie, path='/', secret=SKRIVNOST)
+    
     bottle.redirect('/')
 
 #--------------
 # ADMIN
 #--------------
-def prijava_admin(admin):
-    bottle.response.set_cookie('admin_ime', admin.ime, path='/', secret = SKRIVNOST)
-    bottle.response.set_cookie('aid', str(admin.admin_id), path='/', secret=SKRIVNOST)
-    bottle.redirect('/admin/')
-
-def zahtevaj_admin():
-    aid = bottle.request.get_cookie('aid', secret = SKRIVNOST)
-    if not aid:
-        bottle.redirect('/prijava/')
-    return int(aid)
 
 @bottle.get('/admin/')
 def admin_zacetna():
     aid = zahtevaj_admin()
     admin = Admin.pridobi_po_id(conn, aid)
+
     if not admin:
         bottle.redirect('/prijava/')
+
     return bottle.template('admin_zacetna.html',
                            ime=admin.ime,
                            email=admin.email,
@@ -180,6 +208,8 @@ def admin_dodaj_trenerja():
 
 @bottle.post('/admin/izbrisi_trenerja/')
 def admin_izbirs_trenerja():
+    '''izbriše trenerja
+    '''
     aid = zahtevaj_admin()
     admin = Admin.pridobi_po_id(conn, aid)
     trener_id = bottle.request.forms.get('trener_id')
@@ -191,30 +221,38 @@ def admin_izbirs_trenerja():
 
 @bottle.get('/prijava/')
 def prijava():
-    ime, je_trener, je_admin =get_nav()
+    '''prikaže obrazec za prijavo
+    '''
+    ime, je_trener, je_admin = get_nav()
     return bottle.template('prijava.html', ime=ime, je_trener=je_trener, je_admin=je_admin,
                            napaka=None, random=random.randint(1, 10000))
 
 @bottle.post('/prijava/')
 def prijava_post():
+    '''Obdelava prijave (admin -> trener -> uporabnik)
+    '''
     email = bottle.request.forms.get('email')
     geslo = bottle.request.forms.get('geslo')
 
+    # preveri admina
     admin = Admin.prijava(conn, email, geslo)
     if admin:
         prijava_admin(admin)
         return
     
+    # preveri trenerja
     trener = Trener.prijava(conn, email, geslo)
     if trener:
         prijavi_trenerja(trener)
         return
 
+    # preveri uporabnika
     uporabnik = Uporabnik.prijava(conn, email, geslo)
     if uporabnik:
         prijavi_uporabnika(uporabnik)
         return
     
+    # napačni podatki
     ime, je_trener, je_admin = get_nav()
     return bottle.template('prijava.html', ime=ime, je_trener=je_trener, 
                            je_admin=je_admin, napaka = 'Napčen mail ali geslo', random=random.randint(1, 10000))
@@ -222,12 +260,15 @@ def prijava_post():
     
 @bottle.get('/registracija/')
 def registracija():
+    '''Prikaže obrazec za registracijo
+    '''
     ime, je_trener, je_admin =get_nav()
     return bottle.template('registracija.html', ime=ime, je_admin=je_admin, je_trener=je_trener, napaka=None, random=random.randint(1, 10000))
 
 @bottle.post('/registracija/')
 def registracija_post():
-    
+    '''Ustvari nov uporabniški račun
+    '''
     ime = bottle.request.forms.get('ime')
     priimek = bottle.request.forms.get('priimek')
     email = bottle.request.forms.get('email')
@@ -237,9 +278,12 @@ def registracija_post():
     try:
         uporabnik = Uporabnik(conn, ime, priimek, email, telefon)
         uporabnik.ustvari_racun(geslo)
+
+        # avtomatska prijava po registraciji
         prijavi_uporabnika(uporabnik)
 
     except sqlite3.IntegrityError:
+        # email ali telefon že obstaja
         ime, je_trener, je_admin = get_nav()
         return bottle.template('registracija.html', ime=ime, je_admin=je_admin, je_trener=je_trener, napaka = 'Email ali telefonska številka že obstaja', random=random.randint(1, 10000))
 
@@ -265,6 +309,8 @@ def trener_zacetna():
 
 @bottle.get('/trener/termini/')
 def trener_termini():
+    '''Seznam terminov trenerja
+    '''
     tid = zahtevaj_trenerja()
     trener_ime = bottle.request.get_cookie('trener_ime', secret = SKRIVNOST)
     trener = Trener.pridobi_po_id(conn, tid)
@@ -274,9 +320,12 @@ def trener_termini():
 
 @bottle.get('/trener/prosti_termini/')
 def trener_prosti_termini():
+    '''Prikaže proste termine brez trenerja
+    '''
     tid = zahtevaj_trenerja()
     trener_ime = bottle.request.get_cookie('trener_ime', secret = SKRIVNOST)
     dvorana_filter = bottle.request.query.get('dvorana_id')
+
     if dvorana_filter:
         dvorana_filter = int(dvorana_filter)
     termini = Termin.termini_brez_trenerja(conn, dvorana_filter)
@@ -292,6 +341,8 @@ def trener_prosti_termini():
 
 @bottle.post('/trener/izberi_termin/')
 def trener_izberi_termin():
+    '''Trener si izbere termin
+    '''
     tid = zahtevaj_trenerja()
     termin_id = bottle.request.forms.get('termin_id')
     trener = Trener.pridobi_po_id(conn, tid)
@@ -304,12 +355,16 @@ def trener_izberi_termin():
 
 @bottle.get('/moj_racun/')
 def moj_racun():
+    '''Glavna stran uporabnika
+    '''
     uid = zahtevaj_prijavo()
     uporabnik = Uporabnik.pridobi_po_id(conn, uid)
+
     if not uporabnik:
         bottle.redirect('/')
     karte = list(uporabnik.aktivne_karte())
     rezervacije = list(uporabnik.moje_rezervacije())
+
     return bottle.template('uporabnik_zacetna.html',
                            ime=uporabnik.ime,
                            priimek=uporabnik.priimek,
@@ -321,7 +376,7 @@ def moj_racun():
                            je_admin=False,
                            random=random.randint(1,10000) )
 
-
+# NEVEM A UPORABLAVA
 @bottle.get('/moje_karte/')
 def moje_karte():
     uid = zahtevaj_prijavo()
@@ -334,6 +389,8 @@ def moje_karte():
 
 @bottle.get('/prosti_termini/')
 def prosti_termini():
+    '''Prosti termini za uporabnika
+    '''
     uid = zahtevaj_prijavo()
     ime = bottle.request.get_cookie('uporabnik', secret=SKRIVNOST)
 
@@ -344,6 +401,8 @@ def prosti_termini():
 
 @bottle.post('/rezerviraj/')
 def rezerviraj():
+    '''Uporabnik rezervira termin
+    '''
     uid = zahtevaj_prijavo()
     termin_id = bottle.request.forms.get('termin_id')
     uporabnik = Uporabnik.pridobi_po_id(conn, uid)
@@ -358,6 +417,8 @@ def rezerviraj():
 
 @bottle.get('/moje_rezervacije/')
 def moje_rezervacije():
+    '''Prikaže vse rezervacije uporabnika
+    '''
     uid = zahtevaj_prijavo()
     uporabnik = Uporabnik.pridobi_po_id(conn, uid)
     rezervacije = uporabnik.moje_rezervacije()
@@ -383,5 +444,5 @@ def kupi(karta_id):
     bottle.redirect('/moj_racun/')
 
 # ZAGON APLIKACIJE
-sys.stdout.reconfigure(encoding='utf-8')
+sys.stdout.reconfigure(encoding='utf-8')  # za pravilno izpisovanje šumnikov
 bottle.run(host='localhost', port=8080, debug=True)
