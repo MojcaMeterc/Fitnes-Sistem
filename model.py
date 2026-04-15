@@ -123,14 +123,19 @@ class Uporabnik:
                 WHERE rezervacijaU.uporabnik_id = ?
             """
         return self.conn.execute(sql, (self.uporabnik_id,))
-    
+
     def aktivne_karte(self):
         '''vse aktivne karte uporabnika
         '''
         sql = """
-                SELECT karta.naziv, kk.datum, karta.trajanje FROM kupljenaKarta AS kk
+                SELECT karta.naziv,
+                    kk.datum,
+                    DATE(kk.datum, '+' || karta.trajanje || ' days') AS datum_izteka,
+                    CAST(julianday(DATE(kk.datum, '+' || karta.trajanje || ' days')) - julianday('now') AS INTEGER) AS dni_do_izteka
+                FROM kupljenaKarta AS kk
                 JOIN karta ON kk.vrsta_karte = karta.karta_id
                 WHERE kk.uporabnik_id = ?
+                AND DATE(kk.datum, '+' || karta.trajanje || ' days') >= DATE('now')
             """
         return self.conn.execute(sql, (self.uporabnik_id,))
     
@@ -465,7 +470,7 @@ class Karta:
         '''
         '''
         cur = self.conn.execute("""
-            INSERT INTO karta (naziv, trajanje_dni, cena)
+            INSERT INTO karta (naziv, trajanje, cena)
                 VALUES (?, ?, ?)
             """, (self.naziv, self.trajanje, self.cena))
         
