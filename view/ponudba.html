@@ -28,10 +28,10 @@
                 <p class="cena">35 €</p>
                 % if not uid:
                     <a href="/registracija/" class="racun-btn">Kupi</a>
-                % elif dni_do_izteka is None or dni_do_izteka <= 10:
+                % elif iztek_po_karti.get(2, 0) <= 10:
                     <a href="/kupi/2/" class="racun-btn">Kupi</a>
                 % else:
-                    <a href="#" class="racun-btn">podaljšaj (še {{dni_do_izteka}} dni)</a>
+                    <a href="#" class="racun-btn">podaljšaj (velja še {{iztek_po_karti[2]}} dni)</a>
                 % end
             </div>
 
@@ -41,10 +41,10 @@
                 <p class="cena">300 €</p>
                 % if not uid:
                     <a href="/registracija/" class="racun-btn">Kupi</a>
-                % elif dni_do_izteka is None or dni_do_izteka <= 10:
+                % elif iztek_po_karti.get(2, 0) <= 10:
                     <a href="/kupi/2/" class="racun-btn">Kupi</a>
                 % else:
-                    <a href="#" class="racun-btn">podaljšaj (še {{dni_do_izteka}} dni)</a>
+                    <a href="#" class="racun-btn">podaljšaj (velja še {{iztek_po_karti}} dni)</a>
                 % end
             </div>
         </div>
@@ -70,14 +70,14 @@
                     <p class="cena">45 €</p>
                     % if not uid:
                         <a href="/registracija/" class="racun-btn">Kupi</a>
-                    % elif dni_do_izteka is None or dni_do_izteka <= 10:
+                    % elif iztek_po_karti.get(3, 0) <= 10:
                         <a href="/kupi/6/" class="racun-btn">Kupi</a>
                     % else:
-                        <a href="#" class="racun-btn">podaljšaj (še {{dni_do_izteka}} dni)</a>
+                        <a href="#" class="racun-btn">podaljšaj (velja še {{iztek_po_karti}} dni)</a>
                     % end
                 </div>
             </div>
-        
+
         <h3 class="vadba-naslov">Joga</h3>
         <div class="grid">
             <div class="kartaP">
@@ -89,17 +89,17 @@
                     <a href="/kupi/7/" class="racun-btn">Kupi</a>
                 % end
             </div>
-        
+
             <div class="kartaP">
                 <h3>Joga mesečna</h3>
                 <p>30 dni</p>
                 <p class="cena">40 €</p>
                 % if not uid:
                     <a href="/registracija/" class="racun-btn">Kupi</a>
-                % elif dni_do_izteka is None or dni_do_izteka <= 10:
+                % elif iztek_po_karti.get(6, 0) <= 10:
                     <a href="/kupi/8/" class="racun-btn">Kupi</a>
                 % else:
-                    <a href="#" class="racun-btn">podaljšaj (še {{dni_do_izteka}} dni)</a>
+                    <a href="#" class="racun-btn">podaljšaj (velja še {{iztek_po_karti}} dni)</a>
                 % end
             </div>
         </div>
@@ -122,10 +122,10 @@
                 <p class="cena">50 €</p>
                 % if not uid:
                     <a href="/registracija/" class="racun-btn">Kupi</a>
-                % elif dni_do_izteka is None or dni_do_izteka <= 10:
+                % elif iztek_po_karti.get(8, 0) <= 10:
                     <a href="/kupi/10/" class="racun-btn">Kupi</a>
                 % else:
-                    <a href="#" class="racun-btn">podaljšaj (še {{dni_do_izteka}} dni)</a>
+                    <a href="#" class="racun-btn">podaljšaj (velja še {{iztek_po_karti}} dni)</a>
                 % end
             </div>
         </div>
@@ -142,10 +142,10 @@
                 <p class="cena">60 €</p>
                 % if not uid:
                     <a href="/registracija/" class="racun-btn">Kupi</a>
-                % elif dni_do_izteka is None or dni_do_izteka <= 10:
+                % elif iztek_po_karti.get(10, 0) <= 10:
                     <a href="/kupi/11/" class="racun-btn">Kupi</a>
                 % else:
-                    <a href="#" class="racun-btn">podaljšaj (še {{dni_do_izteka}} dni)</a>
+                    <a href="#" class="racun-btn">podaljšaj (velja še {{iztek_po_karti}} dni)</a>
                 % end
             </div>
 
@@ -159,10 +159,10 @@
                 <p class="cena">110€</p>
                 % if not uid:
                     <a href="/registracija/" class="racun-btn">Kupi</a>
-                % elif dni_do_izteka is None or dni_do_izteka <= 10:
+                % elif iztek_po_karti.get(11, 0) <= 10:
                     <a href="/kupi/12/" class="racun-btn">Kupi</a>
                 % else:
-                    <a href="#" class="racun-btn">podaljšaj (še {{dni_do_izteka}} dni)</a>
+                    <a href="#" class="racun-btn">podaljšaj (velja še {{iztek_po_karti}} dni)</a>
                 % end
             </div>
 
@@ -176,10 +176,10 @@
                 <p class="cena">150 €</p>
                 % if not uid:
                     <a href="/registracija/" class="racun-btn">Kupi</a>
-                % elif dni_do_izteka is None or dni_do_izteka <= 10:
+                % elif iztek_po_karti.get(12, 0) <= 10:
                     <a href="/kupi/13/" class="racun-btn">Kupi</a>
                 % else:
-                    <a href="#" class="racun-btn">podaljšaj (še {{dni_do_izteka}} dni)</a>
+                    <a href="#" class="racun-btn">podaljšaj (velja še {{iztek_po_karti}} dni)</a>
                 % end
             </div>
 
@@ -193,10 +193,10 @@
                 <p class="cena">260 €</p>
                 % if not uid:
                     <a href="/registracija/" class="racun-btn">Kupi</a>
-                % elif dni_do_izteka is None or dni_do_izteka <= 10:
+                % elif iztek_po_karti.get(13, 0) <= 10:
                     <a href="/kupi/14/" class="racun-btn">Kupi</a>
                 % else:
-                    <a href="#" class="racun-btn">podaljšaj (še {{dni_do_izteka}} dni)</a>
+                    <a href="#" class="racun-btn">podaljšaj (velja še {{iztek_po_karti}} dni)</a>
                 % end
             </div>
 
@@ -211,10 +211,10 @@
                 <p class="cena">400 €</p>
                 % if not uid:
                     <a href="/registracija/" class="racun-btn">Kupi</a>
-                % elif dni_do_izteka is None or dni_do_izteka <= 10:
+                % elif iztek_po_karti.get(14, 0) <= 10:
                     <a href="/kupi/15/" class="racun-btn">Kupi</a>
                 % else:
-                    <a href="#" class="racun-btn">podaljšaj (še {{dni_do_izteka}} dni)</a>
+                    <a href="#" class="racun-btn">podaljšaj (velja še {{iztek_po_karti}} dni)</a>
                 % end
             </div>
         </div>

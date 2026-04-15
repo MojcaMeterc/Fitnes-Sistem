@@ -1,5 +1,7 @@
 import sqlite3
-from model import Uporabnik, Trener, Termin, Karta 
+
+from model import Karta, Termin, Trener, Uporabnik
+
 
 def prikazi_proste_termine(conn):
     print("Prosti termini (naslednjih 14 dni):")
@@ -12,18 +14,18 @@ def prikazi_proste_termine(conn):
         if datum != trenutni_datum:
             trenutni_datum = datum
             print(f"\n===== {datum} =====")
-        
+
         print(f"{termin_id}: dvorana {dvorana} | {zacetek} - {konec}")
 
+
 def rezerviraj_termin_U(conn, uporabnik):
-    '''funkcija termin uspešno rezervira ali javi napako
-    '''
+    """funkcija termin uspešno rezervira ali javi napako"""
     if not uporabnik.ima_veljavno_karto():
         izbira = input("Nimate veljavne karte.  (*) za nakup: ")
         if izbira == "*":
             kupi_karto(conn, uporabnik)
-        return 
-    
+        return
+
     prikazi_proste_termine(conn)
     termin_id = input("Vnesi ID termina, ki ga želiš rezervirati: ")
     try:
@@ -32,9 +34,9 @@ def rezerviraj_termin_U(conn, uporabnik):
     except Exception as e:
         print("Napaka pri rezervaciji:", e)
 
+
 def rezerviraj_termin_T(conn, trener):
-    '''funkcija termin uspešno rezervira ali javi napako
-    '''
+    """funkcija termin uspešno rezervira ali javi napako"""
     prikazi_proste_termine(conn)
     termin_id = input("Vnesi ID termina, ki ga želiš rezervirati: ")
     try:
@@ -42,6 +44,7 @@ def rezerviraj_termin_T(conn, trener):
         print("Termin rezerviran!")
     except Exception as e:
         print("Napaka pri rezervaciji:", e)
+
 
 def kupi_karto(conn, uporabnik):
     print("Razpoložljive karte:")
@@ -54,10 +57,12 @@ def kupi_karto(conn, uporabnik):
     except Exception as e:
         print("Napaka pri nakupu:", e)
 
+
 def preveri_karte(conn, uporabnik):
     print("Tvoje karte:")
     for k in uporabnik.aktivne_karte():
         print(f"- {k[0]}, kupljena {k[1]}, trajanje {k[2]} dni")
+
 
 def meni_uporabnik(conn, uporabnik):
     while True:
@@ -82,6 +87,7 @@ def meni_uporabnik(conn, uporabnik):
         else:
             print("Neveljavna izbira")
 
+
 def meni_trener(conn, trener):
     while True:
         print("1) Poglej termine")
@@ -98,6 +104,7 @@ def meni_trener(conn, trener):
             break
         else:
             print("Neveljavna izbira")
+
 
 def glavni_meni(conn):
     print("Dobrodošli v fitnes sistemu!")
@@ -118,18 +125,19 @@ def glavni_meni(conn):
 
         vrstica = conn.execute(
             "SELECT trener_id, specializacija FROM trener WHERE ime = ? AND priimek = ?",
-            (ime, priimek)
+            (ime, priimek),
         ).fetchone()
 
         if vrstica:
             trener = Trener(conn, ime, priimek, vrstica[1], vrstica[0])
             meni_trener(conn, trener)
-        
+
         else:
             print("Trener ne obstaja")
 
     else:
         print("Neveljavna izbira")
+
 
 if __name__ == "__main__":
     conn = sqlite3.connect("fitnes.db")

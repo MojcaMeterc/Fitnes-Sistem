@@ -98,22 +98,20 @@ def zacetna_stran():
 def ponudba():
     ime, je_trener, je_admin = get_nav()
     uid = bottle.request.get_cookie("uid", secret=SKRIVNOST)
-    dni_do_izteka = None
+    iztek_po_karti = {}
+
     if uid:
         uporabnik = Uporabnik.pridobi_po_id(conn, int(uid))
-        iztek = uporabnik.iztek_naslednje()
-        if iztek and iztek[0]:
-            from datetime import datetime
+        for karta in uporabnik.aktivne_karte():
+            iztek_po_karti[karta[0]] = karta[4]
 
-            iztek_datum = datetime.strptime(iztek[0], "%Y-%m-%d").date()
-            dni_do_izteka = (iztek_datum - datetime.now().date()).days
     return bottle.template(
         "ponudba.html",
         ime=ime,
         je_trener=je_trener,
         je_admin=je_admin,
         uid=uid,
-        dni_do_izteka=dni_do_izteka,
+        iztek_po_karti=iztek_po_karti,
         random=random.randint(1, 1000),
     )
 
