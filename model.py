@@ -69,14 +69,23 @@ class Uporabnik:
     # nakup karte(povezava med uporabnik in karta - karta_id)
     def kupi_karto(self, karta_id):
         """nakup karte"""
+
+        cur = self.conn.execute("""
+                SELECT 1 FROM kupljenaKarta
+                WHERE uporabnik_id = ? AND vrsta_karte  = ?
+            """, (self.uporabnik_id, karta_id))
+
+        # Ali že ima
+        if cur.fetchone():
+            return
+
         self.conn.execute(
             """
-            INSERT INTO kupljenaKarta (vrsta_karte, uporabnik_id)
-                VALUES (?, ?)
+            INSERT INTO kupljenaKarta (vrsta_karte, uproabnik_id)
+            VALUES (?, ?)
             """,
-            (karta_id, self.uporabnik_id),
+            (karta_id, self.uporabnik_id)
         )
-
         self.conn.commit()
 
     # uporabnik izbere termin (povezeva med uporabnikom in terminom)
