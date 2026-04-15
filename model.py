@@ -3,8 +3,13 @@ import hashlib
 from datetime import datetime, timedelta
 
 def hash_geslo(geslo):
+    '''hash gesla
+    '''
     return hashlib.sha256(geslo.encode()).hexdigest()
 
+# ==================
+# UPORABNIK
+# ==================
 
 class Uporabnik:
     """
@@ -20,9 +25,8 @@ class Uporabnik:
 
     def __str__(self):
         return f"{self.ime} {self.priimek}"
-    
-    # metode:
-    # ustvari račun
+
+    # REGISTRACIJA
     def ustvari_racun(self, geslo):
         ''' ustvarjanje računa
         '''
@@ -38,7 +42,7 @@ class Uporabnik:
     
     # prijava
     @staticmethod
-    def prijava(conn, email, geslo): #geslo):
+    def prijava(conn, email, geslo):
         ''' prijava po emailu
         '''
         geslo_hash = hash_geslo(geslo)
@@ -146,14 +150,7 @@ class Uporabnik:
     def ima_veljavno_karto(self):
         '''metoda preveri ali ima uporabnik veljavno karto ali ne
         '''
-        sql = """
-                SELECT DATE(kk.datum, '+' || karta.trajanje || ' days') FROM kupljenaKarta AS kk
-                JOIN karta ON kk.vrsta_karte = karta.karta_id
-                WHERE kk.uporabnik_id = ?
-                ORDER BY kk.datum DESC
-                LIMIT 1
-            """
-        vrst = self.conn.execute(sql, (self.uporabnik_id,)).fetchone()
+        vrst = self.iztek_naslednje()
 
         if not vrst or vrst[0] is None:
             return False
@@ -178,8 +175,12 @@ class Uporabnik:
             )
         return None
 
+# ==================
+# TRENER
+# ==================   
+
 class Trener:
-    """ razred za tremerja
+    """ razred za trenerja
     """
     def __init__(self, conn, ime, priimek, email, specializacija, trener_id = None): 
         self.conn = conn
@@ -189,9 +190,6 @@ class Trener:
         self.email = email
         self.special = specializacija
 
-    # metode:
-    # prijava
-    # rezervacija termina
     @staticmethod
     def prijava(conn, email, geslo):
         ''' Prijava trennerja
@@ -234,7 +232,10 @@ class Trener:
             """, (self.trener_id, termin_id))
         
         self.conn.commit()
+
     def moji_termini(self):
+        '''Termini trenerja
+        '''
         sql = """
                 SELECT termini.termin_id,
                     termini.datum,
@@ -278,7 +279,13 @@ class Trener:
             """
         return conn.execute(sql)
     
+# ==================
+# ADMIN
+# ==================
+
 class Admin:
+    '''Admin sistem
+    '''
     def __init__(self, conn, ime, email, admin_id=None):
         self.conn = conn
         self.admin_id = admin_id
@@ -287,6 +294,8 @@ class Admin:
 
     @staticmethod
     def prijava(conn, email, geslo):
+        '''Prijava admina
+        '''
         geslo_hash = hash_geslo(geslo)
         vrstica = conn.execute(
             "SELECT admin_id, ime, email FROM admin WHERE email = ? AND geslo_hash = ?",
