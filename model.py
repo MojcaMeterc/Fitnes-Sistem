@@ -123,7 +123,7 @@ class Uporabnik:
                 WHERE rezervacijaU.uporabnik_id = ?
             """
         return self.conn.execute(sql, (self.uporabnik_id,))
-    
+
     def aktivne_karte(self):
         '''vse aktivne karte uporabnika
         '''
