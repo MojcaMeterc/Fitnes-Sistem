@@ -81,7 +81,7 @@ class Uporabnik:
 
         self.conn.execute(
             """
-            INSERT INTO kupljenaKarta (vrsta_karte, uproabnik_id)
+            INSERT INTO kupljenaKarta (vrsta_karte, uporabnik_id)
             VALUES (?, ?)
             """,
             (karta_id, self.uporabnik_id)
