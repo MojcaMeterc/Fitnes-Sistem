@@ -1,2 +1,2 @@
-admin_id,ime,email,geslo
-1,admin,admin,admin@fitnes.com,240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9
+admin_id,ime,email,geslo_hash
+1,admin,admin@fitnes.com,240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9
