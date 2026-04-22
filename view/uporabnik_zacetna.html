@@ -23,13 +23,14 @@
         <h3>Moje karte</h3>
         % if karte:
             <table class="tabela">
-                <thead><tr><th>Naziv</th><th>Datum nakupa</th><th>Veljavna še</th></tr></thead>
+                <thead><tr><th>Naziv</th><th>Datum nakupa</th><th>Datum izteka</th><th>Veljavna še</th></tr></thead>
                 <tbody>
                     % for karta in karte:
                     <tr>
-                        <td>{{karta[0]}}</td>
                         <td>{{karta[1]}}</td>
-                        <td>{{karta[3]}}</td></tr>
+                        <td>{{karta[2]}}</td>
+                        <td>{{karta[3]}}</td>
+                        <td>{{karta[4]}}</td></tr>
                     % end
                 </tbody>
             </table>

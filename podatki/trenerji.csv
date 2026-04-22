@@ -14,3 +14,4 @@ trener_id,ime,priimek,email,specializacija,geslo_hash
 13,Dewitt,Crudgington,dewitt.crudgington@gmail.com,svetovalec (prehranski),$2a$04$uSFcvFXAsSDTf1jW0SaXkO1hqi9.GUpNHy972JjAhrXvJdltrbdKe
 14,Melvyn,Baudouin,melvyn.baudouin@gmail.com,HIT,$2a$04$I/6fyRZ//gz2LzzNcKCKs.C.QGpWsJQcit7RSUJgvgYwWCLTe5cA6
 15,Aylmar,Macieja,aylmar.macieja@gmail.com,HIT,$2a$04$FYciC0gCP90f.1ew97ejy.Y5FEl6USDCfRKN/./rkwcgWp48r21SG
+16,Janez,Novak,janez@fitnes.com,pilates,88f25d8a48e14232fdfa52c03abd082f76358d3e211c2977e3c3ac55d54df13d

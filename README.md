@@ -61,3 +61,16 @@ Projekt je bil razvit kot študijski projekt za prikaz delovanja spletne aplikac
 pip install bottle
 python spletni_vmesnik.py
 ```
+## Vrste prijave (za preizkus aplikacije)
+### ADMIN prijava
+
+- **Email:** admin@fitnes.com
+- **Geslo:** admin123
+
+### Uporabnik prijava
+- **Email:** maja.horvat@gmail.com
+- **Geslo:** uporabnik123
+
+### Trener prijava
+- **Email:** janez@fitnes.com
+- **Geslo:** geslo123  

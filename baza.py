@@ -82,6 +82,7 @@ class Trener(Tabela):
 
 class Admin(Tabela):
     ime = 'admin'
+    podatki = 'podatki/admin.csv'
 
     def ustvari(self):
         self.conn.execute("""
@@ -131,7 +132,6 @@ class Termin(Tabela):
                 datum TEXT NOT NULL,
                 ura_pricetka TEXT NOT NULL,
                 ura_konca TEXT NOT NULL,
-                        
                 FOREIGN KEY (dvorana_id) REFERENCES dvorane(dvorana_id)
             );
   """)
@@ -145,7 +145,6 @@ class RezervacijaTrener(Tabela):
                 rezervacijaT_id INTEGER PRIMARY KEY AUTOINCREMENT,
                 termin_id INTEGER NOT NULL,
                 trener_id INTEGER NOT NULL,
-                
                 FOREIGN KEY (termin_id) REFERENCES termini(termin_id),
                 FOREIGN KEY (trener_id) REFERENCES trener(trener_id)
             );
@@ -173,9 +172,7 @@ class KupljeneKarte(Tabela):
                 karta_id INTEGER PRIMARY KEY  AUTOINCREMENT,
                 vrsta_karte INTEGER NOT NULL,
                 uporabnik_id INTEGER NOT NULL,
-
                 datum TEXT DEFAULT (DATE('now')),
-                          
                 FOREIGN KEY (vrsta_karte) REFERENCES karta(karta_id),
                 FOREIGN KEY (uporabnik_id) REFERENCES uporabniki(uporabnik_id)
         );
