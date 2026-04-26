@@ -44,7 +44,7 @@ model.py
   podatkovni modeli (Uporabnik, Trener, Admin, Termin)
 
 spletni_vmesnik.py
-  Bittle spletna aplikacija
+  Bottle spletna aplikacija
 
 view/
   HTML predloge
@@ -59,6 +59,7 @@ Projekt je bil razvit kot študijski projekt za prikaz delovanja spletne aplikac
 ## Zagon aplikacije
 ```
 pip install bottle
+python baza.py
 python spletni_vmesnik.py
 ```
 ## Vrste prijave (za preizkus aplikacije)
