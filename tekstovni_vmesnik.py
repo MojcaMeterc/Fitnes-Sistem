@@ -132,13 +132,8 @@ def glavni_meni(conn):
     tip = input("Si uporabnik (u) ali trener(t)?")
 
     if tip.lower() == "u":
-<<<<<<< HEAD
-        email = input("vnesi svoj email: ")
-        geslo = input('Vnesi geslo: ')
-=======
         email = input("Vnesi svoj email: ")
         geslo = input("Vnesi geslo: ")
->>>>>>> b38bbae85521fd140bce7e92a1ff649d5cc9e75e
         uporabnik = Uporabnik.prijava(conn, email, geslo)
 
         if uporabnik:
