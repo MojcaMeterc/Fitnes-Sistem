@@ -8,8 +8,8 @@ def prikazi_proste_termine(conn):
 
     trenutni_datum = None
 
-    for t in Termin.prosti_termini(conn, dni=14):
-        termin_id, dvorana, datum, zacetek, konec = t
+    for t in Termin.termini_brez_trenerja(conn):
+        termin_id, datum, zacetek, konec, dvorana = t
 
         if datum != trenutni_datum:
             trenutni_datum = datum
@@ -112,7 +112,8 @@ def glavni_meni(conn):
 
     if tip.lower() == "u":
         email = input("vnesi svoj email: ")
-        uporabnik = Uporabnik.prijava(conn, email)
+        geslo = input('Vnesi geslo: ')
+        uporabnik = Uporabnik.prijava(conn, email, geslo)
 
         if uporabnik:
             meni_uporabnik(conn, uporabnik)
