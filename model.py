@@ -93,9 +93,17 @@ class Uporabnik:
         """izbira termina"""
         termin = Termin(self.conn, None, None, None, None, termin_id)
 
-        # preveri veljavnost karte
-        if not self.ima_veljavno_karto():
-            raise Exception("Nimate veljavne karte")
+        sql = """
+                SELECT datum FROM termini
+                WHERE termin_id = ?
+            """
+        
+        vrstica = self.conn.execute(sql, (termin_id,)).fetchone()
+        datum_termina = vrstica[0]
+
+        # preveri veljavnost karte za datum termina
+        if not self.ima_veljavno_karto_za_datum(datum_termina):
+            raise Exception("Karta ni veljavna za izbran termin")
 
         # preveri kapaciteto dvorane
         if not termin.je_prostor():
@@ -184,6 +192,26 @@ class Uporabnik:
 
         iztek = datetime.strptime(vrst[0], "%Y-%m-%d").date()
         return iztek >= datetime.now().date()
+    
+    def ima_veljavno_karto_za_datum(self, datum_termina):
+        """ metoda preveri ali ma uporabnim veljavno karto za nek določen datum"""
+        sql = """
+            SELECT DATE(kk.datum, '+' || karta.trajanje || 'days') AS datum_izteka
+            FROM kupljenaKarta AS kk
+            JOIN karta ON kk.vrsta_karte = karta.karta_id
+            WHERE kk.uporabnik_id = ?
+        """
+
+        karte = self.conn.execute(sql, (self.uporabnik_id,)).fetchall()
+        datum_termina = datetime.strptime(datum_termina, "%Y-%m-%d").date()
+
+        for karta in karte:
+            if karta[0]:
+                iztek = datetime.strptime(karta[0], "%Y-%m-%d").date()
+
+                if iztek >= datum_termina:
+                    return True
+        return False
 
     @staticmethod
     def pridobi_po_id(conn, uporabnik_id):

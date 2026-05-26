@@ -404,7 +404,9 @@ def moje_karte():
     uid = zahtevaj_prijavo()
     ime = bottle.request.get_cookie("uporabnik", secret=SKRIVNOST)
 
-    karte = []  # ZAČASNO DOKLER NE POVEŽEVA Z BAZO
+
+    uporabnik = Uporabnik.pridobi_po_id(conn, uid) # pridobi trenutno prijavljenega uporab
+    karte = list(uporabnik.aktivne_karte()) # iz baze prebere njegove aktivne karte
 
     return bottle.template(
         "moje_karte.html",
@@ -443,7 +445,10 @@ def rezerviraj():
         uporabnik.izberi_termin(termin_id)
 
     except Exception as e:
-        return str(e)
+        return bottle.template(
+            "napaka_rezervacija.html",
+            sporocilo = str(e)
+        )
 
     bottle.redirect("/moj_racun/")
 
