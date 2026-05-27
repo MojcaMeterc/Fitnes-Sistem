@@ -196,7 +196,7 @@ class Uporabnik:
     def ima_veljavno_karto_za_datum(self, datum_termina):
         """ metoda preveri ali ma uporabnim veljavno karto za nek določen datum"""
         sql = """
-            SELECT DATE(kk.datum, '+' || karta.trajanje || 'days') AS datum_izteka
+            SELECT DATE(kk.datum, '+' || karta.trajanje || ' days') AS datum_izteka
             FROM kupljenaKarta AS kk
             JOIN karta ON kk.vrsta_karte = karta.karta_id
             WHERE kk.uporabnik_id = ?
